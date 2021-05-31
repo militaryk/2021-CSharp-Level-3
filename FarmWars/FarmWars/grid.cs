@@ -15,8 +15,8 @@ namespace FarmWars
     {
         public int width;
         public int height;
-        public int i;
-        public int f;
+        public int y;
+        public int x;
 
         public void DrawSqaure(Graphics g)
         {
@@ -27,8 +27,8 @@ namespace FarmWars
                 Pen pen1 = new Pen(Color.Black);
 
                 //Calcualte the X and Y of each indervidual square
-                int PosX = width * f;
-                int PosY = height * i;
+                int PosX = width * x;
+                int PosY = height * y;
 
                 int TextPosX = PosX + width / 2;
                 int TextPosY = PosY + width / 2;
@@ -36,12 +36,12 @@ namespace FarmWars
                 // Create rectangle for ellipse.
                 Rectangle rect = new Rectangle(PosX, PosY, width, height);
 
-                Image newImage = Image.FromFile("../../../Art/tallgrass.png");
+                Image newImage = Image.FromFile("../../../Art/ground/tallgrass.png");
                 g.DrawImage(newImage, rect);
                 using (Font font = new Font("Times New Roman", 12, FontStyle.Bold, GraphicsUnit.Pixel))
                 {
                     Point point1 = new Point(TextPosX - 25, TextPosY);
-                    TextRenderer.DrawText(g, Convert.ToString(f) + Convert.ToString(i), font, point1, Color.Blue);
+                    TextRenderer.DrawText(g, Convert.ToString(x) + ", "+ Convert.ToString(y), font, point1, Color.Blue);
                 }
             }
         }

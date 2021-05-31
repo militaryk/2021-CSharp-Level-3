@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace FarmWars
 {
-    class water
+    class Lake
     {
         public int width;
         public int height;
@@ -28,24 +28,32 @@ namespace FarmWars
         public int UY;
         public int DX;
         public int DY;
+        public int lakelength;
+        public int lakeheight;
         bool newlake = true;
         Image newImage = Image.FromFile("../../../Art/ground/water.jpg");
 
-
-        public void DrawWater(Graphics g)
+        
+        public void DrawLake(Graphics g)
         {
             Random water = new Random();
             int waterchance = water.Next(1, 100);
 
             if (waterchance == 1)
             {
+                Random rndlength = new Random();
+                lakelength = rndlength.Next(1, 5);
+
+                Random rndheight = new Random();
+                lakeheight = rndheight.Next(1, 5);
+
                 WaterCentre(g);
 
             }
 
         }
 
-        private void WaterCentre(Graphics g)
+        public void WaterCentre(Graphics g)
         {
             //Define the solid brush with a default colour of orange
             SolidBrush br = new SolidBrush(Color.SandyBrown);
@@ -53,51 +61,25 @@ namespace FarmWars
             //Define the pen with the colour black
             Pen pen1 = new Pen(Color.Black);
 
+            Thread.Sleep(2);
 
-            if (newlake == true)
+            for (int l = 0; l < lakelength; l ++)
             {
-                //Calcualte the X and Y of each indervidual square
-                PosX = width * x;
-                PosY = height * y;
+                //For each row until the number of rows is the same as the number of rows entered by the user
+                for (int u = 0; lakeheight > u; u++)
+                {
+                    //Calcualte the X and Y of each indervidual square
+                    PosX = width * (x + l);
+                    PosY = height * (y + u);
 
 
-                // Create rectangle for ellipse.
-                Rectangle rect = new Rectangle(PosX, PosY, width, height);
-                g.DrawImage(newImage, rect);
-
-                newlake = false;
+                    // Create rectangle for ellipse.
+                    Rectangle rect = new Rectangle(PosX, PosY, width, height);
+                    g.DrawImage(newImage, rect);
+                }
             }
 
-            GetNearest();
-
-
-            Random waternext = new Random();
-            int waternextchance = waternext.Next(0, 4);
-
-            if (waternextchance == 1)
-            {
-                WaterLeft(g);
-
-            }
         }
-        private void WaterLeft(Graphics g)
-        {
-            //For Left
-            //Calcualte the X and Y of each indervidual square
-
-            PosX = width * LX;
-            PosY = height * LY;
-
-            // Create rectangle for ellipse.
-            Rectangle rectL = new Rectangle(PosX, PosY, width, height);
-
-            g.DrawImage(newImage, rectL);
-
-            WaterCentre(g);
-
-
-        }
-
 
         private void GetNearest()
         {

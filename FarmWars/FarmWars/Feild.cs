@@ -31,7 +31,7 @@ namespace FarmWars
 
             //Define the pen with the colour black
             Pen pen1 = new Pen(Color.Black);
-            Image YouImage = Image.FromFile("../../../Art/youngwheat.png");
+            Image YouImage = Image.FromFile("../../../Art/ground/youngwheat.png");
 
 
             //Calculate the width and height of the square so that it all fits in the picturebox
@@ -58,8 +58,8 @@ namespace FarmWars
 
         public void GrowWheat(Graphics g)
         {
-            Thread.Sleep(2000);
-            Image GrownImage = Image.FromFile("../../../Art/grownwheat.png");
+            Thread.Sleep(1);
+            Image GrownImage = Image.FromFile("../../../Art/ground/grownwheat.png");
             Rectangle rect = new Rectangle(PosX, PosY, 25, 25);
             g.DrawImage(GrownImage, rect);
         }

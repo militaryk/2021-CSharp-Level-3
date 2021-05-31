@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Reflection;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,10 +23,12 @@ namespace FarmWars
         int TrY;
         bool feild;
         bool MapDraw = true;
+        int TileCount;
 
         square squareTile = new square();
         Feild feildTile = new Feild();
         water waterTile = new water();
+        Lake lakeTile = new Lake();
 
         //Calculate the width and height of the square so that it all fits in the picturebox
         public int width = 0;
@@ -38,10 +41,15 @@ namespace FarmWars
         int TextPosX = 0;
         int TextPosY = 0;
 
+        //Create list to store marks
+        public List<double> tileList = new List<double>();
+        public List<double> tileType = new List<double>();
 
         public FormGame()
         {
             InitializeComponent();
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, PnlGame, new object[] { true });
+
         }
 
         private void TmrGame_Tick(object sender, EventArgs e)
@@ -58,27 +66,20 @@ namespace FarmWars
             {
 
                 //Draw the grid with the number of columns given
-                for (int f = 0; f * 25 < PnlGame.Width; f++)
+                for (int x = 0; x * SquareSize < PnlGame.Width; x++)
                 {
                     //For each row until the number of rows is the same as the number of rows entered by the user
-                    for (int i = 0; PnlGame.Height > i * 25; i++)
+                    for (int y = 0; PnlGame.Height > y * SquareSize; y++)
                     {
+                        TileCount++;
                         Graphics g = PnlGame.CreateGraphics();
 
                         squareTile.height = SquareSize;
                         squareTile.width = SquareSize;
-                        squareTile.f = f;
-                        squareTile.i = i;
+                        squareTile.x =x;
+                        squareTile.y = y;
 
                         squareTile.DrawSqaure(g);
-
-
-                        waterTile.height = SquareSize;
-                        waterTile.width = SquareSize;
-                        waterTile.f = f;
-                        waterTile.i = i;
-                        waterTile.DrawWater(g);
-                        Thread.Sleep(2);
 
                     }
                 }
@@ -119,5 +120,32 @@ namespace FarmWars
             feildTile.DrawFeild(g);
 
         }
+
+        public void Seed()
+        {
+            int[] frequency = new int[10];
+            double number;
+            Random rnd = new Random();
+
+            for (int ctr = 0; ctr <= TileCount; ctr++)
+            {
+                number = rnd.NextDouble();
+                frequency[(int)Math.Floor(number * 10)]++;
+            }
+            Console.WriteLine("Distribution of Random Numbers:" + TileCount);
+            for (int ctr = frequency.GetLowerBound(0); ctr <= frequency.GetUpperBound(0); ctr++)
+                Console.WriteLine("0.{0}0-0.{0}9       {1}", ctr, frequency[ctr]);
+        }
+
+        private void seedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Seed();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Seed();
+        }
+
     }
 }

@@ -24,6 +24,7 @@ namespace FarmWars
         bool feild;
         bool MapDraw = true;
         int TileCount;
+        public int Traversible = 1;
 
         square squareTile = new square();
         Feild feildTile = new Feild();
@@ -45,6 +46,10 @@ namespace FarmWars
         public List<double> tileList = new List<double>();
         public List<double> tileType = new List<double>();
 
+        //i, j, value
+        List<Tuple<int, int, int, int, int>> newTileMap = new List<Tuple<int, int, int, int, int>>();
+
+
         public FormGame()
         {
             InitializeComponent();
@@ -64,8 +69,8 @@ namespace FarmWars
                         TileCount++;
                         Graphics g = PnlGame.CreateGraphics();
 
-                    Random tile = new Random();
-                    int tiletype = tile.Next(1, 6);
+                        Random tile = new Random();
+                        int tiletype = tile.Next(1, 6);
 
                         
 
@@ -75,8 +80,11 @@ namespace FarmWars
                         squareTile.y = y;
                         squareTile.tiletype = tiletype;
 
-                        squareTile.DrawSqaure(g);
-                    Thread.Sleep(5);
+                        newTileMap.Add(new Tuple<int, int, int, int, int>(x, y, tiletype, Traversible, 0));
+
+
+                    squareTile.DrawSqaure(g);
+                        Thread.Sleep(5);
 
                 }
             }
@@ -109,11 +117,6 @@ namespace FarmWars
             feildTile.DrawFeild(g);
         }
         private void PnlGame_Validated(object sender, EventArgs e)
-        {
-            DrawMap();
-        }
-
-        private void drawMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DrawMap();
         }
@@ -158,6 +161,19 @@ namespace FarmWars
             }
 
             return id;
+        }
+
+        private void reLoadMapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            newTileMap.ForEach(i => Console.Write("{0}\t", i));
+            Console.WriteLine("hi");
+            Console.WriteLine(newTileMap.Last());
+        }
+
+        private void reDrawMapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DrawMap();
+
         }
     }
 }

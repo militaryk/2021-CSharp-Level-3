@@ -50,9 +50,10 @@
             this.PnlGame.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.PnlGame.BackColor = System.Drawing.SystemColors.ControlDark;
             this.PnlGame.CausesValidation = false;
-            this.PnlGame.Location = new System.Drawing.Point(12, 31);
+            this.PnlGame.Location = new System.Drawing.Point(16, 38);
+            this.PnlGame.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PnlGame.Name = "PnlGame";
-            this.PnlGame.Size = new System.Drawing.Size(1418, 735);
+            this.PnlGame.Size = new System.Drawing.Size(1891, 905);
             this.PnlGame.TabIndex = 0;
             this.PnlGame.Click += new System.EventHandler(this.PnlGame_Click);
             this.PnlGame.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlGame_Paint);
@@ -85,7 +86,7 @@
             this.drawMapToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1443, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1924, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -101,19 +102,20 @@
             this.drawMapToolStripMenuItem.Name = "drawMapToolStripMenuItem";
             this.drawMapToolStripMenuItem.Size = new System.Drawing.Size(92, 24);
             this.drawMapToolStripMenuItem.Text = "Draw Map";
-            this.drawMapToolStripMenuItem.Click += new System.EventHandler(this.drawMapToolStripMenuItem_Click);
             // 
             // reDrawMapToolStripMenuItem
             // 
             this.reDrawMapToolStripMenuItem.Name = "reDrawMapToolStripMenuItem";
             this.reDrawMapToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.reDrawMapToolStripMenuItem.Text = "ReDraw Map";
+            this.reDrawMapToolStripMenuItem.Text = "Draw Map";
+            this.reDrawMapToolStripMenuItem.Click += new System.EventHandler(this.reDrawMapToolStripMenuItem_Click);
             // 
             // reLoadMapToolStripMenuItem
             // 
             this.reLoadMapToolStripMenuItem.Name = "reLoadMapToolStripMenuItem";
             this.reLoadMapToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.reLoadMapToolStripMenuItem.Text = "ReLoad Map";
+            this.reLoadMapToolStripMenuItem.Text = "Read List";
+            this.reLoadMapToolStripMenuItem.Click += new System.EventHandler(this.reLoadMapToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -139,13 +141,14 @@
             // 
             // FormGame
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1443, 781);
+            this.ClientSize = new System.Drawing.Size(1924, 961);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.PnlGame);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormGame";
             this.Text = "FarmWars";
             this.contextMenuStrip1.ResumeLayout(false);

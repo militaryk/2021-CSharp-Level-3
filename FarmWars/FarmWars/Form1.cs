@@ -52,63 +52,52 @@ namespace FarmWars
 
         }
 
-        private void TmrGame_Tick(object sender, EventArgs e)
-        {        }
-
         private void DrawMap()
         {
-          
-        }
-
-        private void PnlGame_Paint(object sender, PaintEventArgs e)
-        {
-            if (MapDraw == true)
-            {
-
                 //Draw the grid with the number of columns given
                 for (int x = 0; x * SquareSize < PnlGame.Width; x++)
                 {
                     //For each row until the number of rows is the same as the number of rows entered by the user
                     for (int y = 0; PnlGame.Height > y * SquareSize; y++)
                     {
+                        
                         TileCount++;
                         Graphics g = PnlGame.CreateGraphics();
 
+                    Random tile = new Random();
+                    int tiletype = tile.Next(1, 6);
+
+                        
+
                         squareTile.height = SquareSize;
                         squareTile.width = SquareSize;
-                        squareTile.x =x;
+                        squareTile.x = x;
                         squareTile.y = y;
+                        squareTile.tiletype = tiletype;
 
                         squareTile.DrawSqaure(g);
+                    Thread.Sleep(5);
 
-                    }
                 }
-                MapDraw = false;
             }
 
         }
 
-        private void FormGame_Load(object sender, EventArgs e)
+        private void PnlGame_Paint(object sender, PaintEventArgs e)
         {
-            DrawMap();
         }
-
         private void PnlGame_MouseMove(object sender, MouseEventArgs e)
         {
             XCord = (e.X / 25);
             YCord = (e.Y / 25);
-            LblCord.Text = Convert.ToString(XCord);
-            LblCordY.Text = Convert.ToString(YCord);
-            label1.Text = Convert.ToString(e.X);
-            label2.Text = Convert.ToString(e.Y);
+
         }
 
         private void PnlGame_Click(object sender, EventArgs e)
         {
             TrX = XCord;
             TrY = YCord;
-            label3.Text = Convert.ToString(TrX);
-            label4.Text = Convert.ToString(TrY);
+
 
             feildTile.SquareSize = SquareSize;
 
@@ -118,34 +107,57 @@ namespace FarmWars
             Graphics g = PnlGame.CreateGraphics();
 
             feildTile.DrawFeild(g);
-
+        }
+        private void PnlGame_Validated(object sender, EventArgs e)
+        {
+            DrawMap();
         }
 
-        public void Seed()
+        private void drawMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int[] frequency = new int[10];
-            double number;
-            Random rnd = new Random();
+            DrawMap();
+        }
 
-            for (int ctr = 0; ctr <= TileCount; ctr++)
+        public int GetId(string TileType, int id)
+        {
+            if (TileType == "Grass1")
             {
-                number = rnd.NextDouble();
-                frequency[(int)Math.Floor(number * 10)]++;
+                id = 1;
             }
-            Console.WriteLine("Distribution of Random Numbers:" + TileCount);
-            for (int ctr = frequency.GetLowerBound(0); ctr <= frequency.GetUpperBound(0); ctr++)
-                Console.WriteLine("0.{0}0-0.{0}9       {1}", ctr, frequency[ctr]);
-        }
+            if (TileType == "Grass2")
+            {
+                id = 2;
+            }
+            if (TileType == "Grass3")
+            {
+                id = 3;
+            }
+            if (TileType == "Grass4")
+            {
+                id = 4;
+            }
+            if (TileType == "Grass5")
+            {
+                id = 5;
+            }
+            if (TileType == "Field")
+            {
+                id = 6;
+            }
+            if (TileType == "Wheat")
+            {
+                id = 7;
+            }
+            if (TileType == "GrownWheat")
+            {
+                id = 8;
+            }
+            if (TileType == "Mud")
+            {
+                id = 9;
+            }
 
-        private void seedToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Seed();
+            return id;
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Seed();
-        }
-
     }
 }

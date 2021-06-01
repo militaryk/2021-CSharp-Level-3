@@ -17,6 +17,7 @@ namespace FarmWars
         public int height;
         public int y;
         public int x;
+        public int tiletype;
 
         public void DrawSqaure(Graphics g)
         {
@@ -35,10 +36,37 @@ namespace FarmWars
 
                 // Create rectangle for ellipse.
                 Rectangle rect = new Rectangle(PosX, PosY, width, height);
-
+                if (tiletype == 1)
+                {
                 Image newImage = Image.FromFile("../../../Art/ground/tallgrass.png");
                 g.DrawImage(newImage, rect);
-                using (Font font = new Font("Times New Roman", 12, FontStyle.Bold, GraphicsUnit.Pixel))
+
+            }
+            if (tiletype == 2)
+                {
+                Image newImage = Image.FromFile("../../../Art/ground/tallgrass2.png");
+                g.DrawImage(newImage, rect);
+
+            }
+            if (tiletype == 3)
+            {
+                Image newImage = Image.FromFile("../../../Art/ground/tallgrass3.png");
+                g.DrawImage(newImage, rect);
+
+            }
+            if (tiletype == 4)
+            {
+                Image newImage = Image.FromFile("../../../Art/ground/tallgrass4.png");
+                g.DrawImage(newImage, rect);
+
+            }
+            if (tiletype == 5)
+            {
+                Image newImage = Image.FromFile("../../../Art/ground/tallgrass5.png");
+                g.DrawImage(newImage, rect);
+
+            }
+            using (Font font = new Font("Times New Roman", 12, FontStyle.Bold, GraphicsUnit.Pixel))
                 {
                     Point point1 = new Point(TextPosX - 25, TextPosY);
                     TextRenderer.DrawText(g, Convert.ToString(x) + ", "+ Convert.ToString(y), font, point1, Color.Blue);

@@ -25,11 +25,19 @@ namespace FarmWars
         bool MapDraw = true;
         int TileCount;
         public int Traversible = 1;
+        int mapwidth = 0;
+
+        int AX;
+        int AY;
+        int BX;
+        int BY;
 
         square squareTile = new square();
         Feild feildTile = new Feild();
         water waterTile = new water();
         Lake lakeTile = new Lake();
+        Astar astar = new Astar();
+        Hostile hostile = new Hostile();
 
         //Calculate the width and height of the square so that it all fits in the picturebox
         public int width = 0;
@@ -49,7 +57,6 @@ namespace FarmWars
         //i, j, value
         List<Tuple<int, int, int, int, int>> newTileMap = new List<Tuple<int, int, int, int, int>>();
 
-
         public FormGame()
         {
             InitializeComponent();
@@ -59,34 +66,73 @@ namespace FarmWars
 
         private void DrawMap()
         {
+            astar.EmptyList();
+
+            string line = " ";
+
+            Random tile = new Random();
+            Random AB = new Random();
+            AX = AB.Next(1, 20);
+            AY = AB.Next(1, 20);
+            BX = AB.Next(30, 40);
+            BY = AB.Next(20, 25);
+
                 //Draw the grid with the number of columns given
-                for (int x = 0; x * SquareSize < PnlGame.Width; x++)
+                for (int y = 0; y * SquareSize < PnlGame.Height; y++)
                 {
-                    //For each row until the number of rows is the same as the number of rows entered by the user
-                    for (int y = 0; PnlGame.Height > y * SquareSize; y++)
-                    {
-                        
-                        TileCount++;
-                        Graphics g = PnlGame.CreateGraphics();
 
-                        Random tile = new Random();
-                        int tiletype = tile.Next(1, 6);
+                //For each row until the number of rows is the same as the number of rows entered by the user
+                for (int x = 0; PnlGame.Width > x * SquareSize; x++)
+                {
+                    TileCount++;
+                    Graphics g = PnlGame.CreateGraphics();
 
-                        
+                    int tiletype = tile.Next(1, 6);
 
-                        squareTile.height = SquareSize;
-                        squareTile.width = SquareSize;
-                        squareTile.x = x;
-                        squareTile.y = y;
-                        squareTile.tiletype = tiletype;
 
-                        newTileMap.Add(new Tuple<int, int, int, int, int>(x, y, tiletype, Traversible, 0));
 
+
+                    squareTile.height = SquareSize;
+                    squareTile.width = SquareSize;
+                    squareTile.x = x;
+                    squareTile.y = y;
+                    squareTile.tiletype = tiletype;
+
+                    newTileMap.Add(new Tuple<int, int, int, int, int>(x, y, tiletype, Traversible, 0));
 
                     squareTile.DrawSqaure(g);
-                        Thread.Sleep(5);
 
+                    if (y == AY && x == AX)
+                    {
+                        line = line + "A";
+                        using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
+                        {
+                            Point point1 = new Point(AX * 25, AY * 25);
+                            TextRenderer.DrawText(g, "A", font, point1, Color.Blue);
+                        }
+                    }
+                    else if (x == BX && y == BY)
+                    {
+                        using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
+                        {
+                            Point point1 = new Point(BX * 25, BY * 25);
+                            TextRenderer.DrawText(g, "B", font, point1, Color.Blue);
+                        }
+                        line = line + "B";
+                    }
+                    else if(tiletype == 2)
+                    {
+                        line = line + "-";
+                    } else
+                    {
+                        line = line + " ";
+                    }
                 }
+                astar.AddToList(line);
+                Console.WriteLine(line);
+                mapwidth = line.Length;
+                line = "";
+
             }
 
         }
@@ -103,18 +149,61 @@ namespace FarmWars
 
         private void PnlGame_Click(object sender, EventArgs e)
         {
-            TrX = XCord;
-            TrY = YCord;
-
-
-            feildTile.SquareSize = SquareSize;
-
-            feildTile.TrX = TrX;
-            feildTile.TrY = TrY;
+            astar.EmptyList();
 
             Graphics g = PnlGame.CreateGraphics();
 
-            feildTile.DrawFeild(g);
+            AY = YCord;
+            AX = XCord;
+            int tiletype;
+            string line = "";
+
+            hostile.x = XCord * SquareSize;
+            hostile.y = YCord * SquareSize;
+            hostile.DrawHostile(g);
+
+            //Draw the grid with the number of columns given
+            for (int y = 0; y * SquareSize < PnlGame.Height; y++)
+            {
+
+                //For each row until the number of rows is the same as the number of rows entered by the user
+                for (int x = 0; PnlGame.Width > x * SquareSize; x++)
+                {
+                    var tile = newTileMap.First(z => z.Item1 == x && z.Item2 == y);
+                    tiletype = tile.Item3;
+
+
+                    if (y == AY && x == AX)
+                    {
+                        line = line + "A";
+                        using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
+                        {
+                            Point point1 = new Point(AX * 25, AY * 25);
+                            TextRenderer.DrawText(g, "A", font, point1, Color.Blue);
+                        }
+                    }
+                    else if (x == BX && y == BY)
+                    {
+                        line = line + "B";
+                    }
+                    else if (tiletype == 2)
+                    {
+                        line = line + "-";
+                    }
+                    else
+                    {
+                        line = line + " ";
+                    }
+
+                }
+                astar.AddToList(line);
+                Console.WriteLine(line);
+                line = "";
+
+            }
+            astar.Main(g);
+
+
         }
         private void PnlGame_Validated(object sender, EventArgs e)
         {
@@ -174,6 +263,41 @@ namespace FarmWars
         {
             DrawMap();
 
+        }
+
+        private void pathFindingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PnlGame_DoubleClick(object sender, EventArgs e)
+        {
+            Graphics g = PnlGame.CreateGraphics();
+
+            TrX = XCord;
+            TrY = YCord;
+
+
+            feildTile.SquareSize = SquareSize;
+
+            feildTile.TrX = TrX;
+            feildTile.TrY = TrY;
+
+            feildTile.DrawFeild(g);
+        }
+
+        private void TmrGame_Tick(object sender, EventArgs e)
+        {
+            int currentX = XCord;
+            int currentY = YCord;
+            astar.CurrentX = currentX;
+            astar.CurrentY = currentY;
+        }
+
+        private void moveGuyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Graphics g = PnlGame.CreateGraphics();
+            astar.FollowPath(g);
         }
     }
 }

@@ -66,11 +66,11 @@ namespace FarmWars
                 g.DrawImage(newImage, rect);
 
             }
-            using (Font font = new Font("Times New Roman", 12, FontStyle.Bold, GraphicsUnit.Pixel))
-                {
-                    Point point1 = new Point(TextPosX - 25, TextPosY);
-                    TextRenderer.DrawText(g, Convert.ToString(x) + ", "+ Convert.ToString(y), font, point1, Color.Blue);
-                }
+            //using (Font font = new Font("Times New Roman", 12, FontStyle.Bold, GraphicsUnit.Pixel))
+              //  {
+                //    Point point1 = new Point(TextPosX - 25, TextPosY);
+                  //  TextRenderer.DrawText(g, Convert.ToString(x) + ", "+ Convert.ToString(y), font, point1, Color.Blue);
+                //}
             }
         }
 }

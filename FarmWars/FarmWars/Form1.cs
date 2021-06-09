@@ -56,6 +56,7 @@ namespace FarmWars
 
         //i, j, value
         List<Tuple<int, int, int, int, int>> newTileMap = new List<Tuple<int, int, int, int, int>>();
+        private Bitmap Background;
 
         public FormGame()
         {
@@ -132,13 +133,19 @@ namespace FarmWars
                 Console.WriteLine(line);
                 mapwidth = line.Length;
                 line = "";
-
             }
+            int width = PnlGame.Size.Width;
+            int height = PnlGame.Size.Height;
 
+            Bitmap bm = new Bitmap(width, height);
+            PnlGame.DrawToBitmap(bm, new Rectangle(0, 0, width, height));
+            this.Background = bm;
         }
 
         private void PnlGame_Paint(object sender, PaintEventArgs e)
         {
+
+            e.Graphics.DrawImage(Background, 0, 0, PnlGame.Width, PnlGame.Height);
         }
         private void PnlGame_MouseMove(object sender, MouseEventArgs e)
         {
@@ -155,6 +162,8 @@ namespace FarmWars
 
             AY = YCord;
             AX = XCord;
+            astar.StartX = AX;
+            astar.StartY = AY;
             int tiletype;
             string line = "";
 

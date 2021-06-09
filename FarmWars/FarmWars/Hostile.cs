@@ -17,7 +17,7 @@ namespace FarmWars
         public int y;
         public int x;
         public int tiletype;
-        Astar astar = new Astar();
+        //Astar astar = new Astar();
         public void DrawHostile(Graphics g)
         {
             //Define the solid brush with a default colour of orange
@@ -34,11 +34,6 @@ namespace FarmWars
             Rectangle rect = new Rectangle(x, y, width, height);
             Image newImage = Image.FromFile("../../../Art/character/bad.png");
             g.DrawImage(newImage, rect);
-
-            astar.FollowPath(g);
-
-            
-
         }
     }
 }

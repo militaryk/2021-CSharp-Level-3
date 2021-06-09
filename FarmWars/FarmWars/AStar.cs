@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
+
 
 
 namespace FarmWars
@@ -15,7 +17,7 @@ namespace FarmWars
     {
         public int CurrentX;
         public int CurrentY;
-        public int LeftX, LeftY, RightX, RightY, UpX, UpY, DownX, DownY;
+        public int LeftX, LeftY, RightX, RightY, UpX, UpY, DownX, DownY, StartX, StartY;
         List<string> map = new List<string>();
         List<Tuple<int, int>> path = new List<Tuple<int, int>>();
         Hostile hostile = new Hostile();
@@ -30,6 +32,7 @@ namespace FarmWars
         }
         public void Main(Graphics g)
             {
+            path.Clear();
                 var start = new Tile();
                 start.Y = map.FindIndex(x => x.Contains("A"));
                 start.X = map[start.Y].IndexOf("A");
@@ -145,54 +148,70 @@ namespace FarmWars
 
             public void FollowPath(Graphics g)
             {
-            LeftX = CurrentX - 1;
-            LeftY = CurrentY;
-            UpX = CurrentX;
-            UpY = CurrentY - 1;
-            DownX = CurrentX;
-            DownY = CurrentY + 1;
-            RightX = CurrentX + 1;
-            RightY = CurrentY;
-            try
+            int p = path.RemoveAll(z => z.Item1 == CurrentX && z.Item2 == CurrentY);
+            for (int i = 0; i <= 100; i++)
             {
-                var LeftTile = path.First(z => z.Item1 == LeftX && z.Item2 == LeftY);
-                CurrentX = LeftX;
-                CurrentY = LeftY;
-                Move(g);
-            }
-            catch { }
-            try
-            {
-                var RightTile = path.First(z => z.Item1 == RightX && z.Item2 == RightY);
-                CurrentX = RightX;
-                CurrentY = RightY;
-                Move(g);
-            }catch { }
-            try
-            {
-                var UpTile = path.First(z => z.Item1 == UpX && z.Item2 == UpY);
-                CurrentX = UpX;
-                CurrentY = UpY;
-                Move(g);
-            }
-            catch { }
-            try
-            {
-                var DownTile = path.First(z => z.Item1 == DownX && z.Item2 == DownY);
-                CurrentX = DownX;
-                CurrentY = DownY;
-                Move(g);
-            }
-            catch { }
-        }
+                LeftX = CurrentX - 1;
+                LeftY = CurrentY;
+                UpX = CurrentX;
+                UpY = CurrentY - 1;
+                DownX = CurrentX;
+                DownY = CurrentY + 1;
+                RightX = CurrentX + 1;
+                RightY = CurrentY;
+                //Console.WriteLine("Left" + Convert.ToString(LeftX) + ":" + Convert.ToString(LeftY));
+                //Console.WriteLine("Up" + Convert.ToString(UpX) + ":" + Convert.ToString(UpY));
+                //Console.WriteLine("Down" + Convert.ToString(DownX) + ":" + Convert.ToString(DownY));
+                //Console.WriteLine("Right" + Convert.ToString(RightX) + ":" + Convert.ToString(RightY));
+                bool left = path.Any(z => z.Item1 == LeftX && z.Item2 == LeftY);
+                bool right = path.Any(z => z.Item1 == RightX && z.Item2 == RightY);
+                bool up = path.Any(z => z.Item1 == UpX && z.Item2 == UpY);
+                bool down = path.Any(z => z.Item1 == DownX && z.Item2 == DownY);
 
+                if (down == true)
+                {
+                    Console.WriteLine("Down");
+                    CurrentX = DownX;
+                    CurrentY = DownY;
+                    int v = path.RemoveAll(z => z.Item1 == DownX && z.Item2 == DownY);
+                    Move(g);
+
+                }
+                else if (up == true)
+                {
+                    Console.WriteLine("Up");
+                    CurrentX = UpX;
+                    CurrentY = UpY;
+                    int v = path.RemoveAll(z => z.Item1 == UpX && z.Item2 == UpY);
+                    Move(g);
+
+                }
+                else if (left == true)
+                {
+                    Console.WriteLine("Left");
+                    CurrentX = LeftX;
+                    CurrentY = LeftY;
+                    int v = path.RemoveAll(z => z.Item1 == LeftX && z.Item2 == LeftY);
+                    Move(g);
+
+                }
+                else if (right == true)
+                {
+                    Console.WriteLine("Right");
+                    CurrentX = RightX;
+                    CurrentY = RightY;
+                    int v = path.RemoveAll(z => z.Item1 == RightX && z.Item2 == RightY);
+                    Move(g);
+
+                }
+            }
+        }
         public void Move(Graphics g)
             {
-    
-                hostile.x = CurrentX * 25;
-                hostile.y = CurrentY * 25;
-                hostile.DrawHostile(g);
-        }
+            hostile.x = CurrentX * 25;
+            hostile.y = CurrentY* 25;
+            hostile.DrawHostile(g);
+            }
     }
 
         class Tile

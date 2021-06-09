@@ -22,7 +22,7 @@ namespace FarmWars
         int TrX;
         int TrY;
         bool feild;
-        bool MapDraw = true;
+        bool MapDrawn = false;
         int TileCount;
         public int Traversible = 1;
         int mapwidth = 0;
@@ -134,18 +134,27 @@ namespace FarmWars
                 mapwidth = line.Length;
                 line = "";
             }
+            SaveMap();
+        }
+
+        private void SaveMap()
+        {
             int width = PnlGame.Size.Width;
             int height = PnlGame.Size.Height;
-
             Bitmap bm = new Bitmap(width, height);
             PnlGame.DrawToBitmap(bm, new Rectangle(0, 0, width, height));
             this.Background = bm;
+            MapDrawn = true;
+            PnlGame.Invalidate();
         }
 
         private void PnlGame_Paint(object sender, PaintEventArgs e)
         {
-
-            e.Graphics.DrawImage(Background, 0, 0, PnlGame.Width, PnlGame.Height);
+            if (MapDrawn == true)
+            {
+                Graphics g = PnlGame.CreateGraphics();
+                g.DrawImage(Background, 0, 0, PnlGame.Width, PnlGame.Height);
+            }
         }
         private void PnlGame_MouseMove(object sender, MouseEventArgs e)
         {

@@ -142,8 +142,8 @@ namespace FarmWars
             int width = PnlGame.Size.Width;
             int height = PnlGame.Size.Height;
             Bitmap bm = new Bitmap(width, height);
-            PnlGame.DrawToBitmap(bm, new Rectangle(0, 0, width, height));
             this.Background = bm;
+            PnlGame.DrawToBitmap(bm, new Rectangle(0, 0, width, height));
             MapDrawn = true;
             PnlGame.Invalidate();
         }
@@ -152,8 +152,9 @@ namespace FarmWars
         {
             if (MapDrawn == true)
             {
-                Graphics g = PnlGame.CreateGraphics();
-                g.DrawImage(Background, 0, 0, PnlGame.Width, PnlGame.Height);
+                //Graphics g = PnlGame.CreateGraphics();
+                var g = e.Graphics;
+                g.DrawImage(Background, 0, 0);
             }
         }
         private void PnlGame_MouseMove(object sender, MouseEventArgs e)

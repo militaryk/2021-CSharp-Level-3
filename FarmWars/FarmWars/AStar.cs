@@ -149,7 +149,8 @@ namespace FarmWars
             public void FollowPath(Graphics g)
             {
             int p = path.RemoveAll(z => z.Item1 == CurrentX && z.Item2 == CurrentY);
-            for (int i = 0; i <= 100; i++)
+            int j = 1000;
+            for (int i = 0; i <= j; i++)
             {
                 LeftX = CurrentX - 1;
                 LeftY = CurrentY;
@@ -203,6 +204,10 @@ namespace FarmWars
                     int v = path.RemoveAll(z => z.Item1 == RightX && z.Item2 == RightY);
                     Move(g);
 
+                } else
+                {
+                    j = i;
+                    Console.WriteLine("Down");
                 }
             }
         }
@@ -211,6 +216,7 @@ namespace FarmWars
             hostile.x = CurrentX * 25;
             hostile.y = CurrentY* 25;
             hostile.DrawHostile(g);
+            ((FormGame)FormGame.ActiveForm).PnlGame.Invalidate();
             }
     }
 

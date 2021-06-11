@@ -12,6 +12,7 @@ namespace FarmWars
 {
     class Hostile
     {
+
         public int width = 20;
         public int height = 25;
         public int y;
@@ -34,6 +35,7 @@ namespace FarmWars
             Rectangle rect = new Rectangle(x, y, width, height);
             Image newImage = Image.FromFile("../../../Art/character/bad.png");
             g.DrawImage(newImage, rect);
+
         }
     }
 }

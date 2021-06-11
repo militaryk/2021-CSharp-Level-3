@@ -67,6 +67,8 @@ namespace FarmWars
 
         private void DrawMap()
         {
+            Background = new Bitmap(PnlGame.Width, PnlGame.Height);
+            Graphics g = Graphics.FromImage(Background);
             astar.EmptyList();
 
             string line = " ";
@@ -86,7 +88,6 @@ namespace FarmWars
                 for (int x = 0; PnlGame.Width > x * SquareSize; x++)
                 {
                     TileCount++;
-                    Graphics g = PnlGame.CreateGraphics();
 
                     int tiletype = tile.Next(1, 6);
 
@@ -134,7 +135,9 @@ namespace FarmWars
                 mapwidth = line.Length;
                 line = "";
             }
-            SaveMap();
+            //SaveMap();
+            MapDrawn = true;
+            PnlGame.Invalidate();
         }
 
         private void SaveMap()
@@ -145,7 +148,6 @@ namespace FarmWars
             this.Background = bm;
             PnlGame.DrawToBitmap(bm, new Rectangle(0, 0, width, height));
             MapDrawn = true;
-            PnlGame.Invalidate();
         }
 
         private void PnlGame_Paint(object sender, PaintEventArgs e)
@@ -307,10 +309,18 @@ namespace FarmWars
 
         private void TmrGame_Tick(object sender, EventArgs e)
         {
+            Graphics g = PnlGame.CreateGraphics();
+
             int currentX = XCord;
             int currentY = YCord;
             astar.CurrentX = currentX;
             astar.CurrentY = currentY;
+            Console.WriteLine("TimerGo");
+        }
+
+        private void Invalme()
+        {
+            PnlGame.Invalidate();
         }
 
         private void moveGuyToolStripMenuItem_Click(object sender, EventArgs e)

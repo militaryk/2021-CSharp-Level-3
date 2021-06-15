@@ -56,6 +56,7 @@
     </Compile>
     <Compile Include="grid.cs" />
     <Compile Include="Hostile.cs" />
+    <Compile Include="Inventory.cs" />
     <Compile Include="lake.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,6 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Dirt.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Button.PNG" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

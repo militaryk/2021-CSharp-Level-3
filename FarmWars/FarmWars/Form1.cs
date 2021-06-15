@@ -26,6 +26,9 @@ namespace FarmWars
         int TileCount;
         public int Traversible = 1;
         int mapwidth = 0;
+        int XPos;
+        int YPos;
+        public int PathPos = 0;
 
         int AX;
         int AY;
@@ -38,6 +41,7 @@ namespace FarmWars
         Lake lakeTile = new Lake();
         Astar astar = new Astar();
         Hostile hostile = new Hostile();
+        Inventory inventory = new Inventory();
 
         //Calculate the width and height of the square so that it all fits in the picturebox
         public int width = 0;
@@ -67,6 +71,7 @@ namespace FarmWars
 
         private void DrawMap()
         {
+
             Background = new Bitmap(PnlGame.Width, PnlGame.Height);
             Graphics g = Graphics.FromImage(Background);
             astar.EmptyList();
@@ -125,7 +130,20 @@ namespace FarmWars
                     else if(tiletype == 2)
                     {
                         line = line + "-";
-                    } else
+                    }
+                    else if (x >= (PnlGame.Width / SquareSize) - 9)
+                    {
+                        int height = (PnlGame.Height / SquareSize) - 6;
+                        if (y >= 6 && y <= height)
+                        {
+                            line = line + "-";
+                        }
+                        else
+                        {
+                            line = line + " ";
+                        }
+                    }
+                    else
                     {
                         line = line + " ";
                     }
@@ -137,6 +155,7 @@ namespace FarmWars
             }
             //SaveMap();
             MapDrawn = true;
+            inventory.DrawButtons();
             PnlGame.Invalidate();
         }
 
@@ -152,11 +171,16 @@ namespace FarmWars
 
         private void PnlGame_Paint(object sender, PaintEventArgs e)
         {
+
             if (MapDrawn == true)
             {
                 //Graphics g = PnlGame.CreateGraphics();
                 var g = e.Graphics;
                 g.DrawImage(Background, 0, 0);
+                inventory.PnlHeight = PnlGame.Height;
+                inventory.PnlWidth = PnlGame.Width;
+                inventory.DrawInventory(g);
+
             }
         }
         private void PnlGame_MouseMove(object sender, MouseEventArgs e)
@@ -164,10 +188,23 @@ namespace FarmWars
             XCord = (e.X / 25);
             YCord = (e.Y / 25);
 
+            XPos = e.X;
+            YPos = e.Y;
         }
 
         private void PnlGame_Click(object sender, EventArgs e)
         {
+            if (XPos >= 0 && YPos >= 0 && XPos <= 50 && YPos <= 50)
+            {
+                PauseGame();
+            }
+            else if (XPos >= 50 && YPos >= 0 && XPos <= 100 && YPos <= 50)
+            {
+                PlayGame();
+            } else if (XPos >= 100 && YPos >= 0 && XPos <= 150 && YPos <= 50)
+            {
+                ExitGame();
+            }
             astar.EmptyList();
 
             Graphics g = PnlGame.CreateGraphics();
@@ -190,32 +227,50 @@ namespace FarmWars
                 //For each row until the number of rows is the same as the number of rows entered by the user
                 for (int x = 0; PnlGame.Width > x * SquareSize; x++)
                 {
-                    var tile = newTileMap.First(z => z.Item1 == x && z.Item2 == y);
-                    tiletype = tile.Item3;
-
-
-                    if (y == AY && x == AX)
+                    try
                     {
-                        line = line + "A";
-                        using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
+                        var tile = newTileMap.First(z => z.Item1 == x && z.Item2 == y);
+
+                        tiletype = tile.Item3;
+
+
+                        if (y == AY && x == AX)
                         {
-                            Point point1 = new Point(AX * 25, AY * 25);
-                            TextRenderer.DrawText(g, "A", font, point1, Color.Blue);
+                            line = line + "A";
+                            using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
+                            {
+                                Point point1 = new Point(AX * 25, AY * 25);
+                                TextRenderer.DrawText(g, "A", font, point1, Color.Blue);
+                            }
                         }
-                    }
-                    else if (x == BX && y == BY)
+                        else if (x == BX && y == BY)
+                        {
+                            line = line + "B";
+                        }
+                        else if (x >= (PnlGame.Width / SquareSize) - 8)
+                        {
+                            int height = (PnlGame.Height / SquareSize) - 6;
+                            if (y >= 6 && y <= height)
+                            {
+                                line = line + "-";
+                            }
+                            else
+                            {
+                                line = line + " ";
+                            }
+                        }
+                        else if (tiletype == 2)
+                        {
+                            line = line + "-";
+                        }
+                        else
+                        {
+                            line = line + " ";
+                        }
+                    } catch
                     {
-                        line = line + "B";
-                    }
-                    else if (tiletype == 2)
-                    {
-                        line = line + "-";
-                    }
-                    else
-                    {
-                        line = line + " ";
-                    }
 
+                    }
                 }
                 astar.AddToList(line);
                 Console.WriteLine(line);
@@ -293,7 +348,7 @@ namespace FarmWars
 
         private void PnlGame_DoubleClick(object sender, EventArgs e)
         {
-            Graphics g = PnlGame.CreateGraphics();
+            Graphics g = Graphics.FromImage(Background);
 
             TrX = XCord;
             TrY = YCord;
@@ -305,17 +360,19 @@ namespace FarmWars
             feildTile.TrY = TrY;
 
             feildTile.DrawFeild(g);
+            PnlGame.Invalidate();
         }
 
         private void TmrGame_Tick(object sender, EventArgs e)
         {
-            Graphics g = PnlGame.CreateGraphics();
+            PnlGame.Invalidate();
 
-            int currentX = XCord;
-            int currentY = YCord;
-            astar.CurrentX = currentX;
-            astar.CurrentY = currentY;
-            Console.WriteLine("TimerGo");
+            Graphics g = PnlGame.CreateGraphics();
+            PathPos++;
+            astar.PathPos = PathPos;
+
+            astar.PathFollow(g);
+
         }
 
         private void Invalme()
@@ -327,6 +384,26 @@ namespace FarmWars
         {
             Graphics g = PnlGame.CreateGraphics();
             astar.FollowPath(g);
+        }
+
+        private void BtnExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void ExitGame()
+        {
+            Application.Exit();
+        }
+
+        private void PlayGame()
+        {
+            TmrGame.Enabled = true;
+        }
+
+        private void PauseGame()
+        {
+            TmrGame.Enabled = false;
         }
     }
 }

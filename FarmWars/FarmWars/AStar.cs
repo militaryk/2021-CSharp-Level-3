@@ -17,7 +17,10 @@ namespace FarmWars
     {
         public int CurrentX;
         public int CurrentY;
+
+        public int PathPos = 1;
         public int LeftX, LeftY, RightX, RightY, UpX, UpY, DownX, DownY, StartX, StartY;
+        bool pathmade = false;
         List<string> map = new List<string>();
         List<Tuple<int, int>> path = new List<Tuple<int, int>>();
         Hostile hostile = new Hostile();
@@ -31,8 +34,9 @@ namespace FarmWars
             map.Clear();
         }
         public void Main(Graphics g)
+            { try
             {
-            path.Clear();
+                path.Clear();
                 var start = new Tile();
                 start.Y = map.FindIndex(x => x.Contains("A"));
                 start.X = map[start.Y].IndexOf("A");
@@ -61,33 +65,34 @@ namespace FarmWars
                         while (true)
                         {
 
-                        path.Add(new Tuple<int, int>(tile.X, tile.Y));
-                        Console.WriteLine(path.Last());
+                            path.Add(new Tuple<int, int>(tile.X, tile.Y));
+                            Console.WriteLine(path.Last());
 
-                        using (Font font = new Font("Times New Roman", 36, FontStyle.Bold, GraphicsUnit.Pixel))
-                        {
-                            Point point1 = new Point(tile.X * 25, tile.Y * 25);
-                            TextRenderer.DrawText(g, "*", font, point1, Color.Red);
-                        }
+                            using (Font font = new Font("Times New Roman", 36, FontStyle.Bold, GraphicsUnit.Pixel))
+                            {
+                                Point point1 = new Point(tile.X * 25, tile.Y * 25);
+                                TextRenderer.DrawText(g, "*", font, point1, Color.Red);
+                            }
 
-                        if (map[tile.Y][tile.X] == ' ')
+                            if (map[tile.Y][tile.X] == ' ')
                             {
                                 var newMapRow = map[tile.Y].ToCharArray();
                                 newMapRow[tile.X] = '*';
-                                
+
                                 map[tile.Y] = new string(newMapRow);
                                 Console.WriteLine(newMapRow);
 
-                        }
-                        tile = tile.Parent;
+                            }
+                            tile = tile.Parent;
                             if (tile == null)
                             {
                                 Console.WriteLine("Map looks like :");
                                 map.ForEach(x => Console.WriteLine(x));
                                 Console.WriteLine("Done!");
-                                FollowPath(g);
-
-                            return;
+                                path.Reverse();
+                                ((FormGame)FormGame.ActiveForm).TmrGame.Enabled = true;
+                                pathmade = true;
+                                return;
                             }
                         }
                     }
@@ -122,6 +127,10 @@ namespace FarmWars
                 }
 
                 Console.WriteLine("No Path Found!");
+            } catch
+            {
+
+            }
             }
 
             private List<Tile> GetWalkableTiles(List<string> map, Tile currentTile, Tile targetTile)
@@ -145,6 +154,7 @@ namespace FarmWars
                         .Where(tile => map[tile.Y][tile.X] == ' ' || map[tile.Y][tile.X] == 'B')
                         .ToList();
             }
+            
 
             public void FollowPath(Graphics g)
             {
@@ -208,9 +218,11 @@ namespace FarmWars
                 {
                     j = i;
                     Console.WriteLine("Down");
+
                 }
             }
         }
+
         public void Move(Graphics g)
             {
             hostile.x = CurrentX * 25;
@@ -218,6 +230,25 @@ namespace FarmWars
             hostile.DrawHostile(g);
             ((FormGame)FormGame.ActiveForm).PnlGame.Invalidate();
             }
+
+
+        public void PathFollow(Graphics g)
+        {   if (pathmade == true)
+            {
+                if (PathPos == path.Count)
+                {
+                    ((FormGame)FormGame.ActiveForm).TmrGame.Enabled = false;
+                    ((FormGame)FormGame.ActiveForm).PathPos = 0;
+                    MessageBox.Show("Path Complete");
+                } else {
+                    var x = path[PathPos].Item1;
+                    var y = path[PathPos].Item2;
+                    hostile.x = x * 25;
+                    hostile.y = y * 25;
+                    hostile.DrawHostile(g);
+                }
+            }
+        }
     }
 
         class Tile

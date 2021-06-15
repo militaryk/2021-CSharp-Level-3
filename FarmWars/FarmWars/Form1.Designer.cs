@@ -43,6 +43,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pathFindingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveGuyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.BtnExit = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -54,10 +55,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PnlGame.BackColor = System.Drawing.SystemColors.ControlDark;
             this.PnlGame.CausesValidation = false;
-            this.PnlGame.Location = new System.Drawing.Point(16, 38);
+            this.PnlGame.Location = new System.Drawing.Point(16, 32);
             this.PnlGame.Margin = new System.Windows.Forms.Padding(4);
             this.PnlGame.Name = "PnlGame";
-            this.PnlGame.Size = new System.Drawing.Size(1895, 910);
+            this.PnlGame.Size = new System.Drawing.Size(1263, 916);
             this.PnlGame.TabIndex = 0;
             this.PnlGame.Click += new System.EventHandler(this.PnlGame_Click);
             this.PnlGame.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlGame_Paint);
@@ -67,8 +68,7 @@
             // 
             // TmrGame
             // 
-            this.TmrGame.Enabled = true;
-            this.TmrGame.Interval = 5;
+            this.TmrGame.Interval = 4000;
             this.TmrGame.Tick += new System.EventHandler(this.TmrGame_Tick);
             // 
             // contextMenuStrip1
@@ -93,7 +93,7 @@
             this.moveGuyToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1924, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1292, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -161,11 +161,29 @@
             this.moveGuyToolStripMenuItem.Text = "Move Guy";
             this.moveGuyToolStripMenuItem.Click += new System.EventHandler(this.moveGuyToolStripMenuItem_Click);
             // 
+            // BtnExit
+            // 
+            this.BtnExit.BackColor = System.Drawing.SystemColors.Control;
+            this.BtnExit.BackgroundImage = global::FarmWars.Properties.Resources.Button;
+            this.BtnExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.BtnExit.FlatAppearance.BorderColor = System.Drawing.Color.SandyBrown;
+            this.BtnExit.FlatAppearance.BorderSize = 0;
+            this.BtnExit.Font = new System.Drawing.Font("Viner Hand ITC", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnExit.Location = new System.Drawing.Point(747, 8);
+            this.BtnExit.Name = "BtnExit";
+            this.BtnExit.Size = new System.Drawing.Size(75, 23);
+            this.BtnExit.TabIndex = 2;
+            this.BtnExit.Text = "Save";
+            this.BtnExit.UseVisualStyleBackColor = false;
+            this.BtnExit.Visible = false;
+            this.BtnExit.Click += new System.EventHandler(this.BtnExit_Click);
+            // 
             // FormGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1924, 961);
+            this.ClientSize = new System.Drawing.Size(1292, 961);
+            this.Controls.Add(this.BtnExit);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.PnlGame);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
@@ -182,7 +200,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.Timer TmrGame;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem seedToolStripMenuItem;
         public System.Windows.Forms.Panel PnlGame;
@@ -196,6 +213,8 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pathFindingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moveGuyToolStripMenuItem;
+        public System.Windows.Forms.Button BtnExit;
+        public System.Windows.Forms.Timer TmrGame;
     }
 }
 

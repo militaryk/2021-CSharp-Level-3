@@ -58,7 +58,7 @@
             this.PnlGame.Location = new System.Drawing.Point(16, 32);
             this.PnlGame.Margin = new System.Windows.Forms.Padding(4);
             this.PnlGame.Name = "PnlGame";
-            this.PnlGame.Size = new System.Drawing.Size(1263, 916);
+            this.PnlGame.Size = new System.Drawing.Size(1433, 916);
             this.PnlGame.TabIndex = 0;
             this.PnlGame.Click += new System.EventHandler(this.PnlGame_Click);
             this.PnlGame.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlGame_Paint);
@@ -68,7 +68,6 @@
             // 
             // TmrGame
             // 
-            this.TmrGame.Interval = 4000;
             this.TmrGame.Tick += new System.EventHandler(this.TmrGame_Tick);
             // 
             // contextMenuStrip1
@@ -93,7 +92,7 @@
             this.moveGuyToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1292, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1462, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -182,7 +181,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1292, 961);
+            this.ClientSize = new System.Drawing.Size(1462, 961);
             this.Controls.Add(this.BtnExit);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.PnlGame);

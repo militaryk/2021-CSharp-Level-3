@@ -29,6 +29,7 @@ namespace FarmWars
         int XPos;
         int YPos;
         public int PathPos = 0;
+        public int PathLoc = 0;
 
         int AX;
         int AY;
@@ -85,9 +86,9 @@ namespace FarmWars
             BX = AB.Next(30, 40);
             BY = AB.Next(20, 25);
 
-                //Draw the grid with the number of columns given
-                for (int y = 0; y * SquareSize < PnlGame.Height; y++)
-                {
+            //Draw the grid with the number of columns given
+            for (int y = 0; y * SquareSize < PnlGame.Height; y++)
+            {
 
                 //For each row until the number of rows is the same as the number of rows entered by the user
                 for (int x = 0; PnlGame.Width > x * SquareSize; x++)
@@ -127,7 +128,7 @@ namespace FarmWars
                         }
                         line = line + "B";
                     }
-                    else if(tiletype == 2)
+                    else if (tiletype == 2)
                     {
                         line = line + "-";
                     }
@@ -174,7 +175,6 @@ namespace FarmWars
 
             if (MapDrawn == true)
             {
-                //Graphics g = PnlGame.CreateGraphics();
                 var g = e.Graphics;
                 g.DrawImage(Background, 0, 0);
                 inventory.PnlHeight = PnlGame.Height;
@@ -201,7 +201,8 @@ namespace FarmWars
             else if (XPos >= 50 && YPos >= 0 && XPos <= 100 && YPos <= 50)
             {
                 PlayGame();
-            } else if (XPos >= 100 && YPos >= 0 && XPos <= 150 && YPos <= 50)
+            }
+            else if (XPos >= 100 && YPos >= 0 && XPos <= 150 && YPos <= 50)
             {
                 ExitGame();
             }
@@ -267,7 +268,8 @@ namespace FarmWars
                         {
                             line = line + " ";
                         }
-                    } catch
+                    }
+                    catch
                     {
 
                     }
@@ -365,20 +367,19 @@ namespace FarmWars
 
         private void TmrGame_Tick(object sender, EventArgs e)
         {
-            PnlGame.Invalidate();
-
             Graphics g = PnlGame.CreateGraphics();
             PathPos++;
+            PathLoc++;
+            astar.PathLoc = PathLoc;
             astar.PathPos = PathPos;
-
             astar.PathFollow(g);
-
         }
 
         private void Invalme()
         {
             PnlGame.Invalidate();
         }
+
 
         private void moveGuyToolStripMenuItem_Click(object sender, EventArgs e)
         {

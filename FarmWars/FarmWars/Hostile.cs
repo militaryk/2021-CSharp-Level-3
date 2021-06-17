@@ -12,7 +12,6 @@ namespace FarmWars
 {
     class Hostile
     {
-
         public int width = 20;
         public int height = 25;
         public int y;

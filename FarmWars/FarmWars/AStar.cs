@@ -19,10 +19,16 @@ namespace FarmWars
         public int CurrentY;
 
         public int PathPos = 1;
+        public int PathLoc = 0;
+        int pop = 0;
+
+
         public int LeftX, LeftY, RightX, RightY, UpX, UpY, DownX, DownY, StartX, StartY;
         bool pathmade = false;
         List<string> map = new List<string>();
         List<Tuple<int, int>> path = new List<Tuple<int, int>>();
+        List<Tuple<int, int>> walkpath = new List<Tuple<int, int>>();
+
         Hostile hostile = new Hostile();
 
         public void AddToList(string mapline)
@@ -233,20 +239,55 @@ namespace FarmWars
 
 
         public void PathFollow(Graphics g)
-        {   if (pathmade == true)
+        {
+            try
             {
-                if (PathPos == path.Count)
+                if (pathmade == true)
                 {
-                    ((FormGame)FormGame.ActiveForm).TmrGame.Enabled = false;
-                    ((FormGame)FormGame.ActiveForm).PathPos = 0;
-                    MessageBox.Show("Path Complete");
-                } else {
-                    var x = path[PathPos].Item1;
-                    var y = path[PathPos].Item2;
-                    hostile.x = x * 25;
-                    hostile.y = y * 25;
+                    if (1 == 2)
+                    {
+                        ((FormGame)FormGame.ActiveForm).TmrGame.Enabled = false;
+                        ((FormGame)FormGame.ActiveForm).PathPos = 0;
+                        ((FormGame)FormGame.ActiveForm).PathLoc = 0;
+
+                    }
+                    else
+                    {
+                        int x4 = 0;
+                        int y4 = 0;
+                        int x1 = path[PathPos -1].Item1 * 25;
+                        int y1 = path[PathPos- 1].Item2 * 25;
+                        int x2 = path[PathPos].Item1 * 25;
+                        int y2 = path[PathPos].Item2 * 25;
+                        int x3 = (x1 - x2) / 25;
+                        int y3 = (y1 - y2) / 25;
+                        for (int i = 0; i < 25; i++){
+                            x4 = x1 + x3;
+                            y4 = y1 + y3;
+                            walkpath.Add(new Tuple<int, int>(x4, y4));
+                            Console.WriteLine(x4 + ":" + y4);
+                        }
+                        x1 = x4;
+                        y1 = y4;
+                    }
+
+                    int xLoc = walkpath[PathLoc].Item1;
+                    int yLoc = walkpath[PathLoc].Item2;
+
+                    hostile.x = xLoc;
+                    hostile.y = yLoc;
                     hostile.DrawHostile(g);
+
+                    pop++;
+                    if (pop == 50)
+                    {
+                        Console.WriteLine();
+                    }
+                    
                 }
+            } catch
+            {
+
             }
         }
     }

@@ -22,6 +22,8 @@ namespace FarmWars
         public int PathLoc = 0;
         int pop = 0;
 
+        public bool pathfollowed = false;
+        public bool calcpath = true;
 
         public int LeftX, LeftY, RightX, RightY, UpX, UpY, DownX, DownY, StartX, StartY;
         bool pathmade = false;
@@ -43,6 +45,14 @@ namespace FarmWars
             { try
             {
                 path.Clear();
+                Console.WriteLine("Path Cleared");
+                walkpath.Clear();
+                Console.WriteLine("Walk Path Cleared");
+                calcpath = true;
+                pathfollowed = false;
+
+                PathPos = 1;
+                PathLoc = 0;
                 var start = new Tile();
                 start.Y = map.FindIndex(x => x.Contains("A"));
                 start.X = map[start.Y].IndexOf("A");
@@ -67,12 +77,12 @@ namespace FarmWars
                         //We found the destination and we can be sure (Because the the OrderBy above)
                         //That it's the most low cost option. 
                         var tile = checkTile;
-                        Console.WriteLine("Retracing steps backwards...");
+                        //Console.WriteLine("Retracing steps backwards...");
                         while (true)
                         {
 
                             path.Add(new Tuple<int, int>(tile.X, tile.Y));
-                            Console.WriteLine(path.Last());
+                           //Console.WriteLine(path.Last());
 
                             using (Font font = new Font("Times New Roman", 36, FontStyle.Bold, GraphicsUnit.Pixel))
                             {
@@ -86,17 +96,17 @@ namespace FarmWars
                                 newMapRow[tile.X] = '*';
 
                                 map[tile.Y] = new string(newMapRow);
-                                Console.WriteLine(newMapRow);
+                                //Console.WriteLine(newMapRow);
 
                             }
                             tile = tile.Parent;
                             if (tile == null)
                             {
-                                Console.WriteLine("Map looks like :");
-                                map.ForEach(x => Console.WriteLine(x));
-                                Console.WriteLine("Done!");
+                                //Console.WriteLine("Map looks like :");
+                                //map.ForEach(x => Console.WriteLine(x));
+                                //Console.WriteLine("Done!");
                                 path.Reverse();
-                                ((FormGame)FormGame.ActiveForm).TmrGame.Enabled = true;
+                                ((FormGame)FormGame.ActiveForm).TmrMovement.Enabled = true;
                                 pathmade = true;
                                 return;
                             }
@@ -160,137 +170,59 @@ namespace FarmWars
                         .Where(tile => map[tile.Y][tile.X] == ' ' || map[tile.Y][tile.X] == 'B')
                         .ToList();
             }
-            
-
-            public void FollowPath(Graphics g)
-            {
-            int p = path.RemoveAll(z => z.Item1 == CurrentX && z.Item2 == CurrentY);
-            int j = 1000;
-            for (int i = 0; i <= j; i++)
-            {
-                LeftX = CurrentX - 1;
-                LeftY = CurrentY;
-                UpX = CurrentX;
-                UpY = CurrentY - 1;
-                DownX = CurrentX;
-                DownY = CurrentY + 1;
-                RightX = CurrentX + 1;
-                RightY = CurrentY;
-                //Console.WriteLine("Left" + Convert.ToString(LeftX) + ":" + Convert.ToString(LeftY));
-                //Console.WriteLine("Up" + Convert.ToString(UpX) + ":" + Convert.ToString(UpY));
-                //Console.WriteLine("Down" + Convert.ToString(DownX) + ":" + Convert.ToString(DownY));
-                //Console.WriteLine("Right" + Convert.ToString(RightX) + ":" + Convert.ToString(RightY));
-                bool left = path.Any(z => z.Item1 == LeftX && z.Item2 == LeftY);
-                bool right = path.Any(z => z.Item1 == RightX && z.Item2 == RightY);
-                bool up = path.Any(z => z.Item1 == UpX && z.Item2 == UpY);
-                bool down = path.Any(z => z.Item1 == DownX && z.Item2 == DownY);
-
-                if (down == true)
-                {
-                    Console.WriteLine("Down");
-                    CurrentX = DownX;
-                    CurrentY = DownY;
-                    int v = path.RemoveAll(z => z.Item1 == DownX && z.Item2 == DownY);
-                    Move(g);
-
-                }
-                else if (up == true)
-                {
-                    Console.WriteLine("Up");
-                    CurrentX = UpX;
-                    CurrentY = UpY;
-                    int v = path.RemoveAll(z => z.Item1 == UpX && z.Item2 == UpY);
-                    Move(g);
-
-                }
-                else if (left == true)
-                {
-                    Console.WriteLine("Left");
-                    CurrentX = LeftX;
-                    CurrentY = LeftY;
-                    int v = path.RemoveAll(z => z.Item1 == LeftX && z.Item2 == LeftY);
-                    Move(g);
-
-                }
-                else if (right == true)
-                {
-                    Console.WriteLine("Right");
-                    CurrentX = RightX;
-                    CurrentY = RightY;
-                    int v = path.RemoveAll(z => z.Item1 == RightX && z.Item2 == RightY);
-                    Move(g);
-
-                } else
-                {
-                    j = i;
-                    Console.WriteLine("Down");
-
-                }
-            }
-        }
-
-        public void Move(Graphics g)
-            {
-            hostile.x = CurrentX * 25;
-            hostile.y = CurrentY* 25;
-            hostile.DrawHostile(g);
-            ((FormGame)FormGame.ActiveForm).PnlGame.Invalidate();
-            }
-
 
         public void PathFollow(Graphics g)
         {
-            try
+            if (pathfollowed == false)
             {
-                if (pathmade == true)
+                if (calcpath == true)
                 {
-                    if (1 == 2)
-                    {
-                        ((FormGame)FormGame.ActiveForm).TmrGame.Enabled = false;
-                        ((FormGame)FormGame.ActiveForm).PathPos = 0;
-                        ((FormGame)FormGame.ActiveForm).PathLoc = 0;
-
-                    }
-                    else
+                    try
                     {
                         int x4 = 0;
                         int y4 = 0;
-                        int x1 = path[PathPos -1].Item1 * 25;
-                        int y1 = path[PathPos- 1].Item2 * 25;
+                        int x1 = path[PathPos - 1].Item1 * 25;
+                        int y1 = path[PathPos - 1].Item2 * 25;
                         int x2 = path[PathPos].Item1 * 25;
                         int y2 = path[PathPos].Item2 * 25;
                         int x3 = (x1 - x2) / 25;
                         int y3 = (y1 - y2) / 25;
-                        for (int i = 0; i < 25; i++){
-                            x4 = x1 + x3;
-                            y4 = y1 + y3;
+                        for (int i = 0; i < 25; i++)
+                        {
+                            x4 = x1 - x3;
+                            y4 = y1 - y3;
                             walkpath.Add(new Tuple<int, int>(x4, y4));
                             Console.WriteLine(x4 + ":" + y4);
+                            Console.WriteLine(i);
+                            x1 = x4;
+                            y1 = y4;
                         }
-                        x1 = x4;
-                        y1 = y4;
                     }
-
+                    catch
+                    {
+                        calcpath = false;
+                    }
+                }
+                if (PathLoc < walkpath.Count)
+                {
                     int xLoc = walkpath[PathLoc].Item1;
                     int yLoc = walkpath[PathLoc].Item2;
-
                     hostile.x = xLoc;
                     hostile.y = yLoc;
                     hostile.DrawHostile(g);
 
-                    pop++;
-                    if (pop == 50)
-                    {
-                        Console.WriteLine();
-                    }
-                    
                 }
-            } catch
-            {
-
+                else
+                {
+                    pathfollowed = true;
+                    ((FormGame)FormGame.ActiveForm).TmrMovement.Enabled = false;
+                    ((FormGame)FormGame.ActiveForm).drawn = false;
+                    Console.WriteLine("Path Walked");
+                }
             }
         }
-    }
+        }
+    
 
         class Tile
         {
@@ -309,5 +241,4 @@ namespace FarmWars
             }
         }
         
-
 }

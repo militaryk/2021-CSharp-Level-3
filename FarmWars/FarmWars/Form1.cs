@@ -15,6 +15,7 @@ namespace FarmWars
 {
     public partial class FormGame : Form
     {
+        public bool drawn = false;
         int MapSize = 100;
         int SquareSize = 25;
         int XCord = 0;
@@ -22,6 +23,7 @@ namespace FarmWars
         int TrX;
         int TrY;
         bool feild;
+        int StartGo = 0;
         bool MapDrawn = false;
         int TileCount;
         public int Traversible = 1;
@@ -31,6 +33,7 @@ namespace FarmWars
         public int PathPos = 0;
         public int PathLoc = 0;
 
+        public bool HostileDrawn = false;
         int AX;
         int AY;
         int BX;
@@ -158,6 +161,7 @@ namespace FarmWars
             MapDrawn = true;
             inventory.DrawButtons();
             PnlGame.Invalidate();
+            TmrTurn.Enabled = true;
         }
 
         private void SaveMap()
@@ -172,10 +176,9 @@ namespace FarmWars
 
         private void PnlGame_Paint(object sender, PaintEventArgs e)
         {
-
+            var g = e.Graphics;
             if (MapDrawn == true)
             {
-                var g = e.Graphics;
                 g.DrawImage(Background, 0, 0);
                 inventory.PnlHeight = PnlGame.Height;
                 inventory.PnlWidth = PnlGame.Width;
@@ -187,7 +190,6 @@ namespace FarmWars
         {
             XCord = (e.X / 25);
             YCord = (e.Y / 25);
-
             XPos = e.X;
             YPos = e.Y;
         }
@@ -206,83 +208,8 @@ namespace FarmWars
             {
                 ExitGame();
             }
-            astar.EmptyList();
-
-            Graphics g = PnlGame.CreateGraphics();
-
-            AY = YCord;
-            AX = XCord;
-            astar.StartX = AX;
-            astar.StartY = AY;
-            int tiletype;
-            string line = "";
-
-            hostile.x = XCord * SquareSize;
-            hostile.y = YCord * SquareSize;
-            hostile.DrawHostile(g);
-
-            //Draw the grid with the number of columns given
-            for (int y = 0; y * SquareSize < PnlGame.Height; y++)
-            {
-
-                //For each row until the number of rows is the same as the number of rows entered by the user
-                for (int x = 0; PnlGame.Width > x * SquareSize; x++)
-                {
-                    try
-                    {
-                        var tile = newTileMap.First(z => z.Item1 == x && z.Item2 == y);
-
-                        tiletype = tile.Item3;
-
-
-                        if (y == AY && x == AX)
-                        {
-                            line = line + "A";
-                            using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
-                            {
-                                Point point1 = new Point(AX * 25, AY * 25);
-                                TextRenderer.DrawText(g, "A", font, point1, Color.Blue);
-                            }
-                        }
-                        else if (x == BX && y == BY)
-                        {
-                            line = line + "B";
-                        }
-                        else if (x >= (PnlGame.Width / SquareSize) - 8)
-                        {
-                            int height = (PnlGame.Height / SquareSize) - 6;
-                            if (y >= 6 && y <= height)
-                            {
-                                line = line + "-";
-                            }
-                            else
-                            {
-                                line = line + " ";
-                            }
-                        }
-                        else if (tiletype == 2)
-                        {
-                            line = line + "-";
-                        }
-                        else
-                        {
-                            line = line + " ";
-                        }
-                    }
-                    catch
-                    {
-
-                    }
-                }
-                astar.AddToList(line);
-                Console.WriteLine(line);
-                line = "";
-
-            }
-            astar.Main(g);
-
-
         }
+
         private void PnlGame_Validated(object sender, EventArgs e)
         {
             DrawMap();
@@ -372,6 +299,7 @@ namespace FarmWars
             PathLoc++;
             astar.PathLoc = PathLoc;
             astar.PathPos = PathPos;
+            PnlGame.Invalidate();
             astar.PathFollow(g);
         }
 
@@ -384,7 +312,6 @@ namespace FarmWars
         private void moveGuyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Graphics g = PnlGame.CreateGraphics();
-            astar.FollowPath(g);
         }
 
         private void BtnExit_Click(object sender, EventArgs e)
@@ -399,12 +326,135 @@ namespace FarmWars
 
         private void PlayGame()
         {
-            TmrGame.Enabled = true;
+            TmrMovement.Enabled = true;
         }
 
         private void PauseGame()
         {
-            TmrGame.Enabled = false;
+            TmrMovement.Enabled = false;
+        }
+
+        private void TmrTurn_Tick(object sender, EventArgs e)
+        {
+            int Max = ((PnlGame.Width / 25) * 2) + ((PnlGame.Height / 25) * 2);
+            Random Go = new Random();
+            int StartPos = Go.Next(1, Max);
+            StartGo = Go.Next(1, 100);
+            StartGo = 2;
+            if (StartGo == 2){
+                if (StartPos * 25 > PnlGame.Width + PnlGame.Width + PnlGame.Height)
+                {
+                    int EdgePosY = StartPos - PnlGame.Width - PnlGame.Width - PnlGame.Height;
+                    int EdgePosX = 0;
+                    DrawHostile(EdgePosX, EdgePosY);
+
+                }
+                if (StartPos * 25 > PnlGame.Width + PnlGame.Height)
+                {
+                    int EdgePosX = StartPos - PnlGame.Width - PnlGame.Height;
+                    int EdgePosY = 0;
+                    DrawHostile(EdgePosX, EdgePosY);
+
+                }
+                if (StartPos  * 25> PnlGame.Width)
+                {
+                    int EdgePosY = StartPos - PnlGame.Width;
+                    int EdgePosX = 0;
+                    DrawHostile(EdgePosX, EdgePosY);
+
+                }
+                else
+                {
+                    int EdgePosX = StartPos;
+                    int EdgePosY = 0;
+                    DrawHostile(EdgePosX, EdgePosY);
+                }
+
+            }
+        }
+
+        private void DrawHostile(int XCord, int YCord)
+        {
+            if (drawn == false)
+            {
+                PathPos = 0;
+                PathLoc = 0;
+                astar.EmptyList();
+
+                Graphics g = PnlGame.CreateGraphics();
+
+                AY = YCord;
+                AX = XCord;
+                astar.StartX = AX;
+                astar.StartY = AY;
+                int tiletype;
+                string line = "";
+
+                hostile.x = XCord * SquareSize;
+                hostile.y = YCord * SquareSize;
+                hostile.DrawHostile(g);
+
+                //Draw the grid with the number of columns given
+                for (int y = 0; y * SquareSize < PnlGame.Height; y++)
+                {
+
+                    //For each row until the number of rows is the same as the number of rows entered by the user
+                    for (int x = 0; PnlGame.Width > x * SquareSize; x++)
+                    {
+                        try
+                        {
+                            var tile = newTileMap.First(z => z.Item1 == x && z.Item2 == y);
+
+                            tiletype = tile.Item3;
+
+
+                            if (y == AY && x == AX)
+                            {
+                                line = line + "A";
+                                using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
+                                {
+                                    Point point1 = new Point(AX * 25, AY * 25);
+                                    TextRenderer.DrawText(g, "A", font, point1, Color.Blue);
+                                }
+                            }
+                            else if (x == BX && y == BY)
+                            {
+                                line = line + "B";
+                            }
+                            else if (x >= (PnlGame.Width / SquareSize) - 8)
+                            {
+                                int height = (PnlGame.Height / SquareSize) - 6;
+                                if (y >= 6 && y <= height)
+                                {
+                                    line = line + "-";
+                                }
+                                else
+                                {
+                                    line = line + " ";
+                                }
+                            }
+                            else if (tiletype == 2)
+                            {
+                                line = line + "-";
+                            }
+                            else
+                            {
+                                line = line + " ";
+                            }
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                    astar.AddToList(line);
+                    Console.WriteLine(line);
+                    line = "";
+
+                }
+                astar.Main(g);
+            }
+            drawn = true;
         }
     }
 }

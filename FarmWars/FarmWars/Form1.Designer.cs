@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.PnlGame = new System.Windows.Forms.Panel();
-            this.TmrGame = new System.Windows.Forms.Timer(this.components);
+            this.TmrMovement = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.seedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -44,6 +44,7 @@
             this.pathFindingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveGuyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BtnExit = new System.Windows.Forms.Button();
+            this.TmrTurn = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -66,9 +67,10 @@
             this.PnlGame.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PnlGame_MouseMove);
             this.PnlGame.Validated += new System.EventHandler(this.PnlGame_Validated);
             // 
-            // TmrGame
+            // TmrMovement
             // 
-            this.TmrGame.Tick += new System.EventHandler(this.TmrGame_Tick);
+            this.TmrMovement.Interval = 20;
+            this.TmrMovement.Tick += new System.EventHandler(this.TmrGame_Tick);
             // 
             // contextMenuStrip1
             // 
@@ -177,6 +179,10 @@
             this.BtnExit.Visible = false;
             this.BtnExit.Click += new System.EventHandler(this.BtnExit_Click);
             // 
+            // TmrTurn
+            // 
+            this.TmrTurn.Tick += new System.EventHandler(this.TmrTurn_Tick);
+            // 
             // FormGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -185,6 +191,7 @@
             this.Controls.Add(this.BtnExit);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.PnlGame);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -213,7 +220,8 @@
         private System.Windows.Forms.ToolStripMenuItem pathFindingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moveGuyToolStripMenuItem;
         public System.Windows.Forms.Button BtnExit;
-        public System.Windows.Forms.Timer TmrGame;
+        public System.Windows.Forms.Timer TmrMovement;
+        private System.Windows.Forms.Timer TmrTurn;
     }
 }
 

@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Threading;
 
 
 
 namespace FarmWars
 {
-    class Astar
+    class HumanAstar
     {
         public int CurrentX;
         public int CurrentY;
@@ -42,7 +38,8 @@ namespace FarmWars
             map.Clear();
         }
         public void Main(Graphics g)
-            { try
+        {
+            try
             {
                 path.Clear();
                 Console.WriteLine("Path Cleared");
@@ -53,20 +50,20 @@ namespace FarmWars
 
                 PathPos = 1;
                 PathLoc = 0;
-                var start = new Tile();
+                var start = new HumanTile();
                 start.Y = map.FindIndex(x => x.Contains("A"));
                 start.X = map[start.Y].IndexOf("A");
 
 
-                var finish = new Tile();
+                var finish = new HumanTile();
                 finish.Y = map.FindIndex(x => x.Contains("B"));
                 finish.X = map[finish.Y].IndexOf("B");
 
                 start.SetDistance(finish.X, finish.Y);
 
-                var activeTiles = new List<Tile>();
+                var activeTiles = new List<HumanTile>();
                 activeTiles.Add(start);
-                var visitedTiles = new List<Tile>();
+                var visitedTiles = new List<HumanTile>();
 
                 while (activeTiles.Any())
                 {
@@ -82,7 +79,7 @@ namespace FarmWars
                         {
 
                             path.Add(new Tuple<int, int>(tile.X, tile.Y));
-                           //Console.WriteLine(path.Last());
+                            //Console.WriteLine(path.Last());
 
                             using (Font font = new Font("Times New Roman", 36, FontStyle.Bold, GraphicsUnit.Pixel))
                             {
@@ -143,33 +140,34 @@ namespace FarmWars
                 }
 
                 Console.WriteLine("No Path Found!");
-            } catch
+            }
+            catch
             {
 
             }
-            }
+        }
 
-            private List<Tile> GetWalkableTiles(List<string> map, Tile currentTile, Tile targetTile)
-            {
-                var possibleTiles = new List<Tile>()
+        private List<HumanTile> GetWalkableTiles(List<string> map, HumanTile currentTile, HumanTile targetTile)
+        {
+            var possibleTiles = new List<HumanTile>()
                 {
-                new Tile { X = currentTile.X, Y = currentTile.Y - 1, Parent = currentTile, Cost = currentTile.Cost + 1 },
-                new Tile { X = currentTile.X, Y = currentTile.Y + 1, Parent = currentTile, Cost = currentTile.Cost + 1},
-                new Tile { X = currentTile.X - 1, Y = currentTile.Y, Parent = currentTile, Cost = currentTile.Cost + 1 },
-                new Tile { X = currentTile.X + 1, Y = currentTile.Y, Parent = currentTile, Cost = currentTile.Cost + 1 },
+                new HumanTile { X = currentTile.X, Y = currentTile.Y - 1, Parent = currentTile, Cost = currentTile.Cost + 1 },
+                new HumanTile { X = currentTile.X, Y = currentTile.Y + 1, Parent = currentTile, Cost = currentTile.Cost + 1},
+                new HumanTile { X = currentTile.X - 1, Y = currentTile.Y, Parent = currentTile, Cost = currentTile.Cost + 1 },
+                new HumanTile { X = currentTile.X + 1, Y = currentTile.Y, Parent = currentTile, Cost = currentTile.Cost + 1 },
                 };
 
-                possibleTiles.ForEach(tile => tile.SetDistance(targetTile.X, targetTile.Y));
+            possibleTiles.ForEach(tile => tile.SetDistance(targetTile.X, targetTile.Y));
 
-                var maxX = map.First().Length - 1;
-                var maxY = map.Count - 1;
+            var maxX = map.First().Length - 1;
+            var maxY = map.Count - 1;
 
-                return possibleTiles
-                        .Where(tile => tile.X >= 0 && tile.X <= maxX)
-                        .Where(tile => tile.Y >= 0 && tile.Y <= maxY)
-                        .Where(tile => map[tile.Y][tile.X] == ' ' || map[tile.Y][tile.X] == 'B')
-                        .ToList();
-            }
+            return possibleTiles
+                    .Where(tile => tile.X >= 0 && tile.X <= maxX)
+                    .Where(tile => tile.Y >= 0 && tile.Y <= maxY)
+                    .Where(tile => map[tile.Y][tile.X] == ' ' || map[tile.Y][tile.X] == 'B')
+                    .ToList();
+        }
 
         public void PathFollow(Graphics g)
         {
@@ -221,24 +219,24 @@ namespace FarmWars
                 }
             }
         }
-        }
-    
+    }
 
-        class Tile
+
+    class HumanTile
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Cost { get; set; }
+        public int Distance { get; set; }
+        public int CostDistance => Cost + Distance;
+        public HumanTile Parent { get; set; }
+
+        //The distance is essentially the estimated distance, ignoring walls to our target. 
+        //So how many tiles left and right, up and down, ignoring walls, to get there. 
+        public void SetDistance(int targetX, int targetY)
         {
-            public int X { get; set; }
-            public int Y { get; set; }
-            public int Cost { get; set; }
-            public int Distance { get; set; }
-            public int CostDistance => Cost + Distance;
-            public Tile Parent { get; set; }
-
-            //The distance is essentially the estimated distance, ignoring walls to our target. 
-            //So how many tiles left and right, up and down, ignoring walls, to get there. 
-            public void SetDistance(int targetX, int targetY)
-            {
-                this.Distance = Math.Abs(targetX - X) + Math.Abs(targetY - Y);
-            }
+            this.Distance = Math.Abs(targetX - X) + Math.Abs(targetY - Y);
         }
-        
+    }
+
 }

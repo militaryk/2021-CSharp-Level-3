@@ -43,7 +43,8 @@ namespace FarmWars
         Feild feildTile = new Feild();
         water waterTile = new water();
         Lake lakeTile = new Lake();
-        Astar astar = new Astar();
+        HostileAstar HoAstar = new HostileAstar();
+        HumanAstar HuAstar = new HumanAstar();
         Hostile hostile = new Hostile();
         Inventory inventory = new Inventory();
 
@@ -78,7 +79,8 @@ namespace FarmWars
 
             Background = new Bitmap(PnlGame.Width, PnlGame.Height);
             Graphics g = Graphics.FromImage(Background);
-            astar.EmptyList();
+            HoAstar.EmptyList();
+            HuAstar.EmptyList();
 
             string line = " ";
 
@@ -119,7 +121,7 @@ namespace FarmWars
                         using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
                         {
                             Point point1 = new Point(AX * 25, AY * 25);
-                            TextRenderer.DrawText(g, "A", font, point1, Color.Blue);
+                            //TextRenderer.DrawText(g, "A", font, point1, Color.Blue);
                         }
                     }
                     else if (x == BX && y == BY)
@@ -127,7 +129,7 @@ namespace FarmWars
                         using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
                         {
                             Point point1 = new Point(BX * 25, BY * 25);
-                            TextRenderer.DrawText(g, "B", font, point1, Color.Blue);
+                            //6TextRenderer.DrawText(g, "B", font, point1, Color.Blue);
                         }
                         line = line + "B";
                     }
@@ -152,7 +154,8 @@ namespace FarmWars
                         line = line + " ";
                     }
                 }
-                astar.AddToList(line);
+                HoAstar.AddToList(line);
+                HuAstar.AddToList(line);
                 Console.WriteLine(line);
                 mapwidth = line.Length;
                 line = "";
@@ -297,10 +300,13 @@ namespace FarmWars
             Graphics g = PnlGame.CreateGraphics();
             PathPos++;
             PathLoc++;
-            astar.PathLoc = PathLoc;
-            astar.PathPos = PathPos;
+            HoAstar.PathLoc = PathLoc;
+            HuAstar.PathLoc = PathLoc;
+            HoAstar.PathPos = PathPos;
+            HuAstar.PathPos = PathPos;
             PnlGame.Invalidate();
-            astar.PathFollow(g);
+            HoAstar.PathFollow(g);
+            HuAstar.PathFollow(g);
         }
 
         private void Invalme()
@@ -344,21 +350,21 @@ namespace FarmWars
             if (StartGo == 2){
                 if (StartPos * 25 > PnlGame.Width + PnlGame.Width + PnlGame.Height)
                 {
-                    int EdgePosY = StartPos - PnlGame.Width - PnlGame.Width - PnlGame.Height;
+                    int EdgePosY = StartPos - (PnlGame.Width / 25) - (PnlGame.Width /25) - (PnlGame.Height /25);
                     int EdgePosX = 0;
                     DrawHostile(EdgePosX, EdgePosY);
 
                 }
                 if (StartPos * 25 > PnlGame.Width + PnlGame.Height)
                 {
-                    int EdgePosX = StartPos - PnlGame.Width - PnlGame.Height;
+                    int EdgePosX = StartPos - ((PnlGame.Width) /25)- ((PnlGame.Height) /25);
                     int EdgePosY = 0;
                     DrawHostile(EdgePosX, EdgePosY);
 
                 }
-                if (StartPos  * 25> PnlGame.Width)
+                if (StartPos  * 25 > PnlGame.Width)
                 {
-                    int EdgePosY = StartPos - PnlGame.Width;
+                    int EdgePosY = StartPos - (PnlGame.Width / 25);
                     int EdgePosX = 0;
                     DrawHostile(EdgePosX, EdgePosY);
 
@@ -379,14 +385,14 @@ namespace FarmWars
             {
                 PathPos = 0;
                 PathLoc = 0;
-                astar.EmptyList();
+                HoAstar.EmptyList();
 
                 Graphics g = PnlGame.CreateGraphics();
 
                 AY = YCord;
                 AX = XCord;
-                astar.StartX = AX;
-                astar.StartY = AY;
+                HoAstar.StartX = AX;
+                HoAstar.StartY = AY;
                 int tiletype;
                 string line = "";
 
@@ -447,12 +453,12 @@ namespace FarmWars
 
                         }
                     }
-                    astar.AddToList(line);
+                    HoAstar.AddToList(line);
                     Console.WriteLine(line);
                     line = "";
 
                 }
-                astar.Main(g);
+                HoAstar.Main(g);
             }
             drawn = true;
         }

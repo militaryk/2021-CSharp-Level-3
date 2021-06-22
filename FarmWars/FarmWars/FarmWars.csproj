@@ -46,7 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AStar.cs" />
+    <Compile Include="HumanAstar.cs" />
+    <Compile Include="HostileAStar.cs" />
     <Compile Include="Feild.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

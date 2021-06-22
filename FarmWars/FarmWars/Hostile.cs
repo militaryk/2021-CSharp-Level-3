@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Drawing;
 
 namespace FarmWars
 {
@@ -17,7 +9,7 @@ namespace FarmWars
         public int y;
         public int x;
         public int tiletype;
-        //Astar astar = new Astar();
+        //HostileAstar HoAstar = new HostileAstar();
         public void DrawHostile(Graphics g)
         {
             //Define the solid brush with a default colour of orange

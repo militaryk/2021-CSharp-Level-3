@@ -27,7 +27,7 @@ namespace FarmWars
         List<Tuple<int, int>> path = new List<Tuple<int, int>>();
         List<Tuple<int, int>> walkpath = new List<Tuple<int, int>>();
 
-        Hostile hostile = new Hostile();
+        Human human = new Human();
 
         public void AddToList(string mapline)
         {
@@ -84,7 +84,7 @@ namespace FarmWars
                             using (Font font = new Font("Times New Roman", 36, FontStyle.Bold, GraphicsUnit.Pixel))
                             {
                                 Point point1 = new Point(tile.X * 25, tile.Y * 25);
-                                TextRenderer.DrawText(g, "*", font, point1, Color.Red);
+                                TextRenderer.DrawText(g, "*", font, point1, Color.Aqua);
                             }
 
                             if (map[tile.Y][tile.X] == ' ')
@@ -205,9 +205,9 @@ namespace FarmWars
                 {
                     int xLoc = walkpath[PathLoc].Item1;
                     int yLoc = walkpath[PathLoc].Item2;
-                    hostile.x = xLoc;
-                    hostile.y = yLoc;
-                    hostile.DrawHostile(g);
+                    human.x = xLoc;
+                    human.y = yLoc;
+                    human.DrawHuman(g);
 
                 }
                 else

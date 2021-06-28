@@ -32,18 +32,26 @@ namespace FarmWars
         int YPos;
         public int PathPos = 0;
         public int PathLoc = 0;
+        public int HuPathLoc = 0;
+        public int HuPathPos = 0;
 
         public bool HostileDrawn = false;
+
         int AX;
         int AY;
         int BX;
         int BY;
 
+        int HuAX;
+        int HuAY;
+        int HuBX;
+        int HuBY;
+
         square squareTile = new square();
         Feild feildTile = new Feild();
         water waterTile = new water();
         Lake lakeTile = new Lake();
-        HostileAstar HoAstar = new HostileAstar();
+        HostileAstar HAstar = new HostileAstar();
         HumanAstar HuAstar = new HumanAstar();
         Hostile hostile = new Hostile();
         Inventory inventory = new Inventory();
@@ -79,8 +87,7 @@ namespace FarmWars
 
             Background = new Bitmap(PnlGame.Width, PnlGame.Height);
             Graphics g = Graphics.FromImage(Background);
-            HoAstar.EmptyList();
-            HuAstar.EmptyList();
+            HAstar.EmptyList();
 
             string line = " ";
 
@@ -154,7 +161,7 @@ namespace FarmWars
                         line = line + " ";
                     }
                 }
-                HoAstar.AddToList(line);
+                HAstar.AddToList(line);
                 HuAstar.AddToList(line);
                 Console.WriteLine(line);
                 mapwidth = line.Length;
@@ -199,6 +206,8 @@ namespace FarmWars
 
         private void PnlGame_Click(object sender, EventArgs e)
         {
+            Graphics g = PnlGame.CreateGraphics();
+
             if (XPos >= 0 && YPos >= 0 && XPos <= 50 && YPos <= 50)
             {
                 PauseGame();
@@ -211,6 +220,72 @@ namespace FarmWars
             {
                 ExitGame();
             }
+
+            HuAY = YCord;
+            HuAX = XCord;
+            HuAstar.StartX = HuAX;
+            HuAstar.StartY = HuAY;
+            int tiletype;
+            string line = "";
+            //Draw the grid with the number of columns given
+            for (int y = 0; y * SquareSize < PnlGame.Height; y++)
+            {
+
+                //For each row until the number of rows is the same as the number of rows entered by the user
+                for (int x = 0; PnlGame.Width > x * SquareSize; x++)
+                {
+                    try
+                    {
+                        var tile = newTileMap.First(z => z.Item1 == x && z.Item2 == y);
+
+                        tiletype = tile.Item3;
+
+
+                        if (y == HuAY && x == HuAX)
+                        {
+                            line = line + "A";
+                            using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
+                            {
+                                Point point1 = new Point(HuAX * 25, HuAY * 25);
+                                TextRenderer.DrawText(g, "A", font, point1, Color.Red);
+                            }
+                        }
+                        else if (x == HuBX && y == HuBY)
+                        {
+                            line = line + "B";
+                        }
+                        else if (x >= (PnlGame.Width / SquareSize) - 8)
+                        {
+                            int height = (PnlGame.Height / SquareSize) - 6;
+                            if (y >= 6 && y <= height)
+                            {
+                                line = line + "-";
+                            }
+                            else
+                            {
+                                line = line + " ";
+                            }
+                        }
+                        else if (tiletype == 2)
+                        {
+                            line = line + "-";
+                        }
+                        else
+                        {
+                            line = line + " ";
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                HuAstar.AddToList(line);
+                Console.WriteLine(line);
+                line = "";
+
+            }
+            HuAstar.Main(g);
         }
 
         private void PnlGame_Validated(object sender, EventArgs e)
@@ -270,7 +345,6 @@ namespace FarmWars
         private void reDrawMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DrawMap();
-
         }
 
         private void pathFindingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -300,12 +374,14 @@ namespace FarmWars
             Graphics g = PnlGame.CreateGraphics();
             PathPos++;
             PathLoc++;
-            HoAstar.PathLoc = PathLoc;
-            HuAstar.PathLoc = PathLoc;
-            HoAstar.PathPos = PathPos;
-            HuAstar.PathPos = PathPos;
+            HuPathPos++;
+            HuPathLoc++;
+            HAstar.PathLoc = PathLoc;
+            HAstar.PathPos = PathPos;
+            /HuAstar.PathLoc = HuPathLoc;
+           //HuAstar.PathPos = HuPathPos;
             PnlGame.Invalidate();
-            HoAstar.PathFollow(g);
+            HAstar.PathFollow(g);
             HuAstar.PathFollow(g);
         }
 
@@ -385,14 +461,14 @@ namespace FarmWars
             {
                 PathPos = 0;
                 PathLoc = 0;
-                HoAstar.EmptyList();
+                HAstar.EmptyList();
 
                 Graphics g = PnlGame.CreateGraphics();
 
                 AY = YCord;
                 AX = XCord;
-                HoAstar.StartX = AX;
-                HoAstar.StartY = AY;
+                HAstar.StartX = AX;
+                HAstar.StartY = AY;
                 int tiletype;
                 string line = "";
 
@@ -453,12 +529,12 @@ namespace FarmWars
 
                         }
                     }
-                    HoAstar.AddToList(line);
+                    HAstar.AddToList(line);
                     Console.WriteLine(line);
                     line = "";
 
                 }
-                HoAstar.Main(g);
+                HAstar.Main(g);
             }
             drawn = true;
         }

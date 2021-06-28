@@ -2,15 +2,15 @@
 
 namespace FarmWars
 {
-    class Hostile
+    class Human
     {
         public int width = 20;
         public int height = 25;
         public int y;
         public int x;
         public int tiletype;
-        //HostileAstar HAstar = new HostileAstar();
-        public void DrawHostile(Graphics g)
+        //HostileAstar HoAstar = new HostileAstar();
+        public void DrawHuman(Graphics g)
         {
             //Define the solid brush with a default colour of orange
             SolidBrush br = new SolidBrush(Color.SandyBrown);
@@ -24,7 +24,7 @@ namespace FarmWars
 
             // Create rectangle for ellipse.
             Rectangle rect = new Rectangle(x, y, width, height);
-            Image newImage = Image.FromFile("../../../Art/character/bad.png");
+            Image newImage = Image.FromFile("../../../Art/character/human.png");
             g.DrawImage(newImage, rect);
 
         }

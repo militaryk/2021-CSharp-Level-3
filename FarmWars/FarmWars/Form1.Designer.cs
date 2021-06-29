@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.PnlGame = new System.Windows.Forms.Panel();
-            this.TmrMovement = new System.Windows.Forms.Timer(this.components);
+            this.TmrHosMovement = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.seedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -45,6 +45,7 @@
             this.moveGuyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BtnExit = new System.Windows.Forms.Button();
             this.TmrTurn = new System.Windows.Forms.Timer(this.components);
+            this.TmrHumMovement = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -67,10 +68,10 @@
             this.PnlGame.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PnlGame_MouseMove);
             this.PnlGame.Validated += new System.EventHandler(this.PnlGame_Validated);
             // 
-            // TmrMovement
+            // TmrHosMovement
             // 
-            this.TmrMovement.Interval = 20;
-            this.TmrMovement.Tick += new System.EventHandler(this.TmrGame_Tick);
+            this.TmrHosMovement.Interval = 20;
+            this.TmrHosMovement.Tick += new System.EventHandler(this.TmrGame_Tick);
             // 
             // contextMenuStrip1
             // 
@@ -183,6 +184,11 @@
             // 
             this.TmrTurn.Tick += new System.EventHandler(this.TmrTurn_Tick);
             // 
+            // TmrHumMovement
+            // 
+            this.TmrHumMovement.Interval = 15;
+            this.TmrHumMovement.Tick += new System.EventHandler(this.TmrHumMovement_Tick);
+            // 
             // FormGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -220,8 +226,9 @@
         private System.Windows.Forms.ToolStripMenuItem pathFindingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moveGuyToolStripMenuItem;
         public System.Windows.Forms.Button BtnExit;
-        public System.Windows.Forms.Timer TmrMovement;
+        public System.Windows.Forms.Timer TmrHosMovement;
         private System.Windows.Forms.Timer TmrTurn;
+        public System.Windows.Forms.Timer TmrHumMovement;
     }
 }
 

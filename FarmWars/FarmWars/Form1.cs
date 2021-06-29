@@ -15,7 +15,7 @@ namespace FarmWars
 {
     public partial class FormGame : Form
     {
-        public bool drawn = false;
+        public bool Drawn = false;
         int MapSize = 100;
         int SquareSize = 25;
         int XCord = 0;
@@ -35,6 +35,7 @@ namespace FarmWars
         public int HuPathLoc = 0;
         public int HuPathPos = 0;
 
+        public bool HuDrawn;
         public bool HostileDrawn = false;
 
         int AX;
@@ -42,8 +43,8 @@ namespace FarmWars
         int BX;
         int BY;
 
-        int HuAX;
-        int HuAY;
+        int HuAX = 1;
+        int HuAY = 1;
         int HuBX;
         int HuBY;
 
@@ -162,7 +163,6 @@ namespace FarmWars
                     }
                 }
                 HAstar.AddToList(line);
-                HuAstar.AddToList(line);
                 Console.WriteLine(line);
                 mapwidth = line.Length;
                 line = "";
@@ -220,9 +220,8 @@ namespace FarmWars
             {
                 ExitGame();
             }
-
-            HuAY = YCord;
-            HuAX = XCord;
+            HuBX = XCord;
+            HuBY = YCord;
             HuAstar.StartX = HuAX;
             HuAstar.StartY = HuAY;
             int tiletype;
@@ -372,17 +371,14 @@ namespace FarmWars
         private void TmrGame_Tick(object sender, EventArgs e)
         {
             Graphics g = PnlGame.CreateGraphics();
+
             PathPos++;
             PathLoc++;
-            HuPathPos++;
-            HuPathLoc++;
+
             HAstar.PathLoc = PathLoc;
             HAstar.PathPos = PathPos;
-            /HuAstar.PathLoc = HuPathLoc;
-           //HuAstar.PathPos = HuPathPos;
-            PnlGame.Invalidate();
             HAstar.PathFollow(g);
-            HuAstar.PathFollow(g);
+            PnlGame.Invalidate();
         }
 
         private void Invalme()
@@ -408,12 +404,12 @@ namespace FarmWars
 
         private void PlayGame()
         {
-            TmrMovement.Enabled = true;
+            TmrHosMovement.Enabled = true;
         }
 
         private void PauseGame()
         {
-            TmrMovement.Enabled = false;
+            TmrHosMovement.Enabled = false;
         }
 
         private void TmrTurn_Tick(object sender, EventArgs e)
@@ -457,7 +453,7 @@ namespace FarmWars
 
         private void DrawHostile(int XCord, int YCord)
         {
-            if (drawn == false)
+            if (Drawn == false)
             {
                 PathPos = 0;
                 PathLoc = 0;
@@ -536,7 +532,18 @@ namespace FarmWars
                 }
                 HAstar.Main(g);
             }
-            drawn = true;
+            Drawn = true;
+        }
+
+        private void TmrHumMovement_Tick(object sender, EventArgs e)
+        {
+            Graphics g = PnlGame.CreateGraphics();
+            HuPathPos++;
+            HuPathLoc++;
+
+            HuAstar.PathLoc = HuPathLoc;
+            HuAstar.PathPos = HuPathPos;
+            HuAstar.PathFollow(g);
         }
     }
 }

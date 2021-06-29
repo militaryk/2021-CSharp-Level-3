@@ -103,7 +103,7 @@ namespace FarmWars
                                 //map.ForEach(x => Console.WriteLine(x));
                                 //Console.WriteLine("Done!");
                                 path.Reverse();
-                                ((FormGame)FormGame.ActiveForm).TmrMovement.Enabled = true;
+                                ((FormGame)FormGame.ActiveForm).TmrHumMovement.Enabled = true;
                                 pathmade = true;
                                 return;
                             }
@@ -213,9 +213,9 @@ namespace FarmWars
                 else
                 {
                     pathfollowed = true;
-                    ((FormGame)FormGame.ActiveForm).TmrMovement.Enabled = false;
-                    ((FormGame)FormGame.ActiveForm).drawn = false;
-                    Console.WriteLine("Path Walked");
+                    ((FormGame)FormGame.ActiveForm).TmrHumMovement.Enabled = false;
+                    ((FormGame)FormGame.ActiveForm).HuDrawn = false;
+                    Console.WriteLine("Path Walked cause Human smart");
                 }
             }
         }

@@ -9,7 +9,6 @@ namespace FarmWars
         public int y;
         public int x;
         public int tiletype;
-        //HostileAstar HoAstar = new HostileAstar();
         public void DrawHuman(Graphics g)
         {
             //Define the solid brush with a default colour of orange

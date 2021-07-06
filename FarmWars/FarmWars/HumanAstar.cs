@@ -18,6 +18,9 @@ namespace FarmWars
         public int PathLoc = 0;
         int pop = 0;
 
+        public int xLoc;
+        public int yLoc;
+
         public bool pathfollowed = false;
         public bool calcpath = true;
 
@@ -175,7 +178,7 @@ namespace FarmWars
             {
                 if (calcpath == true)
                 {
-                    try
+                   try
                     {
                         int x4 = 0;
                         int y4 = 0;
@@ -198,26 +201,34 @@ namespace FarmWars
                     }
                     catch
                     {
-                        calcpath = false;
+                       calcpath = false;
                     }
                 }
                 if (PathLoc < walkpath.Count)
                 {
-                    int xLoc = walkpath[PathLoc].Item1;
-                    int yLoc = walkpath[PathLoc].Item2;
+                    xLoc = walkpath[PathLoc].Item1;
+                    yLoc = walkpath[PathLoc].Item2;
                     human.x = xLoc;
                     human.y = yLoc;
-                    human.DrawHuman(g);
-
                 }
                 else
                 {
                     pathfollowed = true;
-                    ((FormGame)FormGame.ActiveForm).TmrHumMovement.Enabled = false;
-                    ((FormGame)FormGame.ActiveForm).HuDrawn = false;
+                    //((FormGame)FormGame.ActiveForm).TmrHumMovement.Enabled = false;
+                   // ((FormGame)FormGame.ActiveForm).HuDrawn = false;
                     Console.WriteLine("Path Walked cause Human smart");
+                    walkpath.Clear();
+                    path.Clear();
                 }
             }
+            human.DrawHuman(g);
+        }
+
+        public void ClearWalkPath()
+        {
+            walkpath.Clear();
+            path.Clear();
+            pathfollowed = true;
         }
     }
 

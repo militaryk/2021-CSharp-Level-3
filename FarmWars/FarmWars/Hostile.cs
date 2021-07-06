@@ -18,9 +18,16 @@ namespace FarmWars
             //Define the pen with the colour black
             Pen pen1 = new Pen(Color.Black);
 
-            //Calcualte the X and Y of each indervidual square
 
+            // Create pen.
+            Pen blackPen = new Pen(Color.Red, 3);
 
+            // Create location and size of ellipse.            
+            int widthc = 75;
+            int heightc = 75;
+
+            // Draw ellipse to screen.
+            g.DrawEllipse(blackPen, x - (25), y - (25), widthc, heightc);
 
             // Create rectangle for ellipse.
             Rectangle rect = new Rectangle(x, y, width, height);

@@ -212,10 +212,16 @@ namespace FarmWars
                 }
                 else
                 {
-                    pathfollowed = true;
-                    ((FormGame)FormGame.ActiveForm).TmrHosMovement.Enabled = false;
-                    ((FormGame)FormGame.ActiveForm).Drawn = false;
-                    Console.WriteLine("Path Walked");
+                    try
+                    {
+                        pathfollowed = true;
+                        ((FormGame)FormGame.ActiveForm).TmrHosMovement.Enabled = false;
+                        ((FormGame)FormGame.ActiveForm).Drawn = false;
+                        Console.WriteLine("Path Walked");
+                    } catch
+                    {
+
+                    }
                 }
             }
         }

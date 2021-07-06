@@ -57,10 +57,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PnlGame.BackColor = System.Drawing.SystemColors.ControlDark;
             this.PnlGame.CausesValidation = false;
-            this.PnlGame.Location = new System.Drawing.Point(16, 32);
+            this.PnlGame.Location = new System.Drawing.Point(0, 0);
             this.PnlGame.Margin = new System.Windows.Forms.Padding(4);
             this.PnlGame.Name = "PnlGame";
-            this.PnlGame.Size = new System.Drawing.Size(1433, 916);
+            this.PnlGame.Size = new System.Drawing.Size(1463, 961);
             this.PnlGame.TabIndex = 0;
             this.PnlGame.Click += new System.EventHandler(this.PnlGame_Click);
             this.PnlGame.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlGame_Paint);
@@ -98,6 +98,7 @@
             this.menuStrip1.Size = new System.Drawing.Size(1462, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.Visible = false;
             // 
             // drawMapToolStripMenuItem
             // 
@@ -118,7 +119,6 @@
             this.reDrawMapToolStripMenuItem.Name = "reDrawMapToolStripMenuItem";
             this.reDrawMapToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
             this.reDrawMapToolStripMenuItem.Text = "Draw Map";
-            this.reDrawMapToolStripMenuItem.Click += new System.EventHandler(this.reDrawMapToolStripMenuItem_Click);
             // 
             // reLoadMapToolStripMenuItem
             // 
@@ -203,6 +203,8 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormGame";
             this.Text = "FarmWars";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormGame_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FormGame_KeyUp);
             this.contextMenuStrip1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

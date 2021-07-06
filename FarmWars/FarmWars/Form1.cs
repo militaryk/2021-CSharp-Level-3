@@ -22,6 +22,11 @@ namespace FarmWars
         int YCord = 0;
         int TrX;
         int TrY;
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern short GetAsyncKeyState(Keys vKey);
+
+
         bool feild;
         int StartGo = 0;
         bool MapDrawn = false;
@@ -34,6 +39,9 @@ namespace FarmWars
         public int PathLoc = 0;
         public int HuPathLoc = 0;
         public int HuPathPos = 0;
+        bool LShift = false;
+        bool RShift = false;
+
 
         public bool HuDrawn;
         public bool HostileDrawn = false;
@@ -56,6 +64,7 @@ namespace FarmWars
         HumanAstar HuAstar = new HumanAstar();
         Hostile hostile = new Hostile();
         Inventory inventory = new Inventory();
+        Shop shop = new Shop();
 
         //Calculate the width and height of the square so that it all fits in the picturebox
         public int width = 0;
@@ -80,13 +89,14 @@ namespace FarmWars
         {
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, PnlGame, new object[] { true });
+            DrawMap();
 
         }
 
         private void DrawMap()
         {
-
             Background = new Bitmap(PnlGame.Width, PnlGame.Height);
+            Console.WriteLine(Background);
             Graphics g = Graphics.FromImage(Background);
             HAstar.EmptyList();
 
@@ -170,6 +180,7 @@ namespace FarmWars
             //SaveMap();
             MapDrawn = true;
             inventory.DrawButtons();
+            shop.DrawShop(g, 100, 100);
             PnlGame.Invalidate();
             TmrTurn.Enabled = true;
         }
@@ -220,71 +231,98 @@ namespace FarmWars
             {
                 ExitGame();
             }
-            HuBX = XCord;
-            HuBY = YCord;
-            HuAstar.StartX = HuAX;
-            HuAstar.StartY = HuAY;
-            int tiletype;
-            string line = "";
-            //Draw the grid with the number of columns given
-            for (int y = 0; y * SquareSize < PnlGame.Height; y++)
+            else
             {
-
-                //For each row until the number of rows is the same as the number of rows entered by the user
-                for (int x = 0; PnlGame.Width > x * SquareSize; x++)
+                if (LShift == true)
                 {
-                    try
+                    HuPathLoc = 0;
+                    HuPathPos = 0;
+                    HuAstar.EmptyList();
+
+                    HuBX = XCord;
+                    HuBY = YCord;
+                    HuAstar.StartX = HuAX;
+                    HuAstar.StartY = HuAY;
+                    int tiletype;
+                    string line = "";
+                    //Draw the grid with the number of columns given
+                    for (int y = 0; y * SquareSize < PnlGame.Height; y++)
                     {
-                        var tile = newTileMap.First(z => z.Item1 == x && z.Item2 == y);
 
-                        tiletype = tile.Item3;
-
-
-                        if (y == HuAY && x == HuAX)
+                        //For each row until the number of rows is the same as the number of rows entered by the user
+                        for (int x = 0; PnlGame.Width > x * SquareSize; x++)
                         {
-                            line = line + "A";
-                            using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
+                            try
                             {
-                                Point point1 = new Point(HuAX * 25, HuAY * 25);
-                                TextRenderer.DrawText(g, "A", font, point1, Color.Red);
+                                var tile = newTileMap.First(z => z.Item1 == x && z.Item2 == y);
+
+                                tiletype = tile.Item3;
+
+
+                                if (y == HuAY && x == HuAX)
+                                {
+                                    line = line + "A";
+                                    using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
+                                    {
+                                        Point point1 = new Point(HuAX * 25, HuAY * 25);
+                                        TextRenderer.DrawText(g, "A", font, point1, Color.Red);
+                                    }
+                                }
+                                else if (x == HuBX && y == HuBY)
+                                {
+                                    line = line + "B";
+                                }
+                                else if (x >= (PnlGame.Width / SquareSize) - 8)
+                                {
+                                    int height = (PnlGame.Height / SquareSize) - 6;
+                                    if (y >= 6 && y <= height)
+                                    {
+                                        line = line + "-";
+                                    }
+                                    else
+                                    {
+                                        line = line + " ";
+                                    }
+                                }
+                                else if (tiletype == 2)
+                                {
+                                    line = line + "-";
+                                }
+                                else
+                                {
+                                    line = line + " ";
+                                }
+                            }
+                            catch
+                            {
+
                             }
                         }
-                        else if (x == HuBX && y == HuBY)
-                        {
-                            line = line + "B";
-                        }
-                        else if (x >= (PnlGame.Width / SquareSize) - 8)
-                        {
-                            int height = (PnlGame.Height / SquareSize) - 6;
-                            if (y >= 6 && y <= height)
-                            {
-                                line = line + "-";
-                            }
-                            else
-                            {
-                                line = line + " ";
-                            }
-                        }
-                        else if (tiletype == 2)
-                        {
-                            line = line + "-";
-                        }
-                        else
-                        {
-                            line = line + " ";
-                        }
+                        HuAstar.AddToList(line);
+                        Console.WriteLine(line);
+                        line = "";
+
                     }
-                    catch
-                    {
+                    HuAstar.Main(g);
+                }
+                if (RShift == true)
+                {
+                    Graphics f = Graphics.FromImage(Background);
 
+                    TrX = XCord;
+                    TrY = YCord;
+
+                    if (XPos >= -50 + HuAstar.xLoc  && YPos >= -50 + HuAstar.yLoc && XPos <= 75 + HuAstar.xLoc && YPos <= 75 + HuAstar.yLoc)
+                    {
+                        feildTile.SquareSize = SquareSize;
+
+                        feildTile.TrX = TrX;
+                        feildTile.TrY = TrY;
+
+                        feildTile.DrawFeild(f);
                     }
                 }
-                HuAstar.AddToList(line);
-                Console.WriteLine(line);
-                line = "";
-
             }
-            HuAstar.Main(g);
         }
 
         private void PnlGame_Validated(object sender, EventArgs e)
@@ -341,11 +379,6 @@ namespace FarmWars
             Console.WriteLine(newTileMap.Last());
         }
 
-        private void reDrawMapToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DrawMap();
-        }
-
         private void pathFindingToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -353,19 +386,6 @@ namespace FarmWars
 
         private void PnlGame_DoubleClick(object sender, EventArgs e)
         {
-            Graphics g = Graphics.FromImage(Background);
-
-            TrX = XCord;
-            TrY = YCord;
-
-
-            feildTile.SquareSize = SquareSize;
-
-            feildTile.TrX = TrX;
-            feildTile.TrY = TrY;
-
-            feildTile.DrawFeild(g);
-            PnlGame.Invalidate();
         }
 
         private void TmrGame_Tick(object sender, EventArgs e)
@@ -419,22 +439,23 @@ namespace FarmWars
             int StartPos = Go.Next(1, Max);
             StartGo = Go.Next(1, 100);
             StartGo = 2;
-            if (StartGo == 2){
+            if (StartGo == 2)
+            {
                 if (StartPos * 25 > PnlGame.Width + PnlGame.Width + PnlGame.Height)
                 {
-                    int EdgePosY = StartPos - (PnlGame.Width / 25) - (PnlGame.Width /25) - (PnlGame.Height /25);
+                    int EdgePosY = StartPos - (PnlGame.Width / 25) - (PnlGame.Width / 25) - (PnlGame.Height / 25);
                     int EdgePosX = 0;
                     DrawHostile(EdgePosX, EdgePosY);
 
                 }
                 if (StartPos * 25 > PnlGame.Width + PnlGame.Height)
                 {
-                    int EdgePosX = StartPos - ((PnlGame.Width) /25)- ((PnlGame.Height) /25);
+                    int EdgePosX = StartPos - ((PnlGame.Width) / 25) - ((PnlGame.Height) / 25);
                     int EdgePosY = 0;
                     DrawHostile(EdgePosX, EdgePosY);
 
                 }
-                if (StartPos  * 25 > PnlGame.Width)
+                if (StartPos * 25 > PnlGame.Width)
                 {
                     int EdgePosY = StartPos - (PnlGame.Width / 25);
                     int EdgePosX = 0;
@@ -543,7 +564,42 @@ namespace FarmWars
 
             HuAstar.PathLoc = HuPathLoc;
             HuAstar.PathPos = HuPathPos;
+            HuAX = HuAstar.xLoc / 25;
+            HuAY = HuAstar.yLoc / 25;
             HuAstar.PathFollow(g);
+        }
+
+        private void FormGame_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ShiftKey)
+            {
+                if (Convert.ToBoolean(GetAsyncKeyState(Keys.LShiftKey)))
+                {
+                    LShift = true;
+                    Console.WriteLine("Left");
+                }
+                if (Convert.ToBoolean(GetAsyncKeyState(Keys.RShiftKey)))
+                {
+                    if (RShift == false)
+                    {
+                        RShift = true;
+                        Console.WriteLine("Build Mode On");
+                    }  else
+                    {
+                        RShift = false;
+                        Console.WriteLine("Build Mode Off");
+                    }
+                }
+            } 
+
+        }
+
+        private void FormGame_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ShiftKey)
+            {
+                LShift = (Convert.ToBoolean(GetAsyncKeyState(Keys.LShiftKey)));
+            }
         }
     }
 }

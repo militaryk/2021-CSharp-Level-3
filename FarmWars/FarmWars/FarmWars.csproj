@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Shop.cs" />
     <Compile Include="Human.cs" />
     <Compile Include="HumanAstar.cs" />
     <Compile Include="HostileAStar.cs" />

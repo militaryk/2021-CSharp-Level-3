@@ -69,13 +69,17 @@ namespace FarmWars
 
         public void DrawButtons()
         {
-            ((FormGame)FormGame.ActiveForm).BtnExit.Visible = true;
-            ((FormGame)FormGame.ActiveForm).BtnExit.Width = width - 25;
-            ((FormGame)FormGame.ActiveForm).BtnExit.Height = height / 10;
-            ((FormGame)FormGame.ActiveForm).BtnExit.Location = new Point(PosX + 30, PosY + 490);
-            ((FormGame)FormGame.ActiveForm).BtnExit.TabStop = false;
-            ((FormGame)FormGame.ActiveForm).BtnExit.FlatStyle = FlatStyle.Flat;
-            ((FormGame)FormGame.ActiveForm).BtnExit.FlatAppearance.BorderSize = 0;
+        //    try
+        //    {
+        //        ((FormGame)FormGame.ActiveForm).BtnExit.Visible = true;
+        //       ((FormGame)FormGame.ActiveForm).BtnExit.Width = width - 25;
+        //        ((FormGame)FormGame.ActiveForm).BtnExit.Height = height / 10;
+        //        ((FormGame)FormGame.ActiveForm).BtnExit.Location = new Point(PosX + 30, PosY + 490);
+        //        ((FormGame)FormGame.ActiveForm).BtnExit.TabStop = false;
+        //        ((FormGame)FormGame.ActiveForm).BtnExit.FlatStyle = FlatStyle.Flat;
+        //       ((FormGame)FormGame.ActiveForm).BtnExit.FlatAppearance.BorderSize = 0;
+        //    }
+        //    catch { }
         }
 
         private void DrawUI(Graphics g)

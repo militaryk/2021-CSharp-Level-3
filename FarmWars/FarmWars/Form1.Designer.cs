@@ -46,6 +46,7 @@
             this.BtnExit = new System.Windows.Forms.Button();
             this.TmrTurn = new System.Windows.Forms.Timer(this.components);
             this.TmrHumMovement = new System.Windows.Forms.Timer(this.components);
+            this.TmrDam = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -65,7 +66,9 @@
             this.PnlGame.Click += new System.EventHandler(this.PnlGame_Click);
             this.PnlGame.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlGame_Paint);
             this.PnlGame.DoubleClick += new System.EventHandler(this.PnlGame_DoubleClick);
+            this.PnlGame.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PnlGame_MouseDown);
             this.PnlGame.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PnlGame_MouseMove);
+            this.PnlGame.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PnlGame_MouseUp);
             this.PnlGame.Validated += new System.EventHandler(this.PnlGame_Validated);
             // 
             // TmrHosMovement
@@ -189,6 +192,12 @@
             this.TmrHumMovement.Interval = 15;
             this.TmrHumMovement.Tick += new System.EventHandler(this.TmrHumMovement_Tick);
             // 
+            // TmrDam
+            // 
+            this.TmrDam.Enabled = true;
+            this.TmrDam.Interval = 1000;
+            this.TmrDam.Tick += new System.EventHandler(this.TmrDam_Tick);
+            // 
             // FormGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -231,6 +240,7 @@
         public System.Windows.Forms.Timer TmrHosMovement;
         private System.Windows.Forms.Timer TmrTurn;
         public System.Windows.Forms.Timer TmrHumMovement;
+        private System.Windows.Forms.Timer TmrDam;
     }
 }
 

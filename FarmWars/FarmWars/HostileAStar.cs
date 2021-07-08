@@ -13,7 +13,8 @@ namespace FarmWars
     {
         public int CurrentX;
         public int CurrentY;
-
+        public int xLoc;
+        public int yLoc;
         public int PathPos = 1;
         public int PathLoc = 0;
         int pop = 0;
@@ -203,8 +204,8 @@ namespace FarmWars
                 }
                 if (PathLoc < walkpath.Count)
                 {
-                    int xLoc = walkpath[PathLoc].Item1;
-                    int yLoc = walkpath[PathLoc].Item2;
+                    xLoc = walkpath[PathLoc].Item1;
+                    yLoc = walkpath[PathLoc].Item2;
                     hostile.x = xLoc;
                     hostile.y = yLoc;
                     hostile.DrawHostile(g);

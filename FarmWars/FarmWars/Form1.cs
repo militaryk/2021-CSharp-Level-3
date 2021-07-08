@@ -26,7 +26,7 @@ namespace FarmWars
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern short GetAsyncKeyState(Keys vKey);
 
-
+        
         bool feild;
         int StartGo = 0;
         bool MapDrawn = false;
@@ -39,10 +39,12 @@ namespace FarmWars
         public int PathLoc = 0;
         public int HuPathLoc = 0;
         public int HuPathPos = 0;
+        public int HuHealth = 100;
+        public int HosHealth = 100;
         bool LShift = false;
         bool RShift = false;
-
-
+        bool MouseDrag = false;
+        
         public bool HuDrawn;
         public bool HostileDrawn = false;
 
@@ -65,6 +67,7 @@ namespace FarmWars
         Hostile hostile = new Hostile();
         Inventory inventory = new Inventory();
         Shop shop = new Shop();
+        Human human = new Human();
 
         //Calculate the width and height of the square so that it all fits in the picturebox
         public int width = 0;
@@ -99,7 +102,6 @@ namespace FarmWars
             Console.WriteLine(Background);
             Graphics g = Graphics.FromImage(Background);
             HAstar.EmptyList();
-
             string line = " ";
 
             Random tile = new Random();
@@ -151,7 +153,7 @@ namespace FarmWars
                         }
                         line = line + "B";
                     }
-                    else if (tiletype == 2)
+                    else if (tiletype == 69)
                     {
                         line = line + "-";
                     }
@@ -213,6 +215,26 @@ namespace FarmWars
             YCord = (e.Y / 25);
             XPos = e.X;
             YPos = e.Y;
+            if (MouseDrag == true)
+            {
+                if (RShift == true)
+                {
+                    Graphics f = Graphics.FromImage(Background);
+
+                    TrX = XCord;
+                    TrY = YCord;
+
+                    if (XPos >= -50 + HuAstar.xLoc && YPos >= -50 + HuAstar.yLoc && XPos <= 75 + HuAstar.xLoc && YPos <= 75 + HuAstar.yLoc)
+                    {
+                        feildTile.SquareSize = SquareSize;
+
+                        feildTile.TrX = TrX;
+                        feildTile.TrY = TrY;
+
+                        feildTile.DrawFeild(f);
+                    }
+                }
+            }
         }
 
         private void PnlGame_Click(object sender, EventArgs e)
@@ -284,7 +306,7 @@ namespace FarmWars
                                         line = line + " ";
                                     }
                                 }
-                                else if (tiletype == 2)
+                                else if (tiletype == 69)
                                 {
                                     line = line + "-";
                                 }
@@ -304,23 +326,6 @@ namespace FarmWars
 
                     }
                     HuAstar.Main(g);
-                }
-                if (RShift == true)
-                {
-                    Graphics f = Graphics.FromImage(Background);
-
-                    TrX = XCord;
-                    TrY = YCord;
-
-                    if (XPos >= -50 + HuAstar.xLoc  && YPos >= -50 + HuAstar.yLoc && XPos <= 75 + HuAstar.xLoc && YPos <= 75 + HuAstar.yLoc)
-                    {
-                        feildTile.SquareSize = SquareSize;
-
-                        feildTile.TrX = TrX;
-                        feildTile.TrY = TrY;
-
-                        feildTile.DrawFeild(f);
-                    }
                 }
             }
         }
@@ -391,7 +396,6 @@ namespace FarmWars
         private void TmrGame_Tick(object sender, EventArgs e)
         {
             Graphics g = PnlGame.CreateGraphics();
-
             PathPos++;
             PathLoc++;
 
@@ -532,7 +536,7 @@ namespace FarmWars
                                     line = line + " ";
                                 }
                             }
-                            else if (tiletype == 2)
+                            else if (tiletype == 69)
                             {
                                 line = line + "-";
                             }
@@ -599,6 +603,39 @@ namespace FarmWars
             if (e.KeyCode == Keys.ShiftKey)
             {
                 LShift = (Convert.ToBoolean(GetAsyncKeyState(Keys.LShiftKey)));
+            }
+        }
+
+        private void PnlGame_MouseDown(object sender, MouseEventArgs e)
+        {
+            MouseDrag = true;
+        }
+
+        private void PnlGame_MouseUp(object sender, MouseEventArgs e)
+        {
+            MouseDrag = false;
+        }
+
+        private void TmrDam_Tick(object sender, EventArgs e)
+        {
+            Graphics g = PnlGame.CreateGraphics();
+            if (HAstar.xLoc >= -50 + HuAstar.xLoc && HAstar.yLoc >= -50 + HuAstar.yLoc && HAstar.xLoc <= 75 + HuAstar.xLoc && HAstar.yLoc <= 75 + HuAstar.yLoc)
+            {
+                int health = HuHealth - 2;
+                human.DrawHealth(g);
+                Console.WriteLine(health);
+                HuHealth = health;
+            }
+            if (HuAstar.xLoc >= -50 + HAstar.xLoc && HuAstar.yLoc >= -50 + HAstar.yLoc && HuAstar.xLoc <= 75 + HAstar.xLoc && HuAstar.yLoc <= 75 + HAstar.yLoc)
+            {
+                int healthhos = HosHealth - 10;
+                hostile.DrawHealth(g);
+                Console.WriteLine(healthhos);
+                HosHealth = healthhos;
+            }
+            if (HosHealth <= 0)
+            {
+                PauseGame();
             }
         }
     }

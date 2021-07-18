@@ -15,7 +15,7 @@ namespace FarmWars
 {
     public partial class FormGame : Form
     {
-        public bool Drawn = false;
+        public bool[] Drawn = new bool[6];
         int MapSize = 100;
         int SquareSize = 25;
         int XCord = 0;
@@ -26,7 +26,7 @@ namespace FarmWars
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern short GetAsyncKeyState(Keys vKey);
 
-        
+
         bool feild;
         int StartGo = 0;
         bool MapDrawn = false;
@@ -44,7 +44,7 @@ namespace FarmWars
         bool LShift = false;
         bool RShift = false;
         bool MouseDrag = false;
-        
+
         public bool HuDrawn;
         public bool HostileDrawn = false;
 
@@ -62,9 +62,10 @@ namespace FarmWars
         Feild feildTile = new Feild();
         water waterTile = new water();
         Lake lakeTile = new Lake();
-        HostileAstar HAstar = new HostileAstar();
+        HostileAstar[] HAstar = new HostileAstar[6];
         HumanAstar HuAstar = new HumanAstar();
-        Hostile hostile = new Hostile();
+        Hostile[] hostile = new Hostile[6];
+
         Inventory inventory = new Inventory();
         Shop shop = new Shop();
         Human human = new Human();
@@ -92,6 +93,13 @@ namespace FarmWars
         {
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, PnlGame, new object[] { true });
+
+            for (int i = 0; i < hostile.Length; i++)
+            {
+                hostile[i] = new Hostile();
+                HAstar[i] = new HostileAstar();
+            }
+
             DrawMap();
 
         }
@@ -101,7 +109,10 @@ namespace FarmWars
             Background = new Bitmap(PnlGame.Width, PnlGame.Height);
             Console.WriteLine(Background);
             Graphics g = Graphics.FromImage(Background);
-            HAstar.EmptyList();
+            for (int i = 0; i < 6; i++)
+            {
+                HAstar[i].EmptyList();
+            }
             string line = " ";
 
             Random tile = new Random();
@@ -174,7 +185,10 @@ namespace FarmWars
                         line = line + " ";
                     }
                 }
-                HAstar.AddToList(line);
+                for (int i = 0; i < hostile.Length; i++)
+                {
+                    HAstar[i].AddToList(line);
+                }
                 Console.WriteLine(line);
                 mapwidth = line.Length;
                 line = "";
@@ -395,14 +409,17 @@ namespace FarmWars
 
         private void TmrGame_Tick(object sender, EventArgs e)
         {
-            Graphics g = PnlGame.CreateGraphics();
-            PathPos++;
-            PathLoc++;
+            for (int i = 0; i < 6; i++)
+            {
+                Graphics g = PnlGame.CreateGraphics();
+                PathPos++;
+                PathLoc++;
 
-            HAstar.PathLoc = PathLoc;
-            HAstar.PathPos = PathPos;
-            HAstar.PathFollow(g);
-            PnlGame.Invalidate();
+                HAstar[i].PathLoc = PathLoc;
+                HAstar[i].PathPos = PathPos;
+                HAstar[i].PathFollow(g, i);
+                PnlGame.Invalidate();
+            }
         }
 
         private void Invalme()
@@ -478,56 +495,67 @@ namespace FarmWars
 
         private void DrawHostile(int XCord, int YCord)
         {
-            if (Drawn == false)
+            for (int i = 0; i <= 0; i++)
             {
-                PathPos = 0;
-                PathLoc = 0;
-                HAstar.EmptyList();
-
-                Graphics g = PnlGame.CreateGraphics();
-
-                AY = YCord;
-                AX = XCord;
-                HAstar.StartX = AX;
-                HAstar.StartY = AY;
-                int tiletype;
-                string line = "";
-
-                hostile.x = XCord * SquareSize;
-                hostile.y = YCord * SquareSize;
-                hostile.DrawHostile(g);
-
-                //Draw the grid with the number of columns given
-                for (int y = 0; y * SquareSize < PnlGame.Height; y++)
+                if (Drawn[i] == true)
                 {
+                    PathPos = 0;
+                    PathLoc = 0;
+                    HAstar[i].EmptyList();
 
-                    //For each row until the number of rows is the same as the number of rows entered by the user
-                    for (int x = 0; PnlGame.Width > x * SquareSize; x++)
+                    Graphics g = PnlGame.CreateGraphics();
+
+                    AY = YCord;
+                    AX = XCord;
+                    HAstar[i].StartX = AX;
+                    HAstar[i].StartY = AY;
+                    int tiletype;
+                    string line = "";
+
+                    HAstar[i].x = XCord * SquareSize;
+                    HAstar[i].y = YCord * SquareSize;
+                    HAstar[i].DrawHostile(g);
+
+                    //Draw the grid with the number of columns given
+                    for (int y = 0; y * SquareSize < PnlGame.Height; y++)
                     {
-                        try
+
+                        //For each row until the number of rows is the same as the number of rows entered by the user
+                        for (int x = 0; PnlGame.Width > x * SquareSize; x++)
                         {
-                            var tile = newTileMap.First(z => z.Item1 == x && z.Item2 == y);
-
-                            tiletype = tile.Item3;
-
-
-                            if (y == AY && x == AX)
+                            try
                             {
-                                line = line + "A";
-                                using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
+                                var tile = newTileMap.First(z => z.Item1 == x && z.Item2 == y);
+
+                                tiletype = tile.Item3;
+
+
+                                if (y == AY && x == AX)
                                 {
-                                    Point point1 = new Point(AX * 25, AY * 25);
-                                    TextRenderer.DrawText(g, "A", font, point1, Color.Blue);
+                                    line = line + "A";
+                                    using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
+                                    {
+                                        Point point1 = new Point(AX * 25, AY * 25);
+                                        TextRenderer.DrawText(g, "A", font, point1, Color.Blue);
+                                    }
                                 }
-                            }
-                            else if (x == BX && y == BY)
-                            {
-                                line = line + "B";
-                            }
-                            else if (x >= (PnlGame.Width / SquareSize) - 8)
-                            {
-                                int height = (PnlGame.Height / SquareSize) - 6;
-                                if (y >= 6 && y <= height)
+                                else if (x == BX && y == BY)
+                                {
+                                    line = line + "B";
+                                }
+                                else if (x >= (PnlGame.Width / SquareSize) - 8)
+                                {
+                                    int height = (PnlGame.Height / SquareSize) - 6;
+                                    if (y >= 6 && y <= height)
+                                    {
+                                        line = line + "-";
+                                    }
+                                    else
+                                    {
+                                        line = line + " ";
+                                    }
+                                }
+                                else if (tiletype == 69)
                                 {
                                     line = line + "-";
                                 }
@@ -536,31 +564,23 @@ namespace FarmWars
                                     line = line + " ";
                                 }
                             }
-                            else if (tiletype == 69)
+                            catch
                             {
-                                line = line + "-";
-                            }
-                            else
-                            {
-                                line = line + " ";
-                            }
-                        }
-                        catch
-                        {
 
+                            }
                         }
+                        HAstar[i].AddToList(line);
+                        Console.WriteLine(line);
+                        line = "";
+
                     }
-                    HAstar.AddToList(line);
-                    Console.WriteLine(line);
-                    line = "";
-
+                    HAstar[i].Main(g, i);
                 }
-                HAstar.Main(g);
+                Drawn[i] = true;
             }
-            Drawn = true;
         }
 
-        private void TmrHumMovement_Tick(object sender, EventArgs e)
+            private void TmrHumMovement_Tick(object sender, EventArgs e)
         {
             Graphics g = PnlGame.CreateGraphics();
             HuPathPos++;
@@ -574,29 +594,30 @@ namespace FarmWars
         }
 
         private void FormGame_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.ShiftKey)
             {
-                if (Convert.ToBoolean(GetAsyncKeyState(Keys.LShiftKey)))
+                if (e.KeyCode == Keys.ShiftKey)
                 {
-                    LShift = true;
-                    Console.WriteLine("Left");
-                }
-                if (Convert.ToBoolean(GetAsyncKeyState(Keys.RShiftKey)))
-                {
-                    if (RShift == false)
+                    if (Convert.ToBoolean(GetAsyncKeyState(Keys.LShiftKey)))
                     {
-                        RShift = true;
-                        Console.WriteLine("Build Mode On");
-                    }  else
+                        LShift = true;
+                        Console.WriteLine("Left");
+                    }
+                    if (Convert.ToBoolean(GetAsyncKeyState(Keys.RShiftKey)))
                     {
-                        RShift = false;
-                        Console.WriteLine("Build Mode Off");
+                        if (RShift == false)
+                        {
+                            RShift = true;
+                            Console.WriteLine("Build Mode On");
+                        }
+                        else
+                        {
+                            RShift = false;
+                            Console.WriteLine("Build Mode Off");
+                        }
                     }
                 }
-            } 
-
-        }
+            }
+           
 
         private void FormGame_KeyUp(object sender, KeyEventArgs e)
         {
@@ -619,23 +640,29 @@ namespace FarmWars
         private void TmrDam_Tick(object sender, EventArgs e)
         {
             Graphics g = PnlGame.CreateGraphics();
-            if (HAstar.xLoc >= -50 + HuAstar.xLoc && HAstar.yLoc >= -50 + HuAstar.yLoc && HAstar.xLoc <= 75 + HuAstar.xLoc && HAstar.yLoc <= 75 + HuAstar.yLoc)
+            for (int i = 0; i < 6; i++)
             {
-                int health = HuHealth - 2;
-                human.DrawHealth(g);
-                Console.WriteLine(health);
-                HuHealth = health;
+                if (HAstar[i].xLoc >= -50 + HuAstar.xLoc && HAstar[i].yLoc >= -50 + HuAstar.yLoc && HAstar[i].xLoc <= 75 + HuAstar.xLoc && HAstar[i].yLoc <= 75 + HuAstar.yLoc)
+                {
+                    int health = HuHealth - 2;
+                    human.DrawHealth(g);
+                    Console.WriteLine(health);
+                    HuHealth = health;
+                }
             }
-            if (HuAstar.xLoc >= -50 + HAstar.xLoc && HuAstar.yLoc >= -50 + HAstar.yLoc && HuAstar.xLoc <= 75 + HAstar.xLoc && HuAstar.yLoc <= 75 + HAstar.yLoc)
+            for (int i = 0; i < 6; i++)
             {
-                int healthhos = HosHealth - 10;
-                hostile.DrawHealth(g);
-                Console.WriteLine(healthhos);
-                HosHealth = healthhos;
-            }
-            if (HosHealth <= 0)
-            {
-                PauseGame();
+                if (HuAstar.xLoc >= -50 + HAstar[i].xLoc && HuAstar.yLoc >= -50 + HAstar[i].yLoc && HuAstar.xLoc <= 75 + HAstar[i].xLoc && HuAstar.yLoc <= 75 + HAstar[i].yLoc)
+                {
+                    int healthhos = HosHealth - 10;
+                    HAstar[i].DrawHealth(g);
+                    Console.WriteLine(healthhos);
+                    HosHealth = healthhos;
+                }
+                if (HosHealth <= 0)
+                {
+                    PauseGame();
+                }
             }
         }
     }

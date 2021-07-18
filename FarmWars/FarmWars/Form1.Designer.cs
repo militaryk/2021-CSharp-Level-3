@@ -73,6 +73,7 @@
             // 
             // TmrHosMovement
             // 
+            this.TmrHosMovement.Enabled = true;
             this.TmrHosMovement.Interval = 20;
             this.TmrHosMovement.Tick += new System.EventHandler(this.TmrGame_Tick);
             // 

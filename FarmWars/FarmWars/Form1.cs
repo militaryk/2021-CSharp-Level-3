@@ -458,8 +458,7 @@ namespace FarmWars
             int Max = ((PnlGame.Width / 25) * 2) + ((PnlGame.Height / 25) * 2);
             Random Go = new Random();
             int StartPos = Go.Next(1, Max);
-            StartGo = Go.Next(1, 100);
-            StartGo = 2;
+            StartGo = Go.Next(1, 4);
             if (StartGo == 2)
             {
                 if (StartPos * 25 > PnlGame.Width + PnlGame.Width + PnlGame.Height)

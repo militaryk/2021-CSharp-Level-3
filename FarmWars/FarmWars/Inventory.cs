@@ -61,12 +61,19 @@ namespace FarmWars
                     InvX = InvX + SqaureSize;
                 }
                 DrawUI(g);
+                DrawNextTurn(g);
             } catch
             {
 
             }
         }
 
+        public void DrawNextTurn(Graphics g)
+        {
+            Rectangle rectnt = new Rectangle(((FormGame)FormGame.ActiveForm).PnlGame.Width - 290, ((FormGame)FormGame.ActiveForm).PnlGame.Height - 125, 270, 105);
+            Image newImagent = Image.FromFile("../../../Art/nextturn.png");
+            g.DrawImage(newImagent, rectnt);
+        }
         public void DrawButtons()
         {
         //    try

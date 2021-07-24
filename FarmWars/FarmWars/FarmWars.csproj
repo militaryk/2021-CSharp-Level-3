@@ -58,7 +58,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="grid.cs" />
-    <Compile Include="Hostile.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="lake.cs" />
     <Compile Include="Program.cs" />

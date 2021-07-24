@@ -59,9 +59,8 @@
             this.PnlGame.BackColor = System.Drawing.SystemColors.ControlDark;
             this.PnlGame.CausesValidation = false;
             this.PnlGame.Location = new System.Drawing.Point(0, 0);
-            this.PnlGame.Margin = new System.Windows.Forms.Padding(4);
             this.PnlGame.Name = "PnlGame";
-            this.PnlGame.Size = new System.Drawing.Size(1463, 961);
+            this.PnlGame.Size = new System.Drawing.Size(1495, 807);
             this.PnlGame.TabIndex = 0;
             this.PnlGame.Click += new System.EventHandler(this.PnlGame_Click);
             this.PnlGame.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlGame_Paint);
@@ -83,12 +82,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.seedToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(112, 28);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(100, 26);
             // 
             // seedToolStripMenuItem
             // 
             this.seedToolStripMenuItem.Name = "seedToolStripMenuItem";
-            this.seedToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
+            this.seedToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.seedToolStripMenuItem.Text = "Seed";
             // 
             // menuStrip1
@@ -99,7 +98,8 @@
             this.moveGuyToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1462, 28);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(1096, 23);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.Visible = false;
@@ -115,55 +115,55 @@
             this.exitToolStripMenuItem,
             this.pathFindingToolStripMenuItem});
             this.drawMapToolStripMenuItem.Name = "drawMapToolStripMenuItem";
-            this.drawMapToolStripMenuItem.Size = new System.Drawing.Size(92, 24);
+            this.drawMapToolStripMenuItem.Size = new System.Drawing.Size(73, 19);
             this.drawMapToolStripMenuItem.Text = "Draw Map";
             // 
             // reDrawMapToolStripMenuItem
             // 
             this.reDrawMapToolStripMenuItem.Name = "reDrawMapToolStripMenuItem";
-            this.reDrawMapToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.reDrawMapToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.reDrawMapToolStripMenuItem.Text = "Draw Map";
             // 
             // reLoadMapToolStripMenuItem
             // 
             this.reLoadMapToolStripMenuItem.Name = "reLoadMapToolStripMenuItem";
-            this.reLoadMapToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.reLoadMapToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.reLoadMapToolStripMenuItem.Text = "Read List";
             this.reLoadMapToolStripMenuItem.Click += new System.EventHandler(this.reLoadMapToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(135, 6);
             // 
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.clearToolStripMenuItem.Text = "Clear";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(166, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(135, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // pathFindingToolStripMenuItem
             // 
             this.pathFindingToolStripMenuItem.Name = "pathFindingToolStripMenuItem";
-            this.pathFindingToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.pathFindingToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.pathFindingToolStripMenuItem.Text = "PathFinding";
             this.pathFindingToolStripMenuItem.Click += new System.EventHandler(this.pathFindingToolStripMenuItem_Click);
             // 
             // moveGuyToolStripMenuItem
             // 
             this.moveGuyToolStripMenuItem.Name = "moveGuyToolStripMenuItem";
-            this.moveGuyToolStripMenuItem.Size = new System.Drawing.Size(89, 24);
+            this.moveGuyToolStripMenuItem.Size = new System.Drawing.Size(73, 19);
             this.moveGuyToolStripMenuItem.Text = "Move Guy";
             this.moveGuyToolStripMenuItem.Click += new System.EventHandler(this.moveGuyToolStripMenuItem_Click);
             // 
@@ -175,9 +175,10 @@
             this.BtnExit.FlatAppearance.BorderColor = System.Drawing.Color.SandyBrown;
             this.BtnExit.FlatAppearance.BorderSize = 0;
             this.BtnExit.Font = new System.Drawing.Font("Viner Hand ITC", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnExit.Location = new System.Drawing.Point(747, 8);
+            this.BtnExit.Location = new System.Drawing.Point(560, 6);
+            this.BtnExit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.BtnExit.Name = "BtnExit";
-            this.BtnExit.Size = new System.Drawing.Size(75, 23);
+            this.BtnExit.Size = new System.Drawing.Size(56, 19);
             this.BtnExit.TabIndex = 2;
             this.BtnExit.Text = "Save";
             this.BtnExit.UseVisualStyleBackColor = false;
@@ -201,16 +202,15 @@
             // 
             // FormGame
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1462, 961);
+            this.ClientSize = new System.Drawing.Size(1494, 807);
             this.Controls.Add(this.BtnExit);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.PnlGame);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormGame";
             this.Text = "FarmWars";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormGame_KeyDown);

@@ -15,8 +15,7 @@ namespace FarmWars
         public int tiletype;
         public void DrawShop(Graphics g, int y, int x)
         {
-            //Define the solid brush with a default colour of orange
-            SolidBrush br = new SolidBrush(Color.SandyBrown);
+
 
             //Define the pen with the colour black
             Pen pen1 = new Pen(Color.Black);
@@ -25,6 +24,15 @@ namespace FarmWars
             Rectangle rect = new Rectangle(x, y, width, height);
             Image newImage = Image.FromFile("../../../Art/shop.png");
             g.DrawImage(newImage, rect);
+
+        }
+
+        public void DrawShopMenu(Graphics g)
+        {
+            SolidBrush br = new SolidBrush(Color.Peru);
+
+            Rectangle ShowMenu = new Rectangle(100, 60, ((FormGame)FormGame.ActiveForm).PnlGame.Width - 200, ((FormGame)FormGame.ActiveForm).PnlGame.Height - 120);
+            g.FillRectangle(br, ShowMenu);
 
         }
     }

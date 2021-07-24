@@ -44,6 +44,9 @@ namespace FarmWars
         bool LShift = false;
         bool RShift = false;
         bool MouseDrag = false;
+        bool GoneShopping = false;
+        bool InGame = true;
+        bool InMenu = false;
 
         public bool HuDrawn;
         public bool HostileDrawn = false;
@@ -64,7 +67,6 @@ namespace FarmWars
         Lake lakeTile = new Lake();
         HostileAstar[] HAstar = new HostileAstar[6];
         HumanAstar HuAstar = new HumanAstar();
-        Hostile[] hostile = new Hostile[6];
 
         Inventory inventory = new Inventory();
         Shop shop = new Shop();
@@ -94,9 +96,8 @@ namespace FarmWars
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, PnlGame, new object[] { true });
 
-            for (int i = 0; i < hostile.Length; i++)
+            for (int i = 0; i < HAstar.Length; i++)
             {
-                hostile[i] = new Hostile();
                 HAstar[i] = new HostileAstar();
             }
 
@@ -185,7 +186,7 @@ namespace FarmWars
                         line = line + " ";
                     }
                 }
-                for (int i = 0; i < hostile.Length; i++)
+                for (int i = 0; i < HAstar.Length; i++)
                 {
                     HAstar[i].AddToList(line);
                 }
@@ -254,64 +255,89 @@ namespace FarmWars
         private void PnlGame_Click(object sender, EventArgs e)
         {
             Graphics g = PnlGame.CreateGraphics();
-
-            if (XPos >= 0 && YPos >= 0 && XPos <= 50 && YPos <= 50)
+            if (InGame == true)
             {
-                PauseGame();
-            }
-            else if (XPos >= 50 && YPos >= 0 && XPos <= 100 && YPos <= 50)
-            {
-                PlayGame();
-            }
-            else if (XPos >= 100 && YPos >= 0 && XPos <= 150 && YPos <= 50)
-            {
-                ExitGame();
-            }
-            else
-            {
-                if (LShift == true)
+                if (XPos >= 0 && YPos >= 0 && XPos <= 50 && YPos <= 50)
                 {
-                    HuPathLoc = 0;
-                    HuPathPos = 0;
-                    HuAstar.EmptyList();
-
-                    HuBX = XCord;
-                    HuBY = YCord;
-                    HuAstar.StartX = HuAX;
-                    HuAstar.StartY = HuAY;
-                    int tiletype;
-                    string line = "";
-                    //Draw the grid with the number of columns given
-                    for (int y = 0; y * SquareSize < PnlGame.Height; y++)
+                    PauseGame();
+                }
+                else if (XPos >= 50 && YPos >= 0 && XPos <= 100 && YPos <= 50)
+                {
+                    PlayGame();
+                }
+                else if (XPos >= 100 && YPos >= 0 && XPos <= 150 && YPos <= 50)
+                {
+                    ExitGame();
+                }
+                else if (XPos >= 100 && YPos >= 100 && XPos <= 200 && YPos <= 180)
+                {
+                    if (XPos >= -50 + HuAstar.xLoc && YPos >= -50 + HuAstar.yLoc && XPos <= 75 + HuAstar.xLoc && YPos <= 75 + HuAstar.yLoc)
                     {
+                        shop.DrawShopMenu(g);
+                        TmrTurn.Enabled = false;
+                        TmrHosMovement.Enabled = false;
+                        TmrHumMovement.Enabled = false;
+                        TmrDam.Enabled = false;
+                        GoneShopping = true;
+                        InGame = false;
 
-                        //For each row until the number of rows is the same as the number of rows entered by the user
-                        for (int x = 0; PnlGame.Width > x * SquareSize; x++)
+                    }
+
+                }
+                else
+                {
+                    if (LShift == true)
+                    {
+                        HuPathLoc = 0;
+                        HuPathPos = 0;
+                        HuAstar.EmptyList();
+
+                        HuBX = XCord;
+                        HuBY = YCord;
+                        HuAstar.StartX = HuAX;
+                        HuAstar.StartY = HuAY;
+                        int tiletype;
+                        string line = "";
+                        //Draw the grid with the number of columns given
+                        for (int y = 0; y * SquareSize < PnlGame.Height; y++)
                         {
-                            try
+
+                            //For each row until the number of rows is the same as the number of rows entered by the user
+                            for (int x = 0; PnlGame.Width > x * SquareSize; x++)
                             {
-                                var tile = newTileMap.First(z => z.Item1 == x && z.Item2 == y);
-
-                                tiletype = tile.Item3;
-
-
-                                if (y == HuAY && x == HuAX)
+                                try
                                 {
-                                    line = line + "A";
-                                    using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
+                                    var tile = newTileMap.First(z => z.Item1 == x && z.Item2 == y);
+
+                                    tiletype = tile.Item3;
+
+
+                                    if (y == HuAY && x == HuAX)
                                     {
-                                        Point point1 = new Point(HuAX * 25, HuAY * 25);
-                                        TextRenderer.DrawText(g, "A", font, point1, Color.Red);
+                                        line = line + "A";
+                                        using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
+                                        {
+                                            Point point1 = new Point(HuAX * 25, HuAY * 25);
+                                            TextRenderer.DrawText(g, "A", font, point1, Color.Red);
+                                        }
                                     }
-                                }
-                                else if (x == HuBX && y == HuBY)
-                                {
-                                    line = line + "B";
-                                }
-                                else if (x >= (PnlGame.Width / SquareSize) - 8)
-                                {
-                                    int height = (PnlGame.Height / SquareSize) - 6;
-                                    if (y >= 6 && y <= height)
+                                    else if (x == HuBX && y == HuBY)
+                                    {
+                                        line = line + "B";
+                                    }
+                                    else if (x >= (PnlGame.Width / SquareSize) - 8)
+                                    {
+                                        int height = (PnlGame.Height / SquareSize) - 6;
+                                        if (y >= 6 && y <= height)
+                                        {
+                                            line = line + "-";
+                                        }
+                                        else
+                                        {
+                                            line = line + " ";
+                                        }
+                                    }
+                                    else if (tiletype == 69)
                                     {
                                         line = line + "-";
                                     }
@@ -320,26 +346,30 @@ namespace FarmWars
                                         line = line + " ";
                                     }
                                 }
-                                else if (tiletype == 69)
+                                catch
                                 {
-                                    line = line + "-";
-                                }
-                                else
-                                {
-                                    line = line + " ";
-                                }
-                            }
-                            catch
-                            {
 
+                                }
                             }
+                            HuAstar.AddToList(line);
+                            Console.WriteLine(line);
+                            line = "";
+
                         }
-                        HuAstar.AddToList(line);
-                        Console.WriteLine(line);
-                        line = "";
-
+                        HuAstar.Main(g);
                     }
-                    HuAstar.Main(g);
+                }
+            }
+            if (GoneShopping == true)
+            {
+                if (XPos <= 100 && YPos <= 60 && XPos >= PnlGame.Width - 100 && YPos >= PnlGame.Height - 60)
+                {
+                    TmrTurn.Enabled = true;
+                    TmrHosMovement.Enabled = true;
+                    TmrHumMovement.Enabled = true;
+                    TmrDam.Enabled = true;
+                    GoneShopping = false;
+                    InGame = true;
                 }
             }
         }
@@ -450,7 +480,7 @@ namespace FarmWars
 
         private void PauseGame()
         {
-            TmrHosMovement.Enabled = false;
+            TmrHosMovement.Enabled = true;
         }
 
         private void TmrTurn_Tick(object sender, EventArgs e)
@@ -459,7 +489,7 @@ namespace FarmWars
             Random Go = new Random();
             int StartPos = Go.Next(1, Max);
             StartGo = Go.Next(1, 4);
-            if (StartGo == 2)
+            if (StartGo == 6)
             {
                 if (StartPos * 25 > PnlGame.Width + PnlGame.Width + PnlGame.Height)
                 {
@@ -594,7 +624,8 @@ namespace FarmWars
 
         private void FormGame_KeyDown(object sender, KeyEventArgs e)
             {
-                if (e.KeyCode == Keys.ShiftKey)
+            Graphics g = Graphics.FromImage(Background);
+            if (e.KeyCode == Keys.ShiftKey)
                 {
                     if (Convert.ToBoolean(GetAsyncKeyState(Keys.LShiftKey)))
                     {
@@ -606,8 +637,8 @@ namespace FarmWars
                         if (RShift == false)
                         {
                             RShift = true;
-                            Console.WriteLine("Build Mode On");
-                        }
+                        Console.WriteLine("Build Mode");
+                    }
                         else
                         {
                             RShift = false;
@@ -615,6 +646,15 @@ namespace FarmWars
                         }
                     }
                 }
+            if (e.KeyCode == Keys.Escape)
+            {
+                TmrTurn.Enabled = true;
+                TmrHosMovement.Enabled = true;
+                TmrHumMovement.Enabled = true;
+                TmrDam.Enabled = true;
+                GoneShopping = false;
+                InGame = true;
+            }
             }
            
 

@@ -27,9 +27,6 @@ namespace FarmWars
         List<string> map = new List<string>();
         List<Tuple<int, int>> path = new List<Tuple<int, int>>();
         List<Tuple<int, int>> walkpath = new List<Tuple<int, int>>();
-
-        Hostile hostile = new Hostile();
-
         public void AddToList(string mapline)
         {
             map.Add(mapline);
@@ -104,7 +101,7 @@ namespace FarmWars
                                 //map.ForEach(x => Console.WriteLine(x));
                                 //Console.WriteLine("Done!");
                                 path.Reverse();
-                                ((FormGame)FormGame.ActiveForm).TmrHosMovement.Enabled = true;
+                                //((FormGame)FormGame.ActiveForm).TmrHosMovement.Enabled = true;
                                 pathmade = true;
                                 return;
                             }
@@ -216,7 +213,7 @@ namespace FarmWars
                     try
                     {
                         pathfollowed = true;
-                        ((FormGame)FormGame.ActiveForm).TmrHosMovement.Enabled = false;
+                        //((FormGame)FormGame.ActiveForm).TmrHosMovement.Enabled = false;
                         ((FormGame)FormGame.ActiveForm).Drawn[arnum] = false;
                         Console.WriteLine("Path Walked");
                     } catch

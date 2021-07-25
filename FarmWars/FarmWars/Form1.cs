@@ -51,6 +51,7 @@ namespace FarmWars
         public bool HuDrawn;
         public bool HostileDrawn = false;
 
+
         int AX;
         int AY;
         int BX;
@@ -95,6 +96,12 @@ namespace FarmWars
         {
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, PnlGame, new object[] { true });
+
+            //Send the Panel Width and Height to the Inventory class
+            inventory.PnlHeight = PnlGame.Height;
+            inventory.PnlWidth = PnlGame.Width;
+            shop.PnlHeight = PnlGame.Height;
+            shop.PnlWidth = PnlGame.Width;
 
             for (int i = 0; i < HAstar.Length; i++)
             {
@@ -222,6 +229,10 @@ namespace FarmWars
                 inventory.PnlWidth = PnlGame.Width;
                 inventory.DrawInventory(g);
 
+            }
+            if (GoneShopping == true)
+            {
+                shop.DrawShopMenu(g);
             }
         }
         private void PnlGame_MouseMove(object sender, MouseEventArgs e)
@@ -362,7 +373,117 @@ namespace FarmWars
             }
             if (GoneShopping == true)
             {
-                if (XPos <= 100 && YPos <= 60 && XPos >= PnlGame.Width - 100 && YPos >= PnlGame.Height - 60)
+                if (XPos >= 100 && YPos >= 60 && XPos <= PnlGame.Width - 100 && YPos <= PnlGame.Height - 60)
+                {
+                    if (XPos >= 200 && YPos >= 360 && XPos <= 300 && YPos <= 390)
+                    {
+                        //Tater
+                        inventory.Moneyz = inventory.Moneyz - 25;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 300 && YPos >= 360 && XPos <= 400 && YPos <= 390)
+                    {
+                        //Wheat
+                        inventory.Moneyz = inventory.Moneyz - 35;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 400 && YPos >= 360 && XPos <= 500 && YPos <= 390)
+                    {
+                        //Corn
+                        inventory.Moneyz = inventory.Moneyz - 50;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 500 && YPos >= 360 && XPos <= 600 && YPos <= 390)
+                    {
+                        //Carrot
+                        inventory.Moneyz = inventory.Moneyz - 100;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 600 && YPos >= 360 && XPos <= 700 && YPos <= 390)
+                    {
+                        //Turnip
+                        inventory.Moneyz = inventory.Moneyz - 150;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 800 && YPos >= 360 && XPos <= 900 && YPos <= 390)
+                    {
+                        //Sell Tater
+                        inventory.Moneyz = inventory.Moneyz + 45;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 900 && YPos >= 360 && XPos <= 1000 && YPos <= 390)
+                    {
+                        //Sell Wheat
+                        inventory.Moneyz = inventory.Moneyz + 60;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 1000 && YPos >= 360 && XPos <= 1100 && YPos <= 390)
+                    {
+                        //Sell Corn
+                        inventory.Moneyz = inventory.Moneyz + 100;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 1200 && YPos >= 360 && XPos <= 1300 && YPos <= 390)
+                    {
+                        //Sell Carrot
+                        inventory.Moneyz = inventory.Moneyz + 150;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 1300 && YPos >= 360 && XPos <= 1400 && YPos <= 390)
+                    {
+                        //Sell Turnip
+                        inventory.Moneyz = inventory.Moneyz - 250;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 200 && YPos >= 690 && XPos <= 300 && YPos <= 720)
+                    {
+                        //Fence
+                        inventory.Moneyz = inventory.Moneyz - 25;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 300 && YPos >= 690 && XPos <= 400 && YPos <= 720)
+                    {
+                        //Wall
+                        inventory.Moneyz = inventory.Moneyz - 100;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 400 && YPos >= 690 && XPos <= 500 && YPos <= 720)
+                    {
+                        //Iron Sword
+                        inventory.Moneyz = inventory.Moneyz - 300;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 500 && YPos >= 690 && XPos <= 600 && YPos <= 720)
+                    {
+                        //Beast Sword
+                        inventory.Moneyz = inventory.Moneyz - 600;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 600 && YPos >= 690 && XPos <= 700 && YPos <= 720)
+                    {
+                        //Iron Sword
+                        inventory.Moneyz = inventory.Moneyz - 350;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 700 && YPos >= 690 && XPos <= 800 && YPos <= 720)
+                    {
+                        //Beast Sword
+                        inventory.Moneyz = inventory.Moneyz - 700;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 800 && YPos >= 690 && XPos <= 900 && YPos <= 720)
+                    {
+                        //Health Potion
+                        inventory.Moneyz = inventory.Moneyz - 250;
+                        inventory.UpdateMoneyz(g);
+                    }
+                    if (XPos >= 1000 && YPos >= 690 && XPos <= 1100 && YPos <= 720)
+                    {
+                        //Useless Potion
+                        inventory.Moneyz = inventory.Moneyz - 500;
+                        inventory.UpdateMoneyz(g);
+                    }
+                } else
                 {
                     TmrTurn.Enabled = true;
                     TmrHosMovement.Enabled = true;

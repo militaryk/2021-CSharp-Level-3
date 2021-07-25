@@ -113,6 +113,11 @@ namespace FarmWars
             DrawMoneyz(g);
         }
 
+        public void UpdateMoneyz(Graphics g)
+        {
+            ((FormGame)FormGame.ActiveForm).PnlGame.Invalidate();
+            DrawMoneyz(g);
+        }
         private void DrawMoneyz(Graphics g) {
             Rectangle RecMoneyz = new Rectangle((SqaureSize * 13)+15, 0, width * 5, height * 2);
             Font drawFont = new Font("Arial", 32);

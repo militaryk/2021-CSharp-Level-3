@@ -22,6 +22,9 @@ namespace FarmWars
         public int Moneyz = 1000;
         public int PnlWidth;
         public int PnlHeight;
+
+       public  List<Tuple<string, int>> inventory = new List<Tuple<string, int>>();
+
         public void DrawInventory(Graphics g)
         {
             try
@@ -30,7 +33,7 @@ namespace FarmWars
                 height = SqaureSize * SqaureHeight;
 
                 //Define the solid brush with a default colour of orange
-                SolidBrush br = new SolidBrush(Color.SandyBrown);
+                SolidBrush br = new SolidBrush(Color.Black);
 
                 //Define the pen with the colour black
                 Pen pen1 = new Pen(Color.Sienna);
@@ -42,6 +45,7 @@ namespace FarmWars
                 InvX = PnlWidth - width + (SqaureSize / 3);
                 InvY = PosY + 125;
 
+                int numofinv = 0;
 
                 // Create rectangle for ellipse.
                 Rectangle rect = new Rectangle(PosX, PosY, width, height);
@@ -49,23 +53,44 @@ namespace FarmWars
                 Image newImage = Image.FromFile("../../../Art/ui/scroll.png");
                 g.DrawImage(newImage, rect);
 
-                for (int i = 0; i < SqaureWidth - 1; i++)
+                for (int i = 0; i < SqaureWidth - 5; i++)
                 {
-                    for (int j = 0; j < SqaureHeight - 11; j++)
+                    for (int j = 0; j < SqaureHeight - 16; j++)
                     {
-                        Rectangle inv = new Rectangle(InvX, InvY, SqaureSize, SqaureSize);
+                        Rectangle inv = new Rectangle(InvX, InvY, 50, 50);
+                        Rectangle invamo = new Rectangle(InvX, InvY + 20, 50, 30);
+
+                        Font invfont = new Font("Arial", 20);
+
+
                         g.DrawRectangle(pen1, inv);
-                        InvY = InvY + SqaureSize;
+                        InvY = InvY + 50;
+
+                        if (numofinv < inventory.Count)
+                        {
+                            string itemname = inventory[numofinv].Item1;
+                            int itemamount = inventory[numofinv].Item2;
+                            int itemid = ItemDict(itemname);
+                            string itempict = ItemPictDict(itemid);
+                            Console.WriteLine(itempict);
+                            numofinv += 1;
+                            Image ItemImage = Image.FromFile(itempict);
+                            g.DrawImage(ItemImage, inv);
+                            g.DrawString(itemamount.ToString(), invfont, br, invamo);
+                        }
+                        else {
+                        }
                     }
                     InvY = PosY + 125;
-                    InvX = InvX + SqaureSize;
+                    InvX = InvX + 50;
                 }
-                DrawUI(g);
-                DrawNextTurn(g);
             } catch
             {
 
             }
+
+            DrawUI(g);
+            DrawNextTurn(g);
         }
 
         public void DrawNextTurn(Graphics g)
@@ -125,5 +150,143 @@ namespace FarmWars
 
             g.DrawString(Moneyz.ToString(), drawFont, drawBrush, RecMoneyz);
         }
+
+        private int ItemDict(string itemname)
+        {
+            int itemid = 0;
+            if (itemname == "Tater")
+            {
+                itemid = 1;
+            }
+            if (itemname == "Wheat")
+            {
+                itemid = 2;
+            }
+            if (itemname == "Corn")
+            {
+                itemid = 3;
+            }
+            if (itemname == "Carrot")
+            {
+                itemid = 4;
+            }
+            if (itemname == "Turnip")
+            {
+                itemid = 5;
+            }
+            if (itemname == "Fence")
+            {
+                itemid = 6;
+            }
+            if (itemname == "Wall")
+            {
+                itemid = 7;
+            }
+            if (itemname == "HealthPot")
+            {
+                itemid = 8;
+            }
+            if (itemname == "UselessPot")
+            {
+                itemid = 9;
+            }
+            if (itemname == "TaterSeed")
+            {
+                itemid = 10;
+            }
+            if (itemname == "WheatSeed")
+            {
+                itemid = 11;
+            }
+            if (itemname == "CornSeed")
+            {
+                itemid = 12;
+            }
+            if (itemname == "CarrotSeed")
+            {
+                itemid = 13;
+            }
+            if (itemname == "TurnipSeed")
+            {
+                itemid = 14;
+            }
+            return itemid;
+        }
+        private string ItemPictDict(int itemid)
+        {
+            string itempict = "url/";
+            if (itemid == 1)
+            {
+                //Tater
+                itempict = "../../../Art/Items/Tater.png";
+            }
+            if (itemid == 2)
+            {
+                //Wheat
+                itempict = "../../../Art/Items/Wheat.png";
+            }
+            if (itemid == 3)
+            {
+                //Corn
+                itempict = "../../../Art/Items/Corn.png";
+            }
+            if (itemid == 4)
+            {
+                //Carrot
+                itempict = "../../../Art/Items/Carrot.png";
+            }
+            if (itemid == 5)
+            {
+                //Turnip
+                itempict = "../../../Art/Items/Turnip.png";
+            }
+            if (itemid == 6)
+            {
+                //Fence
+                itempict = "../../../Art/Items/fence.png";
+            }
+            if (itemid == 7)
+            {
+                //Wall
+                itempict = "../../../Art/Items/Wall.png";
+            }
+            if (itemid == 8)
+            {
+                //HealthPot
+                itempict = "../../../Art/Items/HealthPotion.png";
+            }
+            if (itemid == 9)
+            {
+                //UselessPot
+                itempict = "../../../Art/Items/UselessPotion.png";
+            }
+            if (itemid == 10)
+            {
+                //TaterSeed
+                itempict = "../../../Art/Items/tatersseed.png";
+            }
+            if (itemid == 11)
+            {
+                //WheatSeed
+                itempict = "../../../Art/Items/wheatseed.png";
+            }
+            if (itemid == 12)
+            {
+                //CornSeed
+                itempict = "../../../Art/Items/cornseed.png";
+            }
+            if (itemid == 13)
+            {
+                //CarrotSeed
+                itempict = "../../../Art/Items/carrotseed.png";
+            }
+            if (itemid == 14)
+            {
+                //TurnipSeed
+                itempict = "../../../Art/Items/turnipseed.png";
+            }
+            return itempict;
+        }
+
     }
 }

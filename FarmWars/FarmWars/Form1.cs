@@ -50,6 +50,12 @@ namespace FarmWars
 
         public bool HuDrawn;
         public bool HostileDrawn = false;
+        public bool ISwordPurchased = false;
+        public bool BSwordPurchased = false;
+        public bool IArmourPurchased = false;
+        public bool BArmourPurchased = false;
+
+
 
 
         int AX;
@@ -280,6 +286,10 @@ namespace FarmWars
                 {
                     ExitGame();
                 }
+                else if (XPos >= PnlGame.Width - 290 && YPos >= PnlGame.Height - 125 && XPos <= PnlGame.Width && YPos <= PnlGame.Height)
+                {
+                    MessageBox.Show("Next Turn");
+                }
                 else if (XPos >= 100 && YPos >= 100 && XPos <= 200 && YPos <= 180)
                 {
                     if (XPos >= -50 + HuAstar.xLoc && YPos >= -50 + HuAstar.yLoc && XPos <= 75 + HuAstar.xLoc && YPos <= 75 + HuAstar.yLoc)
@@ -377,111 +387,379 @@ namespace FarmWars
                 {
                     if (XPos >= 200 && YPos >= 360 && XPos <= 300 && YPos <= 390)
                     {
-                        //Tater
-                        inventory.Moneyz = inventory.Moneyz - 25;
-                        inventory.UpdateMoneyz(g);
+                        if (inventory.Moneyz >= 25)
+                        {
+                            int itemnum = 0;
+                            if (inventory.inventory.Where(z => z.Item1 == "TaterSeed").Any())
+                            {
+                                var itemtype = inventory.inventory.Find(z => z.Item1 == "TaterSeed");
+                                Console.WriteLine(itemtype.Item1);
+                                itemnum = itemtype.Item2 + 1;
+                                inventory.inventory.RemoveAll(z => z.Item1 == "TaterSeed");
+                                inventory.inventory.Add(new Tuple<string, int>("TaterSeed", itemnum));
+                                Console.WriteLine(itemnum);
+                            }
+                            else
+                            {
+                                inventory.inventory.Add(new Tuple<string, int>("TaterSeed", 1));
+                            }
+
+                            //Tater
+                            inventory.Moneyz = inventory.Moneyz - 25;
+                            inventory.UpdateMoneyz(g);
+                        }
                     }
                     if (XPos >= 300 && YPos >= 360 && XPos <= 400 && YPos <= 390)
                     {
-                        //Wheat
-                        inventory.Moneyz = inventory.Moneyz - 35;
-                        inventory.UpdateMoneyz(g);
+
+                        if (inventory.Moneyz >= 35)
+                        {
+                            int itemnum = 0;
+                            if (inventory.inventory.Where(z => z.Item1 == "WheatSeed").Any())
+                            {
+                                var itemtype = inventory.inventory.Find(z => z.Item1 == "WheatSeed");
+                                Console.WriteLine(itemtype.Item1);
+                                itemnum = itemtype.Item2 + 1;
+                                inventory.inventory.RemoveAll(z => z.Item1 == "WheatSeed");
+                                inventory.inventory.Add(new Tuple<string, int>("WheatSeed", itemnum));
+                                Console.WriteLine(itemnum);
+                            }
+                            else
+                            {
+                                inventory.inventory.Add(new Tuple<string, int>("WheatSeed", 1));
+                            }
+
+                            //Wheat
+                            inventory.Moneyz = inventory.Moneyz - 35;
+                            inventory.UpdateMoneyz(g);
+                        }
+
                     }
                     if (XPos >= 400 && YPos >= 360 && XPos <= 500 && YPos <= 390)
                     {
-                        //Corn
-                        inventory.Moneyz = inventory.Moneyz - 50;
-                        inventory.UpdateMoneyz(g);
+                        if (inventory.Moneyz >= 50)
+                        {
+                            int itemnum = 0;
+                            if (inventory.inventory.Where(z => z.Item1 == "CornSeed").Any())
+                            {
+                                var itemtype = inventory.inventory.Find(z => z.Item1 == "CornSeed");
+                                Console.WriteLine(itemtype.Item1);
+                                itemnum = itemtype.Item2 + 1;
+                                inventory.inventory.RemoveAll(z => z.Item1 == "CornSeed");
+                                inventory.inventory.Add(new Tuple<string, int>("CornSeed", itemnum));
+                                Console.WriteLine(itemnum);
+                            }
+                            else
+                            {
+                                inventory.inventory.Add(new Tuple<string, int>("CornSeed", 1));
+                            }
+
+                            //Corn
+                            inventory.Moneyz = inventory.Moneyz - 50;
+                            inventory.UpdateMoneyz(g);
+                        }
                     }
                     if (XPos >= 500 && YPos >= 360 && XPos <= 600 && YPos <= 390)
                     {
-                        //Carrot
-                        inventory.Moneyz = inventory.Moneyz - 100;
-                        inventory.UpdateMoneyz(g);
+                        if (inventory.Moneyz >= 100)
+                        {
+                            int itemnum = 0;
+                            if (inventory.inventory.Where(z => z.Item1 == "CarrotSeed").Any())
+                            {
+                                var itemtype = inventory.inventory.Find(z => z.Item1 == "CarrotSeed");
+                                Console.WriteLine(itemtype.Item1);
+                                itemnum = itemtype.Item2 + 1;
+                                inventory.inventory.RemoveAll(z => z.Item1 == "CarrotSeed");
+                                inventory.inventory.Add(new Tuple<string, int>("CarrotSeed", itemnum));
+                                Console.WriteLine(itemnum);
+                            }
+                            else
+                            {
+                                inventory.inventory.Add(new Tuple<string, int>("CarrotSeed", 1));
+                            }
+
+                            //Carrot
+                            inventory.Moneyz = inventory.Moneyz - 100;
+                            inventory.UpdateMoneyz(g);
+                        }
                     }
                     if (XPos >= 600 && YPos >= 360 && XPos <= 700 && YPos <= 390)
                     {
-                        //Turnip
-                        inventory.Moneyz = inventory.Moneyz - 150;
-                        inventory.UpdateMoneyz(g);
+                        if (inventory.Moneyz >= 150)
+                        {
+                            int itemnum = 0;
+                            if (inventory.inventory.Where(z => z.Item1 == "TurnipSeed").Any())
+                            {
+                                var itemtype = inventory.inventory.Find(z => z.Item1 == "TurnipSeed");
+                                Console.WriteLine(itemtype.Item1);
+                                itemnum = itemtype.Item2 + 1;
+                                inventory.inventory.RemoveAll(z => z.Item1 == "TurnipSeed");
+                                inventory.inventory.Add(new Tuple<string, int>("TurnipSeed", itemnum));
+                                Console.WriteLine(itemnum);
+                            }
+                            else
+                            {
+                                inventory.inventory.Add(new Tuple<string, int>("TurnipSeed", 1));
+                            }
+                            //Turnip
+                            inventory.Moneyz = inventory.Moneyz - 150;
+                            inventory.UpdateMoneyz(g);
+                        }
                     }
                     if (XPos >= 800 && YPos >= 360 && XPos <= 900 && YPos <= 390)
                     {
-                        //Sell Tater
-                        inventory.Moneyz = inventory.Moneyz + 45;
-                        inventory.UpdateMoneyz(g);
+                        int itemnum = 0;
+                        if (inventory.inventory.Where(z => z.Item1 == "Tater").Any())
+                        {
+                            var itemtype = inventory.inventory.Find(z => z.Item1 == "Tater");
+                            Console.WriteLine(itemtype.Item1);
+                            if (itemtype.Item2 == 0)
+                            {
+
+                            }
+                            else
+                            {
+                                itemnum = itemtype.Item2 - 1;
+                                inventory.inventory.RemoveAll(z => z.Item1 == "Tater");
+                                inventory.inventory.Add(new Tuple<string, int>("Tater", itemnum));
+                                Console.WriteLine(itemnum);
+                                //Sell Tater
+                                inventory.Moneyz = inventory.Moneyz + 45;
+                                inventory.UpdateMoneyz(g);
+                            }
+                        }
                     }
                     if (XPos >= 900 && YPos >= 360 && XPos <= 1000 && YPos <= 390)
                     {
-                        //Sell Wheat
-                        inventory.Moneyz = inventory.Moneyz + 60;
-                        inventory.UpdateMoneyz(g);
+                        int itemnum = 0;
+                        if (inventory.inventory.Where(z => z.Item1 == "Wheat").Any())
+                        {
+                            var itemtype = inventory.inventory.Find(z => z.Item1 == "Wheat");
+                            Console.WriteLine(itemtype.Item1);
+                            if (itemtype.Item2 == 0)
+                            {
+
+                            }
+                            else
+                            {
+                                itemnum = itemtype.Item2 - 1;
+                                inventory.inventory.RemoveAll(z => z.Item1 == "Wheat");
+                                inventory.inventory.Add(new Tuple<string, int>("Wheat", itemnum));
+                                Console.WriteLine(itemnum);
+                                //Sell Wheat
+                                inventory.Moneyz = inventory.Moneyz + 60;
+                                inventory.UpdateMoneyz(g);
+                            }
+                        }
                     }
                     if (XPos >= 1000 && YPos >= 360 && XPos <= 1100 && YPos <= 390)
                     {
-                        //Sell Corn
-                        inventory.Moneyz = inventory.Moneyz + 100;
-                        inventory.UpdateMoneyz(g);
+                        int itemnum = 0;
+                        if (inventory.inventory.Where(z => z.Item1 == "Corn").Any())
+                        {
+                            var itemtype = inventory.inventory.Find(z => z.Item1 == "Corn");
+                            Console.WriteLine(itemtype.Item1);
+                            if (itemtype.Item2 == 0)
+                            {
+
+                            }
+                            else
+                            {
+                                itemnum = itemtype.Item2 - 1;
+                                inventory.inventory.RemoveAll(z => z.Item1 == "Corn");
+                                inventory.inventory.Add(new Tuple<string, int>("Corn", itemnum));
+                                Console.WriteLine(itemnum);
+                                //Sell Corn
+                                inventory.Moneyz = inventory.Moneyz + 100;
+                                inventory.UpdateMoneyz(g);
+                            }
+                        }
+                    }
+                    if (XPos >= 1100 && YPos >= 360 && XPos <= 1200 && YPos <= 390)
+                    {
+                        int itemnum = 0;
+                        if (inventory.inventory.Where(z => z.Item1 == "Carrot").Any())
+                        {
+                            var itemtype = inventory.inventory.Find(z => z.Item1 == "Carrot");
+                            Console.WriteLine(itemtype.Item1);
+                            if (itemtype.Item2 == 0)
+                            {
+
+                            }
+                            else
+                            {
+                                itemnum = itemtype.Item2 - 1;
+                                inventory.inventory.RemoveAll(z => z.Item1 == "Carrot");
+                                inventory.inventory.Add(new Tuple<string, int>("Carrot", itemnum));
+                                Console.WriteLine(itemnum);
+                                //Sell Carrot
+                                inventory.Moneyz = inventory.Moneyz + 150;
+                                inventory.UpdateMoneyz(g);
+                            }
+                        }
                     }
                     if (XPos >= 1200 && YPos >= 360 && XPos <= 1300 && YPos <= 390)
                     {
-                        //Sell Carrot
-                        inventory.Moneyz = inventory.Moneyz + 150;
-                        inventory.UpdateMoneyz(g);
-                    }
-                    if (XPos >= 1300 && YPos >= 360 && XPos <= 1400 && YPos <= 390)
-                    {
-                        //Sell Turnip
-                        inventory.Moneyz = inventory.Moneyz - 250;
-                        inventory.UpdateMoneyz(g);
+                        int itemnum = 0;
+                        if (inventory.inventory.Where(z => z.Item1 == "Turnip").Any())
+                        {
+                            var itemtype = inventory.inventory.Find(z => z.Item1 == "Turnip");
+                            Console.WriteLine(itemtype.Item1);
+                            if (itemtype.Item2 == 0)
+                            {
+
+                            }
+                            else
+                            {
+                                itemnum = itemtype.Item2 - 1;
+                                inventory.inventory.RemoveAll(z => z.Item1 == "Turnip");
+                                inventory.inventory.Add(new Tuple<string, int>("Turnip", itemnum));
+                                Console.WriteLine(itemnum);
+                                //Sell Turnip
+                                inventory.Moneyz = inventory.Moneyz + 250;
+                                inventory.UpdateMoneyz(g);
+                            }
+                        }
                     }
                     if (XPos >= 200 && YPos >= 690 && XPos <= 300 && YPos <= 720)
                     {
-                        //Fence
-                        inventory.Moneyz = inventory.Moneyz - 25;
-                        inventory.UpdateMoneyz(g);
+                        if (inventory.Moneyz >= 25)
+                        {
+                            int itemnum = 0;
+                            if (inventory.inventory.Where(z => z.Item1 == "Fence").Any())
+                            {
+                                var itemtype = inventory.inventory.Find(z => z.Item1 == "Fence");
+                                Console.WriteLine(itemtype.Item1);
+                                itemnum = itemtype.Item2 + 1;
+                                inventory.inventory.RemoveAll(z => z.Item1 == "Fence");
+                                inventory.inventory.Add(new Tuple<string, int>("Fence", itemnum));
+                                Console.WriteLine(itemnum);
+                            }
+                            else
+                            {
+                                inventory.inventory.Add(new Tuple<string, int>("Fence", 1));
+                            }
+                            //Fence
+                            inventory.Moneyz = inventory.Moneyz - 25;
+                            inventory.UpdateMoneyz(g);
+                        }
                     }
                     if (XPos >= 300 && YPos >= 690 && XPos <= 400 && YPos <= 720)
                     {
-                        //Wall
-                        inventory.Moneyz = inventory.Moneyz - 100;
-                        inventory.UpdateMoneyz(g);
+                        if (inventory.Moneyz >= 100)
+                        {
+                            int itemnum = 0;
+                            if (inventory.inventory.Where(z => z.Item1 == "Wall").Any())
+                            {
+                                var itemtype = inventory.inventory.Find(z => z.Item1 == "Wall");
+                                Console.WriteLine(itemtype.Item1);
+                                itemnum = itemtype.Item2 + 1;
+                                inventory.inventory.RemoveAll(z => z.Item1 == "Wall");
+                                inventory.inventory.Add(new Tuple<string, int>("Wall", itemnum));
+                                Console.WriteLine(itemnum);
+                            }
+                            else
+                            {
+                                inventory.inventory.Add(new Tuple<string, int>("Wall", 1));
+                            }
+                            //Wall
+                            inventory.Moneyz = inventory.Moneyz - 100;
+                            inventory.UpdateMoneyz(g);
+                        }
                     }
                     if (XPos >= 400 && YPos >= 690 && XPos <= 500 && YPos <= 720)
                     {
-                        //Iron Sword
-                        inventory.Moneyz = inventory.Moneyz - 300;
-                        inventory.UpdateMoneyz(g);
+                        if (inventory.Moneyz >= 300)
+                        {
+                            if (ISwordPurchased == false)
+                            {
+                                //Iron Sword
+                                inventory.Moneyz = inventory.Moneyz - 300;
+                                inventory.UpdateMoneyz(g);
+                            }
+                        }
                     }
                     if (XPos >= 500 && YPos >= 690 && XPos <= 600 && YPos <= 720)
                     {
-                        //Beast Sword
-                        inventory.Moneyz = inventory.Moneyz - 600;
-                        inventory.UpdateMoneyz(g);
+                        if (inventory.Moneyz >= 600)
+                        {
+                            if (BSwordPurchased == false)
+                            {
+                                //Beast Sword
+                                inventory.Moneyz = inventory.Moneyz - 600;
+                                inventory.UpdateMoneyz(g);
+                            }
+                        }
                     }
                     if (XPos >= 600 && YPos >= 690 && XPos <= 700 && YPos <= 720)
                     {
-                        //Iron Sword
-                        inventory.Moneyz = inventory.Moneyz - 350;
-                        inventory.UpdateMoneyz(g);
+                        if (inventory.Moneyz >= 350)
+                        {
+                            if (BSwordPurchased == false)
+                            {
+                                //Iron Armour
+                                inventory.Moneyz = inventory.Moneyz - 350;
+                                inventory.UpdateMoneyz(g);
+                            }
+                        }
                     }
                     if (XPos >= 700 && YPos >= 690 && XPos <= 800 && YPos <= 720)
                     {
-                        //Beast Sword
-                        inventory.Moneyz = inventory.Moneyz - 700;
-                        inventory.UpdateMoneyz(g);
+                        if (inventory.Moneyz >= 700)
+                        {
+                            if (BSwordPurchased == false)
+                            {
+                                //Beast Armour
+                                inventory.Moneyz = inventory.Moneyz - 700;
+                                inventory.UpdateMoneyz(g);
+                            }
+                        }
                     }
                     if (XPos >= 800 && YPos >= 690 && XPos <= 900 && YPos <= 720)
                     {
-                        //Health Potion
-                        inventory.Moneyz = inventory.Moneyz - 250;
-                        inventory.UpdateMoneyz(g);
+                        if (inventory.Moneyz >= 250)
+                        {
+                            int itemnum = 0;
+                            if (inventory.inventory.Where(z => z.Item1 == "HealthPot").Any())
+                            {
+                                var itemtype = inventory.inventory.Find(z => z.Item1 == "HealthPot");
+                                Console.WriteLine(itemtype.Item1);
+                                itemnum = itemtype.Item2 + 1;
+                                inventory.inventory.RemoveAll(z => z.Item1 == "HealthPot");
+                                inventory.inventory.Add(new Tuple<string, int>("HealthPot", itemnum));
+                                Console.WriteLine(itemnum);
+                            }
+                            else
+                            {
+                                inventory.inventory.Add(new Tuple<string, int>("HealthPot", 1));
+                            }
+                            //Health Potion
+                            inventory.Moneyz = inventory.Moneyz - 250;
+                            inventory.UpdateMoneyz(g);
+                        }
                     }
                     if (XPos >= 1000 && YPos >= 690 && XPos <= 1100 && YPos <= 720)
                     {
-                        //Useless Potion
-                        inventory.Moneyz = inventory.Moneyz - 500;
-                        inventory.UpdateMoneyz(g);
+                        if (inventory.Moneyz >= 500)
+                        {
+                            int itemnum = 0;
+                            if (inventory.inventory.Where(z => z.Item1 == "UselessPot").Any())
+                            {
+                                var itemtype = inventory.inventory.Find(z => z.Item1 == "UselessPot");
+                                Console.WriteLine(itemtype.Item1);
+                                itemnum = itemtype.Item2 + 1;
+                                inventory.inventory.RemoveAll(z => z.Item1 == "UselessPot");
+                                inventory.inventory.Add(new Tuple<string, int>("UselessPot", itemnum));
+                                Console.WriteLine(itemnum);
+                            }
+                            else
+                            {
+                                inventory.inventory.Add(new Tuple<string, int>("UselessPot", 1));
+                            }
+                            //Useless Potion
+                            inventory.Moneyz = inventory.Moneyz - 500;
+                            inventory.UpdateMoneyz(g);
+                        }
                     }
                 } else
                 {

@@ -13,55 +13,169 @@ namespace FarmWars
 {
     class Feild
     {
-        public int width;
-        public int height;
-        public int TrY;
-        public int TrX;
         public int SquareSize;
-        int clicked = 0;
 
-        int PosX;
-        int PosY;
-        int TextPosX;
-        int TextPosY;
-        public void DrawFeild(Graphics g)
+        public List<Tuple<int, string, int, int>> cropfield = new List<Tuple<int, string, int, int>>();
+
+
+        public void DrawFeild(Graphics g, int Turn, string CropType, int XCord, int YCord)
         {
-            //Define the solid brush with a default colour of orange
-            SolidBrush br = new SolidBrush(Color.SandyBrown);
-
-            //Define the pen with the colour black
-            Pen pen1 = new Pen(Color.Black);
-            Image YouImage = Image.FromFile("../../../Art/ground/youngwheat.png");
-
-
-            //Calculate the width and height of the square so that it all fits in the picturebox
-            int width = SquareSize;
-            int height = SquareSize;
-
             //Calcualte the X and Y of each indervidual square
-            PosX = width * TrX;
-            PosY = height * TrY;
+            int PosX = SquareSize * XCord;
+            int PosY = SquareSize * YCord;
 
-            TextPosX = PosX + width / 2;
-            TextPosY = PosY + width / 2;
+            cropfield.Add(new Tuple<int, string, int, int>(Turn, CropType, PosX, PosY));
 
-
-
-            // Create rectangle for ellipse.
-            Rectangle rect = new Rectangle(PosX, PosY, width, height);
-
-            g.DrawImage(YouImage, rect);
-
-
-            GrowWheat(g);
+            // Create rectangle for feild.
+            Rectangle rect = new Rectangle(PosX, PosY, 25, 25);
+            PlantSeed(g, PosX, PosY, CropType);
         }
 
-        public void GrowWheat(Graphics g)
+        public void PlantSeed(Graphics g, int PosX, int PosY, string CropType)
         {
-            Thread.Sleep(1);
-            Image GrownImage = Image.FromFile("../../../Art/ground/grownwheat.png");
+            CropType = "Wheat";
+            Image SeedImage = Image.FromFile("../../../Art/ground/grownwheat.png");
+
+            if (CropType == "Tater")
+            {
+                SeedImage = Image.FromFile("../../../Art/crops/taters1.png");
+            }
+            if (CropType == "Wheat")
+            {
+                SeedImage = Image.FromFile("../../../Art/crops/wheats1.png");
+            }
+            if (CropType == "Corn")
+            {
+                SeedImage = Image.FromFile("../../../Art/crops/corns1.png");
+            }
+            if (CropType == "Carrot")
+            {
+                SeedImage = Image.FromFile("../../../Art/crops/carrots1.png");
+            }
+            if (CropType == "Turnip")
+            {
+                SeedImage = Image.FromFile("../../../Art/crops/turnips1.png");
+            }
+
             Rectangle rect = new Rectangle(PosX, PosY, 25, 25);
-            g.DrawImage(GrownImage, rect);
+            g.DrawImage(SeedImage, rect);
+        }
+        public void PlantTurn(Graphics g, int Turn)
+        {
+            Image YoungCropImage = Image.FromFile("../../../Art/ground/grownwheat.png");
+            for (int i = 0; i < cropfield.Count; i++)
+            {
+                int CropTurn = cropfield[i].Item1;
+                string CropType = cropfield[i].Item2;
+                int XCord = cropfield[i].Item3;
+                int YCord = cropfield[i].Item4;
+                CropType = "Carrot";
+
+                if (CropTurn == Turn - 1)
+                {
+
+                    if (CropType == "Tater")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/taters2.png");
+                    }
+                    if (CropType == "Wheat")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/wheats2.png");
+                    }
+                    if (CropType == "Corn")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/corns2.png");
+                    }
+                    if (CropType == "Carrot")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/carrots2.png");
+                    }
+                    if (CropType == "Turnip")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/turnips2.png");
+                    }
+                    Rectangle rect = new Rectangle(XCord, YCord, 25, 25);
+                    g.DrawImage(YoungCropImage, rect);
+                }
+                if (CropTurn == Turn - 2)
+                {
+
+                    if (CropType == "Tater")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/taters3.png");
+                    }
+                    if (CropType == "Wheat")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/wheats3.png");
+                    }
+                    if (CropType == "Corn")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/corns3.png");
+                    }
+                    if (CropType == "Carrot")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/carrots3.png");
+                    }
+                    if (CropType == "Turnip")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/turnips3.png");
+                    }
+                    Rectangle rect = new Rectangle(XCord, YCord, 25, 25);
+                    g.DrawImage(YoungCropImage, rect);
+                }
+                if (CropTurn == Turn - 3)
+                {
+
+                    if (CropType == "Tater")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/taters4.png");
+                    }
+                    if (CropType == "Wheat")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/wheats4.png");
+                    }
+                    if (CropType == "Corn")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/corns4.png");
+                    }
+                    if (CropType == "Carrot")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/carrots4.png");
+                    }
+                    if (CropType == "Turnip")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/turnips4.png");
+                    }
+                    Rectangle rect = new Rectangle(XCord, YCord, 25, 25);
+                    g.DrawImage(YoungCropImage, rect);
+                }
+                if (CropTurn == Turn - 4)
+                {
+
+                    if (CropType == "Tater")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/taters5.png");
+                    }
+                    if (CropType == "Wheat")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/wheats5.png");
+                    }
+                    if (CropType == "Corn")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/corns5.png");
+                    }
+                    if (CropType == "Carrot")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/carrots5.png");
+                    }
+                    if (CropType == "Turnip")
+                    {
+                        YoungCropImage = Image.FromFile("../../../Art/crops/turnips5.png");
+                    }
+                    Rectangle rect = new Rectangle(XCord, YCord, 25, 25);
+                    g.DrawImage(YoungCropImage, rect);
+                }
+            }
         }
     }
 }

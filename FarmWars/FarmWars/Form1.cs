@@ -22,6 +22,10 @@ namespace FarmWars
         int YCord = 0;
         int TrX;
         int TrY;
+        int Turn = 0;
+        string CropType;
+
+
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern short GetAsyncKeyState(Keys vKey);
@@ -253,17 +257,11 @@ namespace FarmWars
                 {
                     Graphics f = Graphics.FromImage(Background);
 
-                    TrX = XCord;
-                    TrY = YCord;
-
                     if (XPos >= -50 + HuAstar.xLoc && YPos >= -50 + HuAstar.yLoc && XPos <= 75 + HuAstar.xLoc && YPos <= 75 + HuAstar.yLoc)
                     {
                         feildTile.SquareSize = SquareSize;
 
-                        feildTile.TrX = TrX;
-                        feildTile.TrY = TrY;
-
-                        feildTile.DrawFeild(f);
+                        feildTile.DrawFeild(f,Turn, CropType, XCord, YCord);
                     }
                 }
             }
@@ -272,6 +270,7 @@ namespace FarmWars
         private void PnlGame_Click(object sender, EventArgs e)
         {
             Graphics g = PnlGame.CreateGraphics();
+            Graphics f = Graphics.FromImage(Background);
             if (InGame == true)
             {
                 if (XPos >= 0 && YPos >= 0 && XPos <= 50 && YPos <= 50)
@@ -288,7 +287,9 @@ namespace FarmWars
                 }
                 else if (XPos >= PnlGame.Width - 290 && YPos >= PnlGame.Height - 125 && XPos <= PnlGame.Width && YPos <= PnlGame.Height)
                 {
-                    MessageBox.Show("Next Turn");
+                    Turn += 1;
+                    Console.WriteLine("Next Turn");
+                    feildTile.PlantTurn(f, Turn);
                 }
                 else if (XPos >= 100 && YPos >= 100 && XPos <= 200 && YPos <= 180)
                 {

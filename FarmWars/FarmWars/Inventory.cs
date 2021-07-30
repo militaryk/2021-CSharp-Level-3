@@ -11,14 +11,16 @@ namespace FarmWars
     class Inventory
     {
         int SqaureSize = 25;
-        int SqaureWidth = 8;
-        int SqaureHeight = 22;
-        int PosX;
-        int PosY;
+        int ScrollWidth = 8;
+        int ScrollHeight = 22;
+        int SqaureWidth = 3;
+        int SqaureHeight = 6;
+        public int PosX;
+        public int PosY;
         int InvX;
         int InvY;
-        int width;
-        int height;
+        public int width;
+        public int height;
         public int Moneyz = 1000;
         public int PnlWidth;
         public int PnlHeight;
@@ -29,8 +31,8 @@ namespace FarmWars
         {
             try
             {
-                width = SqaureSize * SqaureWidth;
-                height = SqaureSize * SqaureHeight;
+                width = SqaureSize * ScrollWidth;
+                height = SqaureSize * ScrollHeight;
 
                 //Define the solid brush with a default colour of orange
                 SolidBrush br = new SolidBrush(Color.Black);
@@ -42,7 +44,7 @@ namespace FarmWars
                 PosX = PnlWidth - width;
                 PosY = PnlHeight - height - ((PnlHeight / 5));
 
-                InvX = PnlWidth - width + (SqaureSize / 3);
+                InvX = PnlWidth - width;
                 InvY = PosY + 125;
 
                 int numofinv = 0;
@@ -53,9 +55,9 @@ namespace FarmWars
                 Image newImage = Image.FromFile("../../../Art/ui/scroll.png");
                 g.DrawImage(newImage, rect);
 
-                for (int i = 0; i < SqaureWidth - 5; i++)
+                for (int i = 0; i < SqaureWidth; i++)
                 {
-                    for (int j = 0; j < SqaureHeight - 16; j++)
+                    for (int j = 0; j < SqaureHeight; j++)
                     {
                         Rectangle inv = new Rectangle(InvX, InvY, 50, 50);
                         Rectangle invamo = new Rectangle(InvX, InvY + 20, 50, 30);

@@ -24,7 +24,13 @@ namespace FarmWars
             int PosX = SquareSize * XCord;
             int PosY = SquareSize * YCord;
 
-            cropfield.Add(new Tuple<int, string, int, int>(Turn, CropType, PosX, PosY));
+            if (cropfield.Where(z => z.Item3 == PosX && z.Item4 == PosY).Any())
+            {
+            }
+            else
+            {
+                cropfield.Add(new Tuple<int, string, int, int>(Turn, CropType, PosX, PosY));
+            }
 
             // Create rectangle for feild.
             Rectangle rect = new Rectangle(PosX, PosY, 25, 25);

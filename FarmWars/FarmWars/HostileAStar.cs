@@ -43,8 +43,6 @@ namespace FarmWars
                 Console.WriteLine("Path Cleared");
                 walkpath.Clear();
                 Console.WriteLine("Walk Path Cleared");
-                calcpath = true;
-                pathfollowed = false;
 
                 PathPos = 1;
                 PathLoc = 0;
@@ -103,6 +101,8 @@ namespace FarmWars
                                 path.Reverse();
                                 //((FormGame)FormGame.ActiveForm).TmrHosMovement.Enabled = true;
                                 pathmade = true;
+                                calcpath = true;
+                                pathfollowed = false;
                                 return;
                             }
                         }
@@ -205,7 +205,7 @@ namespace FarmWars
                     yLoc = walkpath[PathLoc].Item2;
                     x = xLoc;
                     y = yLoc;
-                    DrawHostile(g);
+                    DrawHostile(g, arnum);
 
                 }
                 else
@@ -230,7 +230,7 @@ namespace FarmWars
         public int tiletype;
         public int health = 100;
         //HostileAstar HAstar = new HostileAstar();
-        public void DrawHostile(Graphics g)
+        public void DrawHostile(Graphics g, int arnum)
         {
             //Define the solid brush with a default colour of orange
             SolidBrush br = new SolidBrush(Color.SandyBrown);
@@ -253,12 +253,11 @@ namespace FarmWars
             Rectangle rect = new Rectangle(x, y, width, height);
             Image newImage = Image.FromFile("../../../Art/character/bad.png");
             g.DrawImage(newImage, rect);
-            DrawHealth(g);
-            DrawHealth(g);
+            DrawHealth(g, arnum);
         }
-        public void DrawHealth(Graphics g)
+        public void DrawHealth(Graphics g, int arnum)
         {
-            int health = ((FormGame)FormGame.ActiveForm).HosHealth;
+            int health = ((FormGame)FormGame.ActiveForm).HosHealth[arnum];
             SolidBrush grayBrush = new SolidBrush(Color.DarkGray);
             Rectangle HlBrect = new Rectangle(x - 10, y + 30, width + 20, 10);
             g.FillRectangle(grayBrush, HlBrect);

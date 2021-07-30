@@ -44,7 +44,7 @@ namespace FarmWars
         public int HuPathLoc = 0;
         public int HuPathPos = 0;
         public int HuHealth = 100;
-        public int HosHealth = 100;
+        public int[] HosHealth = new int[] { 100, 100, 100, 100, 100, 100 };
         bool LShift = false;
         bool RShift = false;
         bool MouseDrag = false;
@@ -290,6 +290,7 @@ namespace FarmWars
                     Turn += 1;
                     Console.WriteLine("Next Turn");
                     feildTile.PlantTurn(f, Turn);
+                    DrawHostile();
                 }
                 else if (XPos >= 100 && YPos >= 100 && XPos <= 200 && YPos <= 180)
                 {
@@ -305,6 +306,10 @@ namespace FarmWars
 
                     }
 
+                }
+                if (XPos >= inventory. && YPos >= inventory.PosY && XPos <= inventory.PosX + inventory.width && YPos <= inventory.PosY + inventory.height)
+                {
+                    Console.WriteLine("Poggers");
                 }
                 else
                 {
@@ -817,7 +822,6 @@ namespace FarmWars
             {
                 id = 9;
             }
-
             return id;
         }
 
@@ -839,11 +843,12 @@ namespace FarmWars
 
         private void TmrGame_Tick(object sender, EventArgs e)
         {
+            PathPos++;
+            PathLoc++;
             for (int i = 0; i < 6; i++)
             {
                 Graphics g = PnlGame.CreateGraphics();
-                PathPos++;
-                PathLoc++;
+
 
                 HAstar[i].PathLoc = PathLoc;
                 HAstar[i].PathPos = PathPos;
@@ -883,51 +888,48 @@ namespace FarmWars
             TmrHosMovement.Enabled = true;
         }
 
-        private void TmrTurn_Tick(object sender, EventArgs e)
+        private void DrawHostile()
         {
-            int Max = ((PnlGame.Width / 25) * 2) + ((PnlGame.Height / 25) * 2);
-            Random Go = new Random();
-            int StartPos = Go.Next(1, Max);
-            StartGo = Go.Next(1, 4);
-            if (StartGo == 6)
+            for (int i = 0; i <= 5; i++)
             {
-                if (StartPos * 25 > PnlGame.Width + PnlGame.Width + PnlGame.Height)
-                {
-                    int EdgePosY = StartPos - (PnlGame.Width / 25) - (PnlGame.Width / 25) - (PnlGame.Height / 25);
-                    int EdgePosX = 0;
-                    DrawHostile(EdgePosX, EdgePosY);
+                int Max = ((PnlGame.Width / 25) * 2) + ((PnlGame.Height / 25) * 2);
+                int XCord;
+                int YCord;
+                Random Go = new Random();
+                int StartPos = Go.Next(1, Max);
 
-                }
-                if (StartPos * 25 > PnlGame.Width + PnlGame.Height)
-                {
-                    int EdgePosX = StartPos - ((PnlGame.Width) / 25) - ((PnlGame.Height) / 25);
-                    int EdgePosY = 0;
-                    DrawHostile(EdgePosX, EdgePosY);
+                    if (StartPos * 25 > PnlGame.Width + PnlGame.Width + PnlGame.Height)
+                    {
+                        YCord = StartPos - (PnlGame.Width / 25) - (PnlGame.Width / 25) - (PnlGame.Height / 25);
+                        XCord = 0;
 
-                }
-                if (StartPos * 25 > PnlGame.Width)
-                {
-                    int EdgePosY = StartPos - (PnlGame.Width / 25);
-                    int EdgePosX = 0;
-                    DrawHostile(EdgePosX, EdgePosY);
+                    }
+                    if (StartPos * 25 > PnlGame.Width + PnlGame.Height)
+                    {
+                        XCord = StartPos - ((PnlGame.Width) / 25) - ((PnlGame.Height) / 25);
+                        YCord = 0;
 
-                }
-                else
-                {
-                    int EdgePosX = StartPos;
-                    int EdgePosY = 0;
-                    DrawHostile(EdgePosX, EdgePosY);
-                }
+                    }
+                    if (StartPos * 25 > PnlGame.Width)
+                    {
+                        YCord = StartPos - (PnlGame.Width / 25);
+                        XCord = 0;
 
-            }
-        }
-
-        private void DrawHostile(int XCord, int YCord)
-        {
-            for (int i = 0; i <= 0; i++)
-            {
+                    }
+                    else
+                    {
+                        XCord = StartPos;
+                        YCord = 0;
+                    }
                 if (Drawn[i] == true)
                 {
+                    if (feildTile.cropfield.Count > 1)
+                    {
+                        int TargetF = Go.Next(1, feildTile.cropfield.Count);
+                        BX = feildTile.cropfield[TargetF].Item3 / SquareSize;
+                        BY = feildTile.cropfield[TargetF].Item4 / SquareSize;
+                    }
+
                     PathPos = 0;
                     PathLoc = 0;
                     HAstar[i].EmptyList();
@@ -943,7 +945,7 @@ namespace FarmWars
 
                     HAstar[i].x = XCord * SquareSize;
                     HAstar[i].y = YCord * SquareSize;
-                    HAstar[i].DrawHostile(g);
+                    HAstar[i].DrawHostile(g, i);
 
                     //Draw the grid with the number of columns given
                     for (int y = 0; y * SquareSize < PnlGame.Height; y++)
@@ -1093,12 +1095,12 @@ namespace FarmWars
             {
                 if (HuAstar.xLoc >= -50 + HAstar[i].xLoc && HuAstar.yLoc >= -50 + HAstar[i].yLoc && HuAstar.xLoc <= 75 + HAstar[i].xLoc && HuAstar.yLoc <= 75 + HAstar[i].yLoc)
                 {
-                    int healthhos = HosHealth - 10;
-                    HAstar[i].DrawHealth(g);
+                    int healthhos = HosHealth[i] - 10;
+                    HAstar[i].DrawHealth(g, i);
                     Console.WriteLine(healthhos);
-                    HosHealth = healthhos;
+                    HosHealth[i] = healthhos;
                 }
-                if (HosHealth <= 0)
+                if (HosHealth[i] <= 0)
                 {
                     PauseGame();
                 }

@@ -53,14 +53,14 @@
             // 
             // PnlGame
             // 
-            this.PnlGame.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.PnlGame.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PnlGame.BackColor = System.Drawing.SystemColors.ControlDark;
             this.PnlGame.CausesValidation = false;
             this.PnlGame.Location = new System.Drawing.Point(0, 0);
             this.PnlGame.Name = "PnlGame";
-            this.PnlGame.Size = new System.Drawing.Size(1495, 807);
+            this.PnlGame.Size = new System.Drawing.Size(1481, 789);
             this.PnlGame.TabIndex = 0;
             this.PnlGame.Click += new System.EventHandler(this.PnlGame_Click);
             this.PnlGame.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlGame_Paint);
@@ -73,7 +73,7 @@
             // TmrHosMovement
             // 
             this.TmrHosMovement.Enabled = true;
-            this.TmrHosMovement.Interval = 20;
+            this.TmrHosMovement.Interval = 5;
             this.TmrHosMovement.Tick += new System.EventHandler(this.TmrGame_Tick);
             // 
             // contextMenuStrip1
@@ -185,10 +185,6 @@
             this.BtnExit.Visible = false;
             this.BtnExit.Click += new System.EventHandler(this.BtnExit_Click);
             // 
-            // TmrTurn
-            // 
-            this.TmrTurn.Tick += new System.EventHandler(this.TmrTurn_Tick);
-            // 
             // TmrHumMovement
             // 
             this.TmrHumMovement.Interval = 15;
@@ -204,10 +200,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1494, 807);
+            this.ClientSize = new System.Drawing.Size(1465, 791);
             this.Controls.Add(this.BtnExit);
-            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.PnlGame);
+            this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MainMenuStrip = this.menuStrip1;

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
-
+using System.Threading;
 namespace FarmWars
 {
     class Inventory
@@ -13,17 +13,18 @@ namespace FarmWars
         int SqaureSize = 25;
         int ScrollWidth = 8;
         int ScrollHeight = 22;
-        int SqaureWidth = 3;
-        int SqaureHeight = 6;
+        public int SqaureWidth = 3;
+        public int SqaureHeight = 6;
         public int PosX;
         public int PosY;
-        int InvX;
-        int InvY;
+        public int InvX;
+        public int InvY;
         public int width;
         public int height;
         public int Moneyz = 1000;
         public int PnlWidth;
         public int PnlHeight;
+        public string selitemname = "";
 
        public  List<Tuple<string, int>> inventory = new List<Tuple<string, int>>();
 
@@ -52,6 +53,7 @@ namespace FarmWars
                 // Create rectangle for ellipse.
                 Rectangle rect = new Rectangle(PosX, PosY, width, height);
 
+                Thread.Sleep(10);
                 Image newImage = Image.FromFile("../../../Art/ui/scroll.png");
                 g.DrawImage(newImage, rect);
 
@@ -60,6 +62,7 @@ namespace FarmWars
                     for (int j = 0; j < SqaureHeight; j++)
                     {
                         Rectangle inv = new Rectangle(InvX, InvY, 50, 50);
+                        
                         Rectangle invamo = new Rectangle(InvX, InvY + 20, 50, 30);
 
                         Font invfont = new Font("Arial", 20);
@@ -74,7 +77,6 @@ namespace FarmWars
                             int itemamount = inventory[numofinv].Item2;
                             int itemid = ItemDict(itemname);
                             string itempict = ItemPictDict(itemid);
-                            Console.WriteLine(itempict);
                             numofinv += 1;
                             Image ItemImage = Image.FromFile(itempict);
                             g.DrawImage(ItemImage, inv);
@@ -90,30 +92,20 @@ namespace FarmWars
             {
 
             }
+            if (selitemname != "")
+            {
+                DrawSelectSquare(g, selitemname);
 
+            }
             DrawUI(g);
             DrawNextTurn(g);
         }
 
         public void DrawNextTurn(Graphics g)
         {
-            Rectangle rectnt = new Rectangle(((FormGame)FormGame.ActiveForm).PnlGame.Width - 290, ((FormGame)FormGame.ActiveForm).PnlGame.Height - 125, 270, 105);
+            Rectangle rectnt = new Rectangle(PnlWidth - 290, PnlHeight - 125, 270, 105);
             Image newImagent = Image.FromFile("../../../Art/nextturn.png");
             g.DrawImage(newImagent, rectnt);
-        }
-        public void DrawButtons()
-        {
-        //    try
-        //    {
-        //        ((FormGame)FormGame.ActiveForm).BtnExit.Visible = true;
-        //       ((FormGame)FormGame.ActiveForm).BtnExit.Width = width - 25;
-        //        ((FormGame)FormGame.ActiveForm).BtnExit.Height = height / 10;
-        //        ((FormGame)FormGame.ActiveForm).BtnExit.Location = new Point(PosX + 30, PosY + 490);
-        //        ((FormGame)FormGame.ActiveForm).BtnExit.TabStop = false;
-        //        ((FormGame)FormGame.ActiveForm).BtnExit.FlatStyle = FlatStyle.Flat;
-        //       ((FormGame)FormGame.ActiveForm).BtnExit.FlatAppearance.BorderSize = 0;
-        //    }
-        //    catch { }
         }
 
         private void DrawUI(Graphics g)
@@ -125,6 +117,7 @@ namespace FarmWars
             Rectangle iconPlay = new Rectangle(SqaureSize * 2, 0, width * 2, height * 2);
             Rectangle iconExit = new Rectangle(SqaureSize * 4, 0, width * 2, height * 2);
             Rectangle iconCoin = new Rectangle(SqaureSize * 12, 0, width * 2, height * 2);
+
 
 
             Image PauseImage = Image.FromFile("../../../Art/ui/pause.png");
@@ -288,6 +281,23 @@ namespace FarmWars
                 itempict = "../../../Art/Items/turnipseed.png";
             }
             return itempict;
+        }
+
+        public void DrawSelectSquare(Graphics g, string itemname)
+        {
+            int itemid;
+            string itempict;
+            itemid = ItemDict(itemname);
+            itempict = ItemPictDict(itemid);
+
+            SolidBrush whitebr = new SolidBrush(Color.WhiteSmoke);
+
+            Image ItemImage = Image.FromFile(itempict);
+
+            Rectangle selectSquare = new Rectangle(SqaureSize * 2, PnlHeight - SqaureSize * 8, SqaureSize * 6, SqaureSize * 6);
+
+            g.FillRectangle(whitebr, selectSquare);
+            g.DrawImage(ItemImage, selectSquare);
         }
 
     }

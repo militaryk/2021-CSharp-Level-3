@@ -58,9 +58,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PnlGame.BackColor = System.Drawing.SystemColors.ControlDark;
             this.PnlGame.CausesValidation = false;
-            this.PnlGame.Location = new System.Drawing.Point(0, 0);
+            this.PnlGame.Location = new System.Drawing.Point(2, 0);
             this.PnlGame.Name = "PnlGame";
-            this.PnlGame.Size = new System.Drawing.Size(1481, 789);
+            this.PnlGame.Size = new System.Drawing.Size(1428, 758);
             this.PnlGame.TabIndex = 0;
             this.PnlGame.Click += new System.EventHandler(this.PnlGame_Click);
             this.PnlGame.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlGame_Paint);
@@ -200,7 +200,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1465, 791);
+            this.ClientSize = new System.Drawing.Size(1426, 761);
             this.Controls.Add(this.BtnExit);
             this.Controls.Add(this.PnlGame);
             this.Controls.Add(this.menuStrip1);

@@ -213,7 +213,6 @@ namespace FarmWars
             }
             //SaveMap();
             MapDrawn = true;
-            inventory.DrawButtons();
             shop.DrawShop(g, 100, 100);
             PnlGame.Invalidate();
             TmrTurn.Enabled = true;
@@ -307,9 +306,29 @@ namespace FarmWars
                     }
 
                 }
-                if (XPos >= inventory. && YPos >= inventory.PosY && XPos <= inventory.PosX + inventory.width && YPos <= inventory.PosY + inventory.height)
+                if (XPos >= PnlGame.Width - (4 * 50) && YPos >= inventory.PosY + 125 && XPos <= PnlGame.Width - (1 * 50) && YPos <= inventory.PosY + 125 + (6 * 50))
                 {
-                    Console.WriteLine("Poggers");
+                    int invsel = 0;
+                    double invsqx = Math.Round(Convert.ToDouble(XPos) / 50, 0) - 24;
+                    double invsqy = Math.Round(Convert.ToDouble(YPos) / 50, 0) - 3;
+                    if (invsqx == 1)
+                    {
+                        invsel = Convert.ToInt32(invsqy);
+                    }
+                    if (invsqx == 2)
+                    {
+                        invsel = Convert.ToInt32(invsqy) + 6;
+                    } 
+                    if (invsqx == 3)
+                    {
+                        invsel = Convert.ToInt32(invsqy) + 12;
+                    }
+                    invsel = invsel - 1;
+                    if (inventory.inventory.Count > invsel)
+                    {
+                        string Item = inventory.inventory[invsel].Item1;
+                        inventory.selitemname = Item;
+                    }
                 }
                 else
                 {
@@ -399,11 +418,9 @@ namespace FarmWars
                             if (inventory.inventory.Where(z => z.Item1 == "TaterSeed").Any())
                             {
                                 var itemtype = inventory.inventory.Find(z => z.Item1 == "TaterSeed");
-                                Console.WriteLine(itemtype.Item1);
                                 itemnum = itemtype.Item2 + 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "TaterSeed");
                                 inventory.inventory.Add(new Tuple<string, int>("TaterSeed", itemnum));
-                                Console.WriteLine(itemnum);
                             }
                             else
                             {
@@ -424,11 +441,9 @@ namespace FarmWars
                             if (inventory.inventory.Where(z => z.Item1 == "WheatSeed").Any())
                             {
                                 var itemtype = inventory.inventory.Find(z => z.Item1 == "WheatSeed");
-                                Console.WriteLine(itemtype.Item1);
                                 itemnum = itemtype.Item2 + 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "WheatSeed");
                                 inventory.inventory.Add(new Tuple<string, int>("WheatSeed", itemnum));
-                                Console.WriteLine(itemnum);
                             }
                             else
                             {
@@ -449,11 +464,9 @@ namespace FarmWars
                             if (inventory.inventory.Where(z => z.Item1 == "CornSeed").Any())
                             {
                                 var itemtype = inventory.inventory.Find(z => z.Item1 == "CornSeed");
-                                Console.WriteLine(itemtype.Item1);
                                 itemnum = itemtype.Item2 + 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "CornSeed");
                                 inventory.inventory.Add(new Tuple<string, int>("CornSeed", itemnum));
-                                Console.WriteLine(itemnum);
                             }
                             else
                             {
@@ -473,11 +486,9 @@ namespace FarmWars
                             if (inventory.inventory.Where(z => z.Item1 == "CarrotSeed").Any())
                             {
                                 var itemtype = inventory.inventory.Find(z => z.Item1 == "CarrotSeed");
-                                Console.WriteLine(itemtype.Item1);
                                 itemnum = itemtype.Item2 + 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "CarrotSeed");
                                 inventory.inventory.Add(new Tuple<string, int>("CarrotSeed", itemnum));
-                                Console.WriteLine(itemnum);
                             }
                             else
                             {
@@ -497,11 +508,9 @@ namespace FarmWars
                             if (inventory.inventory.Where(z => z.Item1 == "TurnipSeed").Any())
                             {
                                 var itemtype = inventory.inventory.Find(z => z.Item1 == "TurnipSeed");
-                                Console.WriteLine(itemtype.Item1);
                                 itemnum = itemtype.Item2 + 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "TurnipSeed");
                                 inventory.inventory.Add(new Tuple<string, int>("TurnipSeed", itemnum));
-                                Console.WriteLine(itemnum);
                             }
                             else
                             {
@@ -518,7 +527,6 @@ namespace FarmWars
                         if (inventory.inventory.Where(z => z.Item1 == "Tater").Any())
                         {
                             var itemtype = inventory.inventory.Find(z => z.Item1 == "Tater");
-                            Console.WriteLine(itemtype.Item1);
                             if (itemtype.Item2 == 0)
                             {
 
@@ -528,7 +536,6 @@ namespace FarmWars
                                 itemnum = itemtype.Item2 - 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "Tater");
                                 inventory.inventory.Add(new Tuple<string, int>("Tater", itemnum));
-                                Console.WriteLine(itemnum);
                                 //Sell Tater
                                 inventory.Moneyz = inventory.Moneyz + 45;
                                 inventory.UpdateMoneyz(g);
@@ -551,7 +558,6 @@ namespace FarmWars
                                 itemnum = itemtype.Item2 - 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "Wheat");
                                 inventory.inventory.Add(new Tuple<string, int>("Wheat", itemnum));
-                                Console.WriteLine(itemnum);
                                 //Sell Wheat
                                 inventory.Moneyz = inventory.Moneyz + 60;
                                 inventory.UpdateMoneyz(g);
@@ -564,7 +570,6 @@ namespace FarmWars
                         if (inventory.inventory.Where(z => z.Item1 == "Corn").Any())
                         {
                             var itemtype = inventory.inventory.Find(z => z.Item1 == "Corn");
-                            Console.WriteLine(itemtype.Item1);
                             if (itemtype.Item2 == 0)
                             {
 
@@ -574,7 +579,6 @@ namespace FarmWars
                                 itemnum = itemtype.Item2 - 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "Corn");
                                 inventory.inventory.Add(new Tuple<string, int>("Corn", itemnum));
-                                Console.WriteLine(itemnum);
                                 //Sell Corn
                                 inventory.Moneyz = inventory.Moneyz + 100;
                                 inventory.UpdateMoneyz(g);
@@ -587,7 +591,6 @@ namespace FarmWars
                         if (inventory.inventory.Where(z => z.Item1 == "Carrot").Any())
                         {
                             var itemtype = inventory.inventory.Find(z => z.Item1 == "Carrot");
-                            Console.WriteLine(itemtype.Item1);
                             if (itemtype.Item2 == 0)
                             {
 
@@ -597,7 +600,6 @@ namespace FarmWars
                                 itemnum = itemtype.Item2 - 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "Carrot");
                                 inventory.inventory.Add(new Tuple<string, int>("Carrot", itemnum));
-                                Console.WriteLine(itemnum);
                                 //Sell Carrot
                                 inventory.Moneyz = inventory.Moneyz + 150;
                                 inventory.UpdateMoneyz(g);
@@ -610,7 +612,6 @@ namespace FarmWars
                         if (inventory.inventory.Where(z => z.Item1 == "Turnip").Any())
                         {
                             var itemtype = inventory.inventory.Find(z => z.Item1 == "Turnip");
-                            Console.WriteLine(itemtype.Item1);
                             if (itemtype.Item2 == 0)
                             {
 
@@ -620,7 +621,6 @@ namespace FarmWars
                                 itemnum = itemtype.Item2 - 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "Turnip");
                                 inventory.inventory.Add(new Tuple<string, int>("Turnip", itemnum));
-                                Console.WriteLine(itemnum);
                                 //Sell Turnip
                                 inventory.Moneyz = inventory.Moneyz + 250;
                                 inventory.UpdateMoneyz(g);
@@ -635,11 +635,9 @@ namespace FarmWars
                             if (inventory.inventory.Where(z => z.Item1 == "Fence").Any())
                             {
                                 var itemtype = inventory.inventory.Find(z => z.Item1 == "Fence");
-                                Console.WriteLine(itemtype.Item1);
                                 itemnum = itemtype.Item2 + 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "Fence");
                                 inventory.inventory.Add(new Tuple<string, int>("Fence", itemnum));
-                                Console.WriteLine(itemnum);
                             }
                             else
                             {
@@ -658,11 +656,9 @@ namespace FarmWars
                             if (inventory.inventory.Where(z => z.Item1 == "Wall").Any())
                             {
                                 var itemtype = inventory.inventory.Find(z => z.Item1 == "Wall");
-                                Console.WriteLine(itemtype.Item1);
                                 itemnum = itemtype.Item2 + 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "Wall");
                                 inventory.inventory.Add(new Tuple<string, int>("Wall", itemnum));
-                                Console.WriteLine(itemnum);
                             }
                             else
                             {
@@ -729,11 +725,9 @@ namespace FarmWars
                             if (inventory.inventory.Where(z => z.Item1 == "HealthPot").Any())
                             {
                                 var itemtype = inventory.inventory.Find(z => z.Item1 == "HealthPot");
-                                Console.WriteLine(itemtype.Item1);
                                 itemnum = itemtype.Item2 + 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "HealthPot");
                                 inventory.inventory.Add(new Tuple<string, int>("HealthPot", itemnum));
-                                Console.WriteLine(itemnum);
                             }
                             else
                             {
@@ -752,11 +746,9 @@ namespace FarmWars
                             if (inventory.inventory.Where(z => z.Item1 == "UselessPot").Any())
                             {
                                 var itemtype = inventory.inventory.Find(z => z.Item1 == "UselessPot");
-                                Console.WriteLine(itemtype.Item1);
                                 itemnum = itemtype.Item2 + 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "UselessPot");
                                 inventory.inventory.Add(new Tuple<string, int>("UselessPot", itemnum));
-                                Console.WriteLine(itemnum);
                             }
                             else
                             {

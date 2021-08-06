@@ -19,6 +19,7 @@ namespace FarmWars
         public int PosY;
         public int InvX;
         public int InvY;
+        public string itemselected = "Tater";
         public int width;
         public int height;
         public int Moneyz = 1000;
@@ -289,12 +290,13 @@ namespace FarmWars
             string itempict;
             itemid = ItemDict(itemname);
             itempict = ItemPictDict(itemid);
+            itemselected = itemname;
 
-            SolidBrush whitebr = new SolidBrush(Color.WhiteSmoke);
+            SolidBrush whitebr = new SolidBrush(Color.Wheat);
 
             Image ItemImage = Image.FromFile(itempict);
 
-            Rectangle selectSquare = new Rectangle(SqaureSize * 2, PnlHeight - SqaureSize * 8, SqaureSize * 6, SqaureSize * 6);
+            Rectangle selectSquare = new Rectangle(SqaureSize * 2, PnlHeight - SqaureSize * 6, SqaureSize * 4, SqaureSize * 4);
 
             g.FillRectangle(whitebr, selectSquare);
             g.DrawImage(ItemImage, selectSquare);

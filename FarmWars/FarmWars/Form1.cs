@@ -259,8 +259,7 @@ namespace FarmWars
                     if (XPos >= -50 + HuAstar.xLoc && YPos >= -50 + HuAstar.yLoc && XPos <= 75 + HuAstar.xLoc && YPos <= 75 + HuAstar.yLoc)
                     {
                         feildTile.SquareSize = SquareSize;
-
-                        feildTile.DrawFeild(f,Turn, CropType, XCord, YCord);
+                        feildTile.DrawFeild(f,Turn, XCord, YCord);
                     }
                 }
             }
@@ -309,8 +308,10 @@ namespace FarmWars
                 if (XPos >= PnlGame.Width - (4 * 50) && YPos >= inventory.PosY + 125 && XPos <= PnlGame.Width - (1 * 50) && YPos <= inventory.PosY + 125 + (6 * 50))
                 {
                     int invsel = 0;
-                    double invsqx = Math.Round(Convert.ToDouble(XPos) / 50, 0) - 24;
+                    double invsqx = Math.Round(Convert.ToDouble(XPos) / 50, 0) - 18;
                     double invsqy = Math.Round(Convert.ToDouble(YPos) / 50, 0) - 3;
+                    Console.WriteLine(invsqy);
+                    Console.WriteLine(Convert.ToInt32(invsqx));
                     if (invsqx == 1)
                     {
                         invsel = Convert.ToInt32(invsqy);
@@ -323,11 +324,13 @@ namespace FarmWars
                     {
                         invsel = Convert.ToInt32(invsqy) + 12;
                     }
-                    invsel = invsel - 1;
-                    if (inventory.inventory.Count > invsel)
+                    if (inventory.inventory.Count >= invsel)
                     {
                         string Item = inventory.inventory[invsel].Item1;
+                        Console.WriteLine(Convert.ToString(invsel));
+                        Console.WriteLine(Item);
                         inventory.selitemname = Item;
+                        feildTile.CropType = Item;
                     }
                 }
                 else
@@ -408,9 +411,13 @@ namespace FarmWars
             }
             if (GoneShopping == true)
             {
+                int shopscaled = Convert.ToInt32(shop.scalefactord);
+                int shopscalem = Convert.ToInt32(shop.scalefactorm);
+  
+
                 if (XPos >= 100 && YPos >= 60 && XPos <= PnlGame.Width - 100 && YPos <= PnlGame.Height - 60)
                 {
-                    if (XPos >= 200 && YPos >= 360 && XPos <= 300 && YPos <= 390)
+                    if (XPos >= shop.shopx + (((0 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((190 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <=  (shop.shopx + (((0 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         if (inventory.Moneyz >= 25)
                         {
@@ -432,7 +439,7 @@ namespace FarmWars
                             inventory.UpdateMoneyz(g);
                         }
                     }
-                    if (XPos >= 300 && YPos >= 360 && XPos <= 400 && YPos <= 390)
+                    if (XPos >= shop.shopx + (((1 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((190 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (((1 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
 
                         if (inventory.Moneyz >= 35)
@@ -456,7 +463,7 @@ namespace FarmWars
                         }
 
                     }
-                    if (XPos >= 400 && YPos >= 360 && XPos <= 500 && YPos <= 390)
+                    if (XPos >= shop.shopx + (((2 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((190 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (((2 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         if (inventory.Moneyz >= 50)
                         {
@@ -478,7 +485,7 @@ namespace FarmWars
                             inventory.UpdateMoneyz(g);
                         }
                     }
-                    if (XPos >= 500 && YPos >= 360 && XPos <= 600 && YPos <= 390)
+                    if (XPos >= shop.shopx + (((3 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((190 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (((3 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         if (inventory.Moneyz >= 100)
                         {
@@ -500,7 +507,7 @@ namespace FarmWars
                             inventory.UpdateMoneyz(g);
                         }
                     }
-                    if (XPos >= 600 && YPos >= 360 && XPos <= 700 && YPos <= 390)
+                    if (XPos >= shop.shopx + (((4 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((190 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (((4 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         if (inventory.Moneyz >= 150)
                         {
@@ -521,7 +528,7 @@ namespace FarmWars
                             inventory.UpdateMoneyz(g);
                         }
                     }
-                    if (XPos >= 800 && YPos >= 360 && XPos <= 900 && YPos <= 390)
+                    if (XPos >= shop.shopx + (600 / shopscaled) * shopscalem  + (((0 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((190 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (600 / shopscaled) * shopscalem + (((0 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         int itemnum = 0;
                         if (inventory.inventory.Where(z => z.Item1 == "Tater").Any())
@@ -542,7 +549,7 @@ namespace FarmWars
                             }
                         }
                     }
-                    if (XPos >= 900 && YPos >= 360 && XPos <= 1000 && YPos <= 390)
+                    if (XPos >= shop.shopx + (600 / shopscaled) * shopscalem + (((1 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((190 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (600 / shopscaled) * shopscalem + (((1 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         int itemnum = 0;
                         if (inventory.inventory.Where(z => z.Item1 == "Wheat").Any())
@@ -564,7 +571,7 @@ namespace FarmWars
                             }
                         }
                     }
-                    if (XPos >= 1000 && YPos >= 360 && XPos <= 1100 && YPos <= 390)
+                    if (XPos >= shop.shopx + (600 / shopscaled) * shopscalem + (((2 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((190 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (600 / shopscaled) * shopscalem + (((2 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         int itemnum = 0;
                         if (inventory.inventory.Where(z => z.Item1 == "Corn").Any())
@@ -585,7 +592,7 @@ namespace FarmWars
                             }
                         }
                     }
-                    if (XPos >= 1100 && YPos >= 360 && XPos <= 1200 && YPos <= 390)
+                    if (XPos >= shop.shopx + (600 / shopscaled) * shopscalem + (((3 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((190 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (600 / shopscaled) * shopscalem + (((3 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         int itemnum = 0;
                         if (inventory.inventory.Where(z => z.Item1 == "Carrot").Any())
@@ -606,7 +613,7 @@ namespace FarmWars
                             }
                         }
                     }
-                    if (XPos >= 1200 && YPos >= 360 && XPos <= 1300 && YPos <= 390)
+                    if (XPos >= shop.shopx + (600 / shopscaled) * shopscalem + (((4 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((190 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (600 / shopscaled) * shopscalem + (((4 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         int itemnum = 0;
                         if (inventory.inventory.Where(z => z.Item1 == "Turnip").Any())
@@ -620,14 +627,14 @@ namespace FarmWars
                             {
                                 itemnum = itemtype.Item2 - 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "Turnip");
-                                inventory.inventory.Add(new Tuple<string, int>("Turnip", itemnum));
+                                inventory.inventory.Add( new Tuple<string, int>("Turnip", itemnum));
                                 //Sell Turnip
                                 inventory.Moneyz = inventory.Moneyz + 250;
                                 inventory.UpdateMoneyz(g);
                             }
                         }
                     }
-                    if (XPos >= 200 && YPos >= 690 && XPos <= 300 && YPos <= 720)
+                    if (XPos >= shop.shopx + (((0 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((300 / shopscaled) * shopscalem) + ((190 / shopscaled) * shopscalem) && YPos <= shop.shopy + 300 / shopscaled * shopscalem + 210 / shopscaled * shopscalem + 40 / shopscaled * shopscalem && XPos <= (shop.shopx + (((0 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         if (inventory.Moneyz >= 25)
                         {
@@ -648,7 +655,7 @@ namespace FarmWars
                             inventory.UpdateMoneyz(g);
                         }
                     }
-                    if (XPos >= 300 && YPos >= 690 && XPos <= 400 && YPos <= 720)
+                    if (XPos >= shop.shopx + (((1 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((300 / shopscaled) * shopscalem) + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((300 / shopscaled) * shopscalem) + ((210 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (((1 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         if (inventory.Moneyz >= 100)
                         {
@@ -669,7 +676,7 @@ namespace FarmWars
                             inventory.UpdateMoneyz(g);
                         }
                     }
-                    if (XPos >= 400 && YPos >= 690 && XPos <= 500 && YPos <= 720)
+                    if (XPos >= shop.shopx + (((2 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((300 / shopscaled) * shopscalem) + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((300 / shopscaled) * shopscalem) + ((210 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (((2 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         if (inventory.Moneyz >= 300)
                         {
@@ -681,7 +688,7 @@ namespace FarmWars
                             }
                         }
                     }
-                    if (XPos >= 500 && YPos >= 690 && XPos <= 600 && YPos <= 720)
+                    if (XPos >= shop.shopx + (((3 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((300 / shopscaled) * shopscalem) + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((300 / shopscaled) * shopscalem) + ((210 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (((3 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         if (inventory.Moneyz >= 600)
                         {
@@ -693,7 +700,7 @@ namespace FarmWars
                             }
                         }
                     }
-                    if (XPos >= 600 && YPos >= 690 && XPos <= 700 && YPos <= 720)
+                    if (XPos >= shop.shopx + (((4 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((300 / shopscaled) * shopscalem) + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((300 / shopscaled) * shopscalem) + ((210 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (((4 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         if (inventory.Moneyz >= 350)
                         {
@@ -705,7 +712,7 @@ namespace FarmWars
                             }
                         }
                     }
-                    if (XPos >= 700 && YPos >= 690 && XPos <= 800 && YPos <= 720)
+                    if (XPos >= shop.shopx + (((5 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((300 / shopscaled) * shopscalem) + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((300 / shopscaled) * shopscalem) + ((210 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (((5 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         if (inventory.Moneyz >= 700)
                         {
@@ -717,7 +724,7 @@ namespace FarmWars
                             }
                         }
                     }
-                    if (XPos >= 800 && YPos >= 690 && XPos <= 900 && YPos <= 720)
+                    if (XPos >= shop.shopx + (((6 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((300 / shopscaled) * shopscalem) + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((300 / shopscaled) * shopscalem) + ((210 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (((6 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         if (inventory.Moneyz >= 250)
                         {
@@ -738,7 +745,7 @@ namespace FarmWars
                             inventory.UpdateMoneyz(g);
                         }
                     }
-                    if (XPos >= 1000 && YPos >= 690 && XPos <= 1100 && YPos <= 720)
+                    if (XPos >= shop.shopx + (((7 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((300 / shopscaled) * shopscalem) + ((190 / shopscaled) * shopscalem) && YPos <= shop.shopy + (((300 / shopscaled) * shopscalem) + ((210 / shopscaled) * shopscalem) + (40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (((7 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         if (inventory.Moneyz >= 500)
                         {
@@ -1006,8 +1013,8 @@ namespace FarmWars
             private void TmrHumMovement_Tick(object sender, EventArgs e)
         {
             Graphics g = PnlGame.CreateGraphics();
-            HuPathPos++;
-            HuPathLoc++;
+            HuPathPos = HuPathPos + 1;
+            HuPathLoc = HuPathLoc + 2;
 
             HuAstar.PathLoc = HuPathLoc;
             HuAstar.PathPos = HuPathPos;
@@ -1075,26 +1082,32 @@ namespace FarmWars
             Graphics g = PnlGame.CreateGraphics();
             for (int i = 0; i < 6; i++)
             {
-                if (HAstar[i].xLoc >= -50 + HuAstar.xLoc && HAstar[i].yLoc >= -50 + HuAstar.yLoc && HAstar[i].xLoc <= 75 + HuAstar.xLoc && HAstar[i].yLoc <= 75 + HuAstar.yLoc)
+                if (HAstar[i].visible == true)
                 {
-                    int health = HuHealth - 2;
-                    human.DrawHealth(g);
-                    Console.WriteLine(health);
-                    HuHealth = health;
+                    if (HAstar[i].xLoc >= -50 + HuAstar.xLoc && HAstar[i].yLoc >= -50 + HuAstar.yLoc && HAstar[i].xLoc <= 75 + HuAstar.xLoc && HAstar[i].yLoc <= 75 + HuAstar.yLoc)
+                    {
+                        int health = HuHealth - 2;
+                        human.DrawHealth(g);
+                        Console.WriteLine(health);
+                        HuHealth = health;
+                    }
                 }
             }
             for (int i = 0; i < 6; i++)
             {
-                if (HuAstar.xLoc >= -50 + HAstar[i].xLoc && HuAstar.yLoc >= -50 + HAstar[i].yLoc && HuAstar.xLoc <= 75 + HAstar[i].xLoc && HuAstar.yLoc <= 75 + HAstar[i].yLoc)
+                if (HAstar[i].visible == true)
                 {
-                    int healthhos = HosHealth[i] - 10;
-                    HAstar[i].DrawHealth(g, i);
-                    Console.WriteLine(healthhos);
-                    HosHealth[i] = healthhos;
-                }
-                if (HosHealth[i] <= 0)
-                {
-                    PauseGame();
+                    if (HuAstar.xLoc >= -50 + HAstar[i].xLoc && HuAstar.yLoc >= -50 + HAstar[i].yLoc && HuAstar.xLoc <= 75 + HAstar[i].xLoc && HuAstar.yLoc <= 75 + HAstar[i].yLoc)
+                    {
+                        int healthhos = HosHealth[i] - 10;
+                        HAstar[i].DrawHealth(g, i);
+                        Console.WriteLine(healthhos);
+                        HosHealth[i] = healthhos;
+                    }
+                    if (HosHealth[i] <= 0)
+                    {
+                        PauseGame();
+                    }
                 }
             }
         }

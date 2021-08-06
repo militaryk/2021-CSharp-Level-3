@@ -16,6 +16,10 @@ namespace FarmWars
         public int tiletype;
         public int PnlHeight;
         public int PnlWidth;
+        public double scalefactord = 10;
+        public double scalefactorm = 7;
+        public int shopx = 200;
+        public int shopy = 200;
 
         public void DrawShop(Graphics g, int y, int x)
         {
@@ -30,46 +34,49 @@ namespace FarmWars
 
         public void DrawShopMenu(Graphics g)
         {
+            int buypos = (96 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm);
+
+
+
             Color ui = Color.FromArgb(210, 183, 119);
 
             SolidBrush br = new SolidBrush(ui);
-            Pen penblack = new Pen(Color.Black, 4);
+            Pen penblack = new Pen(Color.Black, (4 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
             Rectangle ShowMenu = new Rectangle(100, 60, PnlWidth - 200, PnlHeight - 120);
-            Rectangle ShopSign = new Rectangle(125, 100, 400,100);
+            Rectangle ShopSign = new Rectangle(125, 100, (400 / Convert.ToInt32(scalefactord) * Convert.ToInt32(scalefactorm)),( 100 /Convert.ToInt32(scalefactord) * Convert.ToInt32(scalefactorm)));
 
-            Font shopFont = new Font("Times New Roman Bold", 52);
+            Font shopFont = new Font("Times New Roman Bold",( 52 / Convert.ToInt32(scalefactord) * Convert.ToInt32(scalefactorm)));
             SolidBrush shopBrush = new SolidBrush(Color.White);
 
             String drawString = "Error";
 
-            Font drawFont = new Font("Arial Bold", 12);
+            Font drawFont = new Font("Arial Bold",12 );
             SolidBrush drawBrush = new SolidBrush(Color.Black);
             SolidBrush whiteBrush = new SolidBrush(Color.White);
             SolidBrush buyBrush = new SolidBrush(Color.FromArgb(94, 72, 20));
 
-            Font coinFont = new Font("Arial", 20);
-            Font buyFont = new Font("Arial", 26);
+            Font coinFont = new Font("Arial",( 20 / Convert.ToInt32(scalefactord) * Convert.ToInt32(scalefactorm)));
+            Font buyFont = new Font("Arial",( 26 / Convert.ToInt32(scalefactord) * Convert.ToInt32(scalefactorm)));
 
             g.FillRectangle(br, ShowMenu);
             g.DrawString("Shop", shopFont, shopBrush, ShopSign);
 
             for (int i = 0; i < 5; i++)
             {
-                int x = 200;
-                int y = 200;
+                int x = shopx;
+                int y = shopy;
 
                 Image SeedImage = Image.FromFile("../../../Art/Items/tatersseed.png");
                 Image CoinImage = Image.FromFile("../../../Art/ui/Coin.png");
                 int Price = 25;
-
-                Rectangle MenuSeeds = new Rectangle(x + (i * 100), y, 100, 100);
-                Rectangle MenuTitle = new Rectangle(x + (i * 100), y + 100, 100, 30);
-                Rectangle MenuPrice = new Rectangle(x + (i * 100), y + 130, 100, 30);
-                Rectangle MenuCoin = new Rectangle(x + (i * 100), y + 130, 30, 30);
-                Rectangle MenuCost = new Rectangle(x + 30 + (i * 100), y + 130, 100, 30);
-                Rectangle MenuBuy = new Rectangle(x + (i * 100), y + 160, 100, 40);
-                Rectangle MenuBuyInside = new Rectangle(x + 2 + (i * 100), y + 160, 96, 40);
-                Rectangle MenuBuyText = new Rectangle(x + 12 + (i * 100), y + 160, 76, 40);
+                Rectangle MenuSeeds = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y, (100 /Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuTitle = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm),  (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (60 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuPrice = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (160 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuCoin = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (160 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuCost = new Rectangle(x + (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm) + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (160 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuBuy = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (190 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (40 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuBuyInside = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (190 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (40 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuBuyText = new Rectangle(x + (12 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm) + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (190 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (76 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (40 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
 
                 drawString = "Tater Seeds";
 
@@ -77,8 +84,9 @@ namespace FarmWars
                 g.DrawRectangle(penblack, MenuSeeds);
                 g.DrawRectangle(penblack, MenuTitle);
                 g.DrawRectangle(penblack, MenuPrice);
-                g.DrawRectangle(penblack, MenuBuy);
                 g.FillRectangle(buyBrush, MenuBuyInside);
+                g.DrawRectangle(penblack, MenuBuy);
+
 
                 if (i == 1)
                 {
@@ -114,21 +122,22 @@ namespace FarmWars
             }
             for (int i = 0; i < 8; i++)
             {
-                int x = 200;
-                int y = 500;
+                int x = shopx;
+                int y = shopy + (300 / Convert.ToInt32(scalefactord) * Convert.ToInt32(scalefactorm));
 
                 Image SeedImage = Image.FromFile("../../../Art/Items/fence.png");
                 Image CoinImage = Image.FromFile("../../../Art/ui/Coin.png");
                 int Price = 25;
 
-                Rectangle MenuSeeds = new Rectangle(x + (i * 100), y, 100, 100);
-                Rectangle MenuTitle = new Rectangle(x + (i * 100), y + 100, 100, 60);
-                Rectangle MenuPrice = new Rectangle(x + (i * 100), y + 160, 100, 30);
-                Rectangle MenuCoin = new Rectangle(x + (i * 100), y + 160, 30, 30);
-                Rectangle MenuCost = new Rectangle(x + 30 + (i * 100), y + 160, 100, 30);
-                Rectangle MenuBuy = new Rectangle(x + (i * 100), y + 190, 100, 40);
-                Rectangle MenuBuyInside = new Rectangle(x + 2 + (i * 100), y + 190, 96, 40);
-                Rectangle MenuBuyText = new Rectangle(x + 12 + (i * 100), y + 190, 76, 40);
+                Rectangle MenuSeeds = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y, (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuTitle = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (90 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuPrice = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (190 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuCoin = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (190 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuCost = new Rectangle(x + (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm) + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (190 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuBuy = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (220 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (40 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuBuyInside = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (220 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (40 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuBuyText = new Rectangle(x + (12 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm) + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (220 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (76 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (40 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+
 
                 drawString = "Fence";
 
@@ -136,8 +145,8 @@ namespace FarmWars
                 g.DrawRectangle(penblack, MenuSeeds);
                 g.DrawRectangle(penblack, MenuTitle);
                 g.DrawRectangle(penblack, MenuPrice);
-                g.DrawRectangle(penblack, MenuBuy);
                 g.FillRectangle(buyBrush, MenuBuyInside);
+                g.DrawRectangle(penblack, MenuBuy);
 
                 if (i == 1)
                 {
@@ -191,21 +200,21 @@ namespace FarmWars
             }
             for (int i = 0; i < 5; i++)
             {
-                int x = 800;
-                int y = 200;
+                int x = shopx + (600 / Convert.ToInt32(scalefactord) * Convert.ToInt32(scalefactorm));
+                int y = shopy;
 
                 Image SeedImage = Image.FromFile("../../../Art/Items/Tater.png");
                 Image CoinImage = Image.FromFile("../../../Art/ui/Coin.png");
                 int Price = 45;
 
-                Rectangle MenuSeeds = new Rectangle(x + (i * 100), y, 100, 100);
-                Rectangle MenuTitle = new Rectangle(x + (i * 100), y + 100, 100, 30);
-                Rectangle MenuPrice = new Rectangle(x + (i * 100), y + 130, 100, 30);
-                Rectangle MenuCoin = new Rectangle(x + (i * 100), y + 130, 30, 30);
-                Rectangle MenuCost = new Rectangle(x + 30 + (i * 100), y + 130, 100, 30);
-                Rectangle MenuBuy = new Rectangle(x + (i * 100), y + 160, 100, 40);
-                Rectangle MenuBuyInside = new Rectangle(x + 2 + (i * 100), y + 160, 96, 40);
-                Rectangle MenuBuyText = new Rectangle(x + 12 + (i * 100), y + 160, 76, 40);
+                Rectangle MenuSeeds = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y, (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuTitle = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (60 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuPrice = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (160 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuCoin = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (160 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuCost = new Rectangle(x + (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm) + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (160 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (30 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuBuy = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (190 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (40 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuBuyInside = new Rectangle(x + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (190 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (40 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuBuyText = new Rectangle(x + (12 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm) + ((i * 100) / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), y + (190 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (76 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (40 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
 
                 drawString = "Tater";
 
@@ -213,8 +222,8 @@ namespace FarmWars
                 g.DrawRectangle(penblack, MenuSeeds);
                 g.DrawRectangle(penblack, MenuTitle);
                 g.DrawRectangle(penblack, MenuPrice);
-                g.DrawRectangle(penblack, MenuBuy);
                 g.FillRectangle(buyBrush, MenuBuyInside);
+                g.DrawRectangle(penblack, MenuBuy);
 
                 if (i == 1)
                 {

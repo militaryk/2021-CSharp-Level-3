@@ -21,6 +21,7 @@ namespace FarmWars
 
         public bool pathfollowed = false;
         public bool calcpath = true;
+        public bool visible = false;
 
         public int LeftX, LeftY, RightX, RightY, UpX, UpY, DownX, DownY, StartX, StartY;
         bool pathmade = false;
@@ -39,6 +40,7 @@ namespace FarmWars
         {
             try
             {
+                visible = true;
                 path.Clear();
                 Console.WriteLine("Path Cleared");
                 walkpath.Clear();
@@ -212,8 +214,8 @@ namespace FarmWars
                 {
                     try
                     {
+                        visible = true;
                         pathfollowed = true;
-                        //((FormGame)FormGame.ActiveForm).TmrHosMovement.Enabled = false;
                         ((FormGame)FormGame.ActiveForm).Drawn[arnum] = false;
                         Console.WriteLine("Path Walked");
                     } catch
@@ -279,6 +281,15 @@ namespace FarmWars
             int healthlength = ((health) * 36 / 100);
             Rectangle Hlrect = new Rectangle(x - 8, y + 31, healthlength, 8);
             g.FillRectangle(healthBrush, Hlrect);
+
+            if (health < 1)
+            {
+                visible = false;
+                pathfollowed = true;
+                //((FormGame)FormGame.ActiveForm).TmrHosMovement.Enabled = false;
+                ((FormGame)FormGame.ActiveForm).Drawn[arnum] = false;
+                Console.WriteLine("Path Walked");
+            }
         }
     }
 

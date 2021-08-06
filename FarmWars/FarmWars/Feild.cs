@@ -14,51 +14,55 @@ namespace FarmWars
     class Feild
     {
         public int SquareSize;
+        public string CropType;
 
         public List<Tuple<int, string, int, int>> cropfield = new List<Tuple<int, string, int, int>>();
 
+        Inventory inventory = new Inventory();
 
-        public void DrawFeild(Graphics g, int Turn, string CropType, int XCord, int YCord)
+        public void DrawFeild(Graphics g, int Turn, int XCord, int YCord)
         {
-            //Calcualte the X and Y of each indervidual square
-            int PosX = SquareSize * XCord;
-            int PosY = SquareSize * YCord;
-
-            if (cropfield.Where(z => z.Item3 == PosX && z.Item4 == PosY).Any())
+            if (CropType == "TaterSeed" || CropType == "WheatSeed" || CropType == "CornSeed" || CropType == "CarrotSeed" || CropType == "TurnipSeed")
             {
-            }
-            else
-            {
-                cropfield.Add(new Tuple<int, string, int, int>(Turn, CropType, PosX, PosY));
-            }
 
-            // Create rectangle for feild.
-            Rectangle rect = new Rectangle(PosX, PosY, 25, 25);
-            PlantSeed(g, PosX, PosY, CropType);
+                //Calcualte the X and Y of each indervidual square
+                int PosX = SquareSize * XCord;
+                int PosY = SquareSize * YCord;
+
+                if (cropfield.Where(z => z.Item3 == PosX && z.Item4 == PosY).Any())
+                {
+                    Console.WriteLine(CropType);
+                }
+                else
+                {
+                  cropfield.Add(new Tuple<int, string, int, int>(Turn, CropType, PosX, PosY));
+                    // Create rectangle for feild.
+                    PlantSeed(g, PosX, PosY, CropType);
+                }
+            }
         }
 
         public void PlantSeed(Graphics g, int PosX, int PosY, string CropType)
         {
-            CropType = "Wheat";
             Image SeedImage = Image.FromFile("../../../Art/ground/grownwheat.png");
 
-            if (CropType == "Tater")
+            if (CropType == "TaterSeed")
             {
                 SeedImage = Image.FromFile("../../../Art/crops/taters1.png");
             }
-            if (CropType == "Wheat")
+            if (CropType == "WheatSeed")
             {
                 SeedImage = Image.FromFile("../../../Art/crops/wheats1.png");
             }
-            if (CropType == "Corn")
+            if (CropType == "CornSeed")
             {
                 SeedImage = Image.FromFile("../../../Art/crops/corns1.png");
             }
-            if (CropType == "Carrot")
+            if (CropType == "CarrotSeed")
             {
                 SeedImage = Image.FromFile("../../../Art/crops/carrots1.png");
             }
-            if (CropType == "Turnip")
+            if (CropType == "TurnipSeed")
             {
                 SeedImage = Image.FromFile("../../../Art/crops/turnips1.png");
             }
@@ -75,28 +79,27 @@ namespace FarmWars
                 string CropType = cropfield[i].Item2;
                 int XCord = cropfield[i].Item3;
                 int YCord = cropfield[i].Item4;
-                CropType = "Carrot";
 
                 if (CropTurn == Turn - 1)
                 {
 
-                    if (CropType == "Tater")
+                    if (CropType == "TaterSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/taters2.png");
                     }
-                    if (CropType == "Wheat")
+                    if (CropType == "WheatSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/wheats2.png");
                     }
-                    if (CropType == "Corn")
+                    if (CropType == "CornSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/corns2.png");
                     }
-                    if (CropType == "Carrot")
+                    if (CropType == "CarrotSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/carrots2.png");
                     }
-                    if (CropType == "Turnip")
+                    if (CropType == "TurnipSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/turnips2.png");
                     }
@@ -106,23 +109,23 @@ namespace FarmWars
                 if (CropTurn == Turn - 2)
                 {
 
-                    if (CropType == "Tater")
+                    if (CropType == "TaterSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/taters3.png");
                     }
-                    if (CropType == "Wheat")
+                    if (CropType == "WheatSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/wheats3.png");
                     }
-                    if (CropType == "Corn")
+                    if (CropType == "CornSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/corns3.png");
                     }
-                    if (CropType == "Carrot")
+                    if (CropType == "CarrotSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/carrots3.png");
                     }
-                    if (CropType == "Turnip")
+                    if (CropType == "TurnipSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/turnips3.png");
                     }
@@ -132,23 +135,23 @@ namespace FarmWars
                 if (CropTurn == Turn - 3)
                 {
 
-                    if (CropType == "Tater")
+                    if (CropType == "TaterSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/taters4.png");
                     }
-                    if (CropType == "Wheat")
+                    if (CropType == "WheatSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/wheats4.png");
                     }
-                    if (CropType == "Corn")
+                    if (CropType == "CornSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/corns4.png");
                     }
-                    if (CropType == "Carrot")
+                    if (CropType == "CarrotSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/carrots4.png");
                     }
-                    if (CropType == "Turnip")
+                    if (CropType == "TurnipSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/turnips4.png");
                     }
@@ -158,23 +161,23 @@ namespace FarmWars
                 if (CropTurn == Turn - 4)
                 {
 
-                    if (CropType == "Tater")
+                    if (CropType == "TaterSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/taters5.png");
                     }
-                    if (CropType == "Wheat")
+                    if (CropType == "WheatSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/wheats5.png");
                     }
-                    if (CropType == "Corn")
+                    if (CropType == "CornSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/corns5.png");
                     }
-                    if (CropType == "Carrot")
+                    if (CropType == "CarrotSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/carrots5.png");
                     }
-                    if (CropType == "Turnip")
+                    if (CropType == "TurnipSeed")
                     {
                         YoungCropImage = Image.FromFile("../../../Art/crops/turnips5.png");
                     }

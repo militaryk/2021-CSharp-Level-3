@@ -9,6 +9,8 @@ namespace FarmWars
         public int y;
         public int x;
         public int tiletype;
+        public int health = 100;
+        public int maxhealth = 100;
         public void DrawHuman(Graphics g)
         {
 
@@ -28,18 +30,16 @@ namespace FarmWars
             int heightc = 75;
 
             // Draw ellipse to screen.
-            g.DrawEllipse(blackPen, x - (28), y- (25) , widthc, heightc);
+            g.DrawEllipse(blackPen, x - (28), y - (25), widthc, heightc);
 
             Rectangle rect = new Rectangle(x, y, width, height);
             Image newImage = Image.FromFile("../../../Art/character/human.png");
             g.DrawImage(newImage, rect);
             DrawHealth(g);
-
         }
 
         public void DrawHealth(Graphics g)
         {
-            int health = ((FormGame)FormGame.ActiveForm).HuHealth;
             SolidBrush grayBrush = new SolidBrush(Color.DarkGray);
             Rectangle HlBrect = new Rectangle(x - 10, y + 30, width + 20, 10);
             g.FillRectangle(grayBrush, HlBrect);
@@ -49,13 +49,16 @@ namespace FarmWars
             if (health > 80 && health <= 100)
             {
                 healthBrush = new SolidBrush(Color.Green);
-            } else if(health > 40 && health <= 80)
+            }
+            else if (health > 40 && health <= 80)
             {
                 healthBrush = new SolidBrush(Color.Yellow);
-            } else if (health > 0 && health < 40){
+            }
+            else if (health > 0 && health < 40)
+            {
                 healthBrush = new SolidBrush(Color.Red);
             }
-            int healthlength = ((health) * 36 / 100);
+            int healthlength = ((health) * 36 / maxhealth);
             Rectangle Hlrect = new Rectangle(x - 8, y + 31, healthlength, 8);
             g.FillRectangle(healthBrush, Hlrect);
         }

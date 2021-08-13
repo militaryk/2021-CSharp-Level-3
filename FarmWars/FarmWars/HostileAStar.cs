@@ -22,6 +22,9 @@ namespace FarmWars
         public bool pathfollowed = false;
         public bool calcpath = true;
         public bool visible = false;
+        public bool attacking = false;
+
+
 
         public int LeftX, LeftY, RightX, RightY, UpX, UpY, DownX, DownY, StartX, StartY;
         bool pathmade = false;
@@ -40,11 +43,10 @@ namespace FarmWars
         {
             try
             {
+                attacking = true;
                 visible = true;
                 path.Clear();
-                Console.WriteLine("Path Cleared");
                 walkpath.Clear();
-                Console.WriteLine("Walk Path Cleared");
 
                 PathPos = 1;
                 PathLoc = 0;
@@ -140,6 +142,7 @@ namespace FarmWars
                 }
 
                 Console.WriteLine("No Path Found!");
+                visible = false;
             }
             catch
             {
@@ -190,8 +193,7 @@ namespace FarmWars
                             x4 = x1 - x3;
                             y4 = y1 - y3;
                             walkpath.Add(new Tuple<int, int>(x4, y4));
-                            Console.WriteLine(x4 + ":" + y4);
-                            Console.WriteLine(i);
+
                             x1 = x4;
                             y1 = y4;
                         }
@@ -212,15 +214,10 @@ namespace FarmWars
                 }
                 else
                 {
-                    try
-                    {
-                        visible = true;
-                        pathfollowed = true;
-                        ((FormGame)FormGame.ActiveForm).Drawn[arnum] = false;
-                        Console.WriteLine("Path Walked");
-                    } catch
-                    {
-
+                    if (attacking == true) {
+                        x = xLoc;
+                        y = yLoc;
+                        DrawHostile(g, arnum);
                     }
                 }
             }
@@ -259,38 +256,44 @@ namespace FarmWars
         }
         public void DrawHealth(Graphics g, int arnum)
         {
-            int health = ((FormGame)FormGame.ActiveForm).HosHealth[arnum];
-            SolidBrush grayBrush = new SolidBrush(Color.DarkGray);
-            Rectangle HlBrect = new Rectangle(x - 10, y + 30, width + 20, 10);
-            g.FillRectangle(grayBrush, HlBrect);
+            if (visible == true)
+            {
+                int health = ((FormGame)FormGame.ActiveForm).HosHealth[arnum];
+                SolidBrush grayBrush = new SolidBrush(Color.DarkGray);
+                Rectangle HlBrect = new Rectangle(x - 10, y + 30, width + 20, 10);
+                g.FillRectangle(grayBrush, HlBrect);
 
-            SolidBrush healthBrush = new SolidBrush(Color.Yellow);
+                SolidBrush healthBrush = new SolidBrush(Color.Yellow);
 
-            if (health > 80 && health <= 100)
-            {
-                healthBrush = new SolidBrush(Color.Green);
-            }
-            else if (health > 40 && health <= 80)
-            {
-                healthBrush = new SolidBrush(Color.Yellow);
-            }
-            else if (health > 0 && health < 40)
-            {
-                healthBrush = new SolidBrush(Color.Red);
-            }
-            int healthlength = ((health) * 36 / 100);
-            Rectangle Hlrect = new Rectangle(x - 8, y + 31, healthlength, 8);
-            g.FillRectangle(healthBrush, Hlrect);
-
-            if (health < 1)
-            {
-                visible = false;
-                pathfollowed = true;
-                //((FormGame)FormGame.ActiveForm).TmrHosMovement.Enabled = false;
-                ((FormGame)FormGame.ActiveForm).Drawn[arnum] = false;
-                Console.WriteLine("Path Walked");
+                if (health > 80 && health <= 100)
+                {
+                    healthBrush = new SolidBrush(Color.Green);
+                }
+                else if (health > 40 && health <= 80)
+                {
+                    healthBrush = new SolidBrush(Color.Yellow);
+                }
+                else if (health > 0 && health < 40)
+                {
+                    healthBrush = new SolidBrush(Color.Red);
+                }
+                int healthlength = ((health) * 36 / 100);
+                Rectangle Hlrect = new Rectangle(x - 8, y + 31, healthlength, 8);
+                g.FillRectangle(healthBrush, Hlrect);
+                if (health < 1)
+                {
+                    visible = false;
+                    pathfollowed = true;
+                    //((FormGame)FormGame.ActiveForm).TmrHosMovement.Enabled = false;
+                    ((FormGame)FormGame.ActiveForm).Drawn[arnum] = false;
+                    Console.WriteLine("Path Walked");
+                    attacking = false;
+                    xLoc = 0;
+                    yLoc = 0;
+                }
             }
         }
+
     }
 
 

@@ -30,6 +30,20 @@
         {
             this.components = new System.ComponentModel.Container();
             this.PnlGame = new System.Windows.Forms.Panel();
+            this.PnlMenu = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.btnSwitch = new System.Windows.Forms.Button();
+            this.LblHighSel = new System.Windows.Forms.Label();
+            this.LblHighscore = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.LbHighscore = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.LblUsername = new System.Windows.Forms.Label();
+            this.TbUsername = new System.Windows.Forms.TextBox();
+            this.BtnTutorial = new System.Windows.Forms.Button();
+            this.BtnGame = new System.Windows.Forms.Button();
             this.TmrHosMovement = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.seedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,6 +61,9 @@
             this.TmrTurn = new System.Windows.Forms.Timer(this.components);
             this.TmrHumMovement = new System.Windows.Forms.Timer(this.components);
             this.TmrDam = new System.Windows.Forms.Timer(this.components);
+            this.TmrRegen = new System.Windows.Forms.Timer(this.components);
+            this.PnlGame.SuspendLayout();
+            this.PnlMenu.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -58,6 +75,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PnlGame.BackColor = System.Drawing.SystemColors.ControlDark;
             this.PnlGame.CausesValidation = false;
+            this.PnlGame.Controls.Add(this.PnlMenu);
             this.PnlGame.Location = new System.Drawing.Point(2, 0);
             this.PnlGame.Name = "PnlGame";
             this.PnlGame.Size = new System.Drawing.Size(1480, 850);
@@ -69,6 +87,193 @@
             this.PnlGame.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PnlGame_MouseMove);
             this.PnlGame.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PnlGame_MouseUp);
             this.PnlGame.Validated += new System.EventHandler(this.PnlGame_Validated);
+            // 
+            // PnlMenu
+            // 
+            this.PnlMenu.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PnlMenu.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.PnlMenu.CausesValidation = false;
+            this.PnlMenu.Controls.Add(this.label4);
+            this.PnlMenu.Controls.Add(this.label5);
+            this.PnlMenu.Controls.Add(this.btnSwitch);
+            this.PnlMenu.Controls.Add(this.LblHighSel);
+            this.PnlMenu.Controls.Add(this.LblHighscore);
+            this.PnlMenu.Controls.Add(this.label3);
+            this.PnlMenu.Controls.Add(this.label2);
+            this.PnlMenu.Controls.Add(this.LbHighscore);
+            this.PnlMenu.Controls.Add(this.label1);
+            this.PnlMenu.Controls.Add(this.LblUsername);
+            this.PnlMenu.Controls.Add(this.TbUsername);
+            this.PnlMenu.Controls.Add(this.BtnTutorial);
+            this.PnlMenu.Controls.Add(this.BtnGame);
+            this.PnlMenu.Location = new System.Drawing.Point(0, 1);
+            this.PnlMenu.Name = "PnlMenu";
+            this.PnlMenu.Size = new System.Drawing.Size(1480, 850);
+            this.PnlMenu.TabIndex = 1;
+            this.PnlMenu.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlMenu_Paint);
+            // 
+            // label4
+            // 
+            this.label4.AccessibleRole = System.Windows.Forms.AccessibleRole.Grip;
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.Font = new System.Drawing.Font("Matura MT Script Capitals", 60F, System.Drawing.FontStyle.Bold);
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(129, 626);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(155, 133);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "14";
+            // 
+            // label5
+            // 
+            this.label5.AccessibleRole = System.Windows.Forms.AccessibleRole.Grip;
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.Font = new System.Drawing.Font("Matura MT Script Capitals", 30F, System.Drawing.FontStyle.Bold);
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(-7, 759);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(406, 67);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "Character Max!";
+            // 
+            // btnSwitch
+            // 
+            this.btnSwitch.BackgroundImage = global::FarmWars.Properties.Resources.Button;
+            this.btnSwitch.Font = new System.Drawing.Font("Matura MT Script Capitals", 20F, System.Drawing.FontStyle.Bold);
+            this.btnSwitch.ForeColor = System.Drawing.Color.White;
+            this.btnSwitch.Location = new System.Drawing.Point(1112, 526);
+            this.btnSwitch.Name = "btnSwitch";
+            this.btnSwitch.Size = new System.Drawing.Size(354, 52);
+            this.btnSwitch.TabIndex = 10;
+            this.btnSwitch.Text = "Show All";
+            this.btnSwitch.UseVisualStyleBackColor = true;
+            this.btnSwitch.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // LblHighSel
+            // 
+            this.LblHighSel.AutoSize = true;
+            this.LblHighSel.BackColor = System.Drawing.Color.Transparent;
+            this.LblHighSel.Font = new System.Drawing.Font("Lucida Handwriting", 25F, System.Drawing.FontStyle.Bold);
+            this.LblHighSel.ForeColor = System.Drawing.Color.White;
+            this.LblHighSel.Location = new System.Drawing.Point(1191, 188);
+            this.LblHighSel.Name = "LblHighSel";
+            this.LblHighSel.Size = new System.Drawing.Size(182, 55);
+            this.LblHighSel.TabIndex = 9;
+            this.LblHighSel.Text = "Top 10";
+            this.LblHighSel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LblHighscore
+            // 
+            this.LblHighscore.AutoSize = true;
+            this.LblHighscore.BackColor = System.Drawing.Color.Transparent;
+            this.LblHighscore.Font = new System.Drawing.Font("Lucida Handwriting", 25F, System.Drawing.FontStyle.Bold);
+            this.LblHighscore.ForeColor = System.Drawing.Color.White;
+            this.LblHighscore.Location = new System.Drawing.Point(1141, 133);
+            this.LblHighscore.Name = "LblHighscore";
+            this.LblHighscore.Size = new System.Drawing.Size(292, 55);
+            this.LblHighscore.TabIndex = 8;
+            this.LblHighscore.Text = "HighScores";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Font = new System.Drawing.Font("Lucida Handwriting", 30F, System.Drawing.FontStyle.Bold);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(1118, 188);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(46, 64);
+            this.label3.TabIndex = 7;
+            this.label3.Text = " ";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Matura MT Script Capitals", 30F, System.Drawing.FontStyle.Bold);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(1088, 741);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(372, 67);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Letters Only!";
+            // 
+            // LbHighscore
+            // 
+            this.LbHighscore.BackColor = System.Drawing.Color.NavajoWhite;
+            this.LbHighscore.Font = new System.Drawing.Font("Lucida Handwriting", 14F, System.Drawing.FontStyle.Bold);
+            this.LbHighscore.FormattingEnabled = true;
+            this.LbHighscore.HorizontalExtent = 100;
+            this.LbHighscore.HorizontalScrollbar = true;
+            this.LbHighscore.ItemHeight = 29;
+            this.LbHighscore.Location = new System.Drawing.Point(1112, 255);
+            this.LbHighscore.Name = "LbHighscore";
+            this.LbHighscore.Size = new System.Drawing.Size(354, 294);
+            this.LbHighscore.TabIndex = 5;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Lucida Handwriting", 75F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(343, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(837, 162);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Farm Wars";
+            // 
+            // LblUsername
+            // 
+            this.LblUsername.AutoSize = true;
+            this.LblUsername.BackColor = System.Drawing.Color.Transparent;
+            this.LblUsername.Font = new System.Drawing.Font("Lucida Handwriting", 50F, System.Drawing.FontStyle.Bold);
+            this.LblUsername.ForeColor = System.Drawing.Color.White;
+            this.LblUsername.Location = new System.Drawing.Point(352, 599);
+            this.LblUsername.Name = "LblUsername";
+            this.LblUsername.Size = new System.Drawing.Size(812, 108);
+            this.LblUsername.TabIndex = 3;
+            this.LblUsername.Text = "Enter Username";
+            this.LblUsername.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // TbUsername
+            // 
+            this.TbUsername.Font = new System.Drawing.Font("Matura MT Script Capitals", 50F, System.Drawing.FontStyle.Bold);
+            this.TbUsername.Location = new System.Drawing.Point(432, 710);
+            this.TbUsername.Name = "TbUsername";
+            this.TbUsername.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.TbUsername.Size = new System.Drawing.Size(650, 118);
+            this.TbUsername.TabIndex = 2;
+            this.TbUsername.TextChanged += new System.EventHandler(this.TbUsername_TextChanged);
+            // 
+            // BtnTutorial
+            // 
+            this.BtnTutorial.BackgroundImage = global::FarmWars.Properties.Resources.Button;
+            this.BtnTutorial.Font = new System.Drawing.Font("Matura MT Script Capitals", 50F, System.Drawing.FontStyle.Bold);
+            this.BtnTutorial.ForeColor = System.Drawing.Color.White;
+            this.BtnTutorial.Location = new System.Drawing.Point(432, 378);
+            this.BtnTutorial.Name = "BtnTutorial";
+            this.BtnTutorial.Size = new System.Drawing.Size(650, 200);
+            this.BtnTutorial.TabIndex = 1;
+            this.BtnTutorial.Text = "Tutorial";
+            this.BtnTutorial.UseVisualStyleBackColor = true;
+            // 
+            // BtnGame
+            // 
+            this.BtnGame.BackgroundImage = global::FarmWars.Properties.Resources.Button;
+            this.BtnGame.Font = new System.Drawing.Font("Matura MT Script Capitals", 50F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnGame.ForeColor = System.Drawing.Color.White;
+            this.BtnGame.Location = new System.Drawing.Point(432, 172);
+            this.BtnGame.Name = "BtnGame";
+            this.BtnGame.Size = new System.Drawing.Size(650, 200);
+            this.BtnGame.TabIndex = 0;
+            this.BtnGame.Text = "Launch Game";
+            this.BtnGame.UseVisualStyleBackColor = true;
+            this.BtnGame.Click += new System.EventHandler(this.BtnGame_Click);
             // 
             // TmrHosMovement
             // 
@@ -185,6 +390,11 @@
             this.BtnExit.Visible = false;
             this.BtnExit.Click += new System.EventHandler(this.BtnExit_Click);
             // 
+            // TmrTurn
+            // 
+            this.TmrTurn.Enabled = true;
+            this.TmrTurn.Tick += new System.EventHandler(this.TmrTurn_Tick);
+            // 
             // TmrHumMovement
             // 
             this.TmrHumMovement.Interval = 5;
@@ -195,6 +405,12 @@
             this.TmrDam.Enabled = true;
             this.TmrDam.Interval = 1000;
             this.TmrDam.Tick += new System.EventHandler(this.TmrDam_Tick);
+            // 
+            // TmrRegen
+            // 
+            this.TmrRegen.Enabled = true;
+            this.TmrRegen.Interval = 2000;
+            this.TmrRegen.Tick += new System.EventHandler(this.TmrRegen_Tick);
             // 
             // FormGame
             // 
@@ -212,6 +428,9 @@
             this.Text = "FarmWars";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormGame_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FormGame_KeyUp);
+            this.PnlGame.ResumeLayout(false);
+            this.PnlMenu.ResumeLayout(false);
+            this.PnlMenu.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -239,6 +458,21 @@
         private System.Windows.Forms.Timer TmrTurn;
         public System.Windows.Forms.Timer TmrHumMovement;
         private System.Windows.Forms.Timer TmrDam;
+        public System.Windows.Forms.Panel PnlMenu;
+        private System.Windows.Forms.Button BtnGame;
+        private System.Windows.Forms.TextBox TbUsername;
+        private System.Windows.Forms.Button BtnTutorial;
+        private System.Windows.Forms.Label LblUsername;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox LbHighscore;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnSwitch;
+        private System.Windows.Forms.Label LblHighSel;
+        private System.Windows.Forms.Label LblHighscore;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Timer TmrRegen;
     }
 }
 

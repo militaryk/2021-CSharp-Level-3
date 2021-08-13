@@ -46,8 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Shop.cs" />
     <Compile Include="Human.cs" />
+    <Compile Include="Shop.cs" />
     <Compile Include="HumanAstar.cs" />
     <Compile Include="HostileAStar.cs" />
     <Compile Include="Feild.cs" />
@@ -59,10 +59,8 @@
     </Compile>
     <Compile Include="grid.cs" />
     <Compile Include="Inventory.cs" />
-    <Compile Include="lake.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="water.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

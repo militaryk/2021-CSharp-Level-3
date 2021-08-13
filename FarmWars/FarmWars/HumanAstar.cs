@@ -18,6 +18,7 @@ namespace FarmWars
         public int PathLoc = 0;
         int pop = 0;
 
+
         public int xLoc;
         public int yLoc;
 
@@ -45,9 +46,8 @@ namespace FarmWars
             try
             {
                 path.Clear();
-                Console.WriteLine("Path Cleared");
+            
                 walkpath.Clear();
-                Console.WriteLine("Walk Path Cleared");
                 calcpath = true;
                 pathfollowed = false;
 
@@ -106,6 +106,7 @@ namespace FarmWars
                                 //map.ForEach(x => Console.WriteLine(x));
                                 //Console.WriteLine("Done!");
                                 path.Reverse();
+
                                 ((FormGame)FormGame.ActiveForm).TmrHumMovement.Enabled = true;
                                 pathmade = true;
                                 return;
@@ -143,6 +144,7 @@ namespace FarmWars
                 }
 
                 Console.WriteLine("No Path Found!");
+
             }
             catch
             {
@@ -193,8 +195,6 @@ namespace FarmWars
                             x4 = x1 - x3;
                             y4 = y1 - y3;
                             walkpath.Add(new Tuple<int, int>(x4, y4));
-                            Console.WriteLine(x4 + ":" + y4);
-                            Console.WriteLine(i);
                             x1 = x4;
                             y1 = y4;
                         }

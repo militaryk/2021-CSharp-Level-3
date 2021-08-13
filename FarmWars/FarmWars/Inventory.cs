@@ -26,9 +26,17 @@ namespace FarmWars
         public int PnlWidth;
         public int PnlHeight;
         public string selitemname = "";
+        public bool nextturn = true;
+        public bool Rshift = false;
 
        public  List<Tuple<string, int>> inventory = new List<Tuple<string, int>>();
 
+        public void DrawMenu(Graphics g)
+        {
+            Rectangle rect = new Rectangle(0, 0, PnlWidth, PnlHeight);
+            Image menuImage = Image.FromFile("../../../Art/menubackground.png");
+            g.DrawImage(menuImage, rect);
+        }
         public void DrawInventory(Graphics g)
         {
             try
@@ -100,13 +108,26 @@ namespace FarmWars
             }
             DrawUI(g);
             DrawNextTurn(g);
+            DrawBuildIcon(g);
         }
 
         public void DrawNextTurn(Graphics g)
         {
-            Rectangle rectnt = new Rectangle(PnlWidth - 290, PnlHeight - 125, 270, 105);
-            Image newImagent = Image.FromFile("../../../Art/nextturn.png");
-            g.DrawImage(newImagent, rectnt);
+            if (nextturn == true)
+            {
+                Rectangle rectnt = new Rectangle(PnlWidth - 290, PnlHeight - 125, 270, 105);
+                Image newImagent = Image.FromFile("../../../Art/nextturn.png");
+                g.DrawImage(newImagent, rectnt);
+            }
+        }
+
+        public void DrawBuildIcon(Graphics g)
+        {
+            if (Rshift == true){
+                Rectangle rectbd = new Rectangle(SqaureSize * 2, PnlHeight - SqaureSize * 10, SqaureSize * 4, SqaureSize * 4);
+                Image newImagent = Image.FromFile("../../../Art/buildmode.png");
+                g.DrawImage(newImagent, rectbd);
+            }
         }
 
         private void DrawUI(Graphics g)
@@ -115,20 +136,17 @@ namespace FarmWars
             height = SqaureSize;
 
             Rectangle iconPause = new Rectangle(SqaureSize * 0, 0, width * 2, height * 2);
-            Rectangle iconPlay = new Rectangle(SqaureSize * 2, 0, width * 2, height * 2);
             Rectangle iconExit = new Rectangle(SqaureSize * 4, 0, width * 2, height * 2);
             Rectangle iconCoin = new Rectangle(SqaureSize * 12, 0, width * 2, height * 2);
 
 
 
             Image PauseImage = Image.FromFile("../../../Art/ui/pause.png");
-            Image PlayImage = Image.FromFile("../../../Art/ui/play.png");
             Image ExitImage = Image.FromFile("../../../Art/ui/exit.png");
             Image CoinImage = Image.FromFile("../../../Art/ui/Coin.png");
 
 
             g.DrawImage(PauseImage, iconPause);
-            g.DrawImage(PlayImage, iconPlay);
             g.DrawImage(ExitImage, iconExit);
             g.DrawImage(CoinImage, iconCoin);
             DrawMoneyz(g);

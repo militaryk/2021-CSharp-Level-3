@@ -15,10 +15,13 @@ namespace FarmWars
     {
         public int SquareSize;
         public string CropType;
+        int health = 100;
 
-        public List<Tuple<int, string, int, int>> cropfield = new List<Tuple<int, string, int, int>>();
+
+        public List<Tuple<int, string, int, int, int>> cropfield = new List<Tuple<int, string, int, int, int>>();
 
         Inventory inventory = new Inventory();
+        Square square = new Square();
 
         public void DrawFeild(Graphics g, int Turn, int XCord, int YCord)
         {
@@ -31,11 +34,11 @@ namespace FarmWars
 
                 if (cropfield.Where(z => z.Item3 == PosX && z.Item4 == PosY).Any())
                 {
-                    Console.WriteLine(CropType);
+
                 }
                 else
                 {
-                  cropfield.Add(new Tuple<int, string, int, int>(Turn, CropType, PosX, PosY));
+                  cropfield.Add(new Tuple<int, string, int, int, int>(Turn, CropType, PosX, PosY, health));
                     // Create rectangle for feild.
                     PlantSeed(g, PosX, PosY, CropType);
                 }
@@ -69,6 +72,24 @@ namespace FarmWars
 
             Rectangle rect = new Rectangle(PosX, PosY, 25, 25);
             g.DrawImage(SeedImage, rect);
+        }
+
+        public string HarvestField(int XCord, int YCord, int Turn)
+        {
+            string CropName = "";
+            for (int i = 0; i < cropfield.Count; i++)
+            {
+                if (cropfield[i].Item3 / 25 == XCord / 25 && cropfield[i].Item4 / 25 == YCord / 25)
+                {
+                    int CropTurn = cropfield[i].Item1;
+                    if (CropTurn <= Turn - 4) {
+                        CropName = cropfield[i].Item2;
+                        cropfield.RemoveAt(i);
+                        Console.WriteLine(CropName);
+                    }
+                }
+            }
+            return CropName;
         }
         public void PlantTurn(Graphics g, int Turn)
         {

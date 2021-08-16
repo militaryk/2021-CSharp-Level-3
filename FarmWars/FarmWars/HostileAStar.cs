@@ -74,12 +74,10 @@ namespace FarmWars
                         //We found the destination and we can be sure (Because the the OrderBy above)
                         //That it's the most low cost option. 
                         var tile = checkTile;
-                        //Console.WriteLine("Retracing steps backwards...");
                         while (true)
                         {
 
                             path.Add(new Tuple<int, int>(tile.X, tile.Y));
-                            //Console.WriteLine(path.Last());
 
                             using (Font font = new Font("Times New Roman", 36, FontStyle.Bold, GraphicsUnit.Pixel))
                             {
@@ -93,17 +91,12 @@ namespace FarmWars
                                 newMapRow[tile.X] = '*';
 
                                 map[tile.Y] = new string(newMapRow);
-                                //Console.WriteLine(newMapRow);
 
                             }
                             tile = tile.Parent;
                             if (tile == null)
                             {
-                                //Console.WriteLine("Map looks like :");
-                                //map.ForEach(x => Console.WriteLine(x));
-                                //Console.WriteLine("Done!");
                                 path.Reverse();
-                                //((FormGame)FormGame.ActiveForm).TmrHosMovement.Enabled = true;
                                 pathmade = true;
                                 calcpath = true;
                                 pathfollowed = false;
@@ -141,7 +134,7 @@ namespace FarmWars
                     }
                 }
 
-                Console.WriteLine("No Path Found!");
+                Console.WriteLine("No Path Found! (Hostile)");
                 visible = false;
             }
             catch
@@ -228,7 +221,7 @@ namespace FarmWars
         public int x;
         public int tiletype;
         public int health = 100;
-        //HostileAstar HAstar = new HostileAstar();
+
         public void DrawHostile(Graphics g, int arnum)
         {
             //Define the solid brush with a default colour of orange
@@ -246,16 +239,23 @@ namespace FarmWars
             int heightc = 75;
 
             // Draw ellipse to screen.
-            g.DrawEllipse(blackPen, x - (25), y - (25), widthc, heightc);
+            g.DrawRectangle(blackPen, x - 50, y - 50, 125, 125);
 
             // Create rectangle for ellipse.
             Rectangle rect = new Rectangle(x, y, width, height);
             Image newImage = Image.FromFile("../../../Art/character/bad.png");
             g.DrawImage(newImage, rect);
             DrawHealth(g, arnum);
+
+            if (x < 25 && y < 25)
+            {
+                health = 0;
+                attacking = false;
+            }
         }
         public void DrawHealth(Graphics g, int arnum)
         {
+         
             if (visible == true)
             {
                 int health = ((FormGame)FormGame.ActiveForm).HosHealth[arnum];
@@ -286,7 +286,6 @@ namespace FarmWars
                     pathfollowed = true;
                     //((FormGame)FormGame.ActiveForm).TmrHosMovement.Enabled = false;
                     ((FormGame)FormGame.ActiveForm).Drawn[arnum] = false;
-                    Console.WriteLine("Path Walked");
                     attacking = false;
                     xLoc = 0;
                     yLoc = 0;

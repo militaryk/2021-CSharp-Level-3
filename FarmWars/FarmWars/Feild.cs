@@ -85,7 +85,6 @@ namespace FarmWars
                     if (CropTurn <= Turn - 4) {
                         CropName = cropfield[i].Item2;
                         cropfield.RemoveAt(i);
-                        Console.WriteLine(CropName);
                     }
                 }
             }

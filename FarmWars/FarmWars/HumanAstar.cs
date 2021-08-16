@@ -18,6 +18,13 @@ namespace FarmWars
         public int PathLoc = 0;
         int pop = 0;
 
+        public int width = 20;
+        public int height = 25;
+        public int y;
+        public int x;
+        public int tiletype;
+        public int health = 100;
+        public int maxhealth = 100;
 
         public int xLoc;
         public int yLoc;
@@ -30,8 +37,6 @@ namespace FarmWars
         List<string> map = new List<string>();
         List<Tuple<int, int>> path = new List<Tuple<int, int>>();
         List<Tuple<int, int>> walkpath = new List<Tuple<int, int>>();
-
-        Human human = new Human();
 
         public void AddToList(string mapline)
         {
@@ -77,12 +82,10 @@ namespace FarmWars
                         //We found the destination and we can be sure (Because the the OrderBy above)
                         //That it's the most low cost option. 
                         var tile = checkTile;
-                        //Console.WriteLine("Retracing steps backwards...");
                         while (true)
                         {
 
                             path.Add(new Tuple<int, int>(tile.X, tile.Y));
-                            //Console.WriteLine(path.Last());
 
                             using (Font font = new Font("Times New Roman", 36, FontStyle.Bold, GraphicsUnit.Pixel))
                             {
@@ -96,15 +99,11 @@ namespace FarmWars
                                 newMapRow[tile.X] = '*';
 
                                 map[tile.Y] = new string(newMapRow);
-                                //Console.WriteLine(newMapRow);
 
                             }
                             tile = tile.Parent;
                             if (tile == null)
                             {
-                                //Console.WriteLine("Map looks like :");
-                                //map.ForEach(x => Console.WriteLine(x));
-                                //Console.WriteLine("Done!");
                                 path.Reverse();
 
                                 ((FormGame)FormGame.ActiveForm).TmrHumMovement.Enabled = true;
@@ -143,7 +142,7 @@ namespace FarmWars
                     }
                 }
 
-                Console.WriteLine("No Path Found!");
+                Console.WriteLine("No Path Found! (Human)");
 
             }
             catch
@@ -208,20 +207,17 @@ namespace FarmWars
                 {
                     xLoc = walkpath[PathLoc].Item1;
                     yLoc = walkpath[PathLoc].Item2;
-                    human.x = xLoc;
-                    human.y = yLoc;
+                    x = xLoc;
+                    y = yLoc;
                 }
                 else
                 {
                     pathfollowed = true;
-                    //((FormGame)FormGame.ActiveForm).TmrHumMovement.Enabled = false;
-                   // ((FormGame)FormGame.ActiveForm).HuDrawn = false;
-                    Console.WriteLine("Path Walked cause Human smart");
                     walkpath.Clear();
                     path.Clear();
                 }
             }
-            human.DrawHuman(g);
+            DrawHuman(g);
         }
 
         public void ClearWalkPath()
@@ -229,6 +225,58 @@ namespace FarmWars
             walkpath.Clear();
             path.Clear();
             pathfollowed = true;
+        }
+
+        public void DrawHuman(Graphics g)
+        {
+
+            //Define the solid brush with a default colour of orange
+            SolidBrush br = new SolidBrush(Color.SandyBrown);
+
+            //Define the pen with the colour black
+            Pen pen1 = new Pen(Color.Black);
+
+            //Calcualte the X and Y of each indervidual square
+
+            // Create pen.
+            Pen blackPen = new Pen(Color.Aquamarine, 3);
+
+            // Create location and size of ellipse.            
+            int widthc = 75;
+            int heightc = 75;
+
+            // Draw ellipse to screen.
+            g.DrawRectangle(blackPen, x - 50, y - 50, 125, 125);
+
+            Rectangle rect = new Rectangle(x, y, width, height);
+            Image newImage = Image.FromFile("../../../Art/character/human.png");
+            g.DrawImage(newImage, rect);
+            DrawHealth(g);
+        }
+
+        public void DrawHealth(Graphics g)
+        {
+            SolidBrush grayBrush = new SolidBrush(Color.DarkGray);
+            Rectangle HlBrect = new Rectangle(x - 10, y + 30, width + 20, 10);
+            g.FillRectangle(grayBrush, HlBrect);
+
+            SolidBrush healthBrush = new SolidBrush(Color.Yellow);
+
+            if (health > 80 && health <= 100)
+            {
+                healthBrush = new SolidBrush(Color.Green);
+            }
+            else if (health > 40 && health <= 80)
+            {
+                healthBrush = new SolidBrush(Color.Yellow);
+            }
+            else if (health > 0 && health < 40)
+            {
+                healthBrush = new SolidBrush(Color.Red);
+            }
+            int healthlength = ((health) * 36 / maxhealth);
+            Rectangle Hlrect = new Rectangle(x - 8, y + 31, healthlength, 8);
+            g.FillRectangle(healthBrush, Hlrect);
         }
     }
 

@@ -66,7 +66,6 @@ namespace FarmWars
                 g.DrawImage(newImage, rect);
 
             }
-            Console.WriteLine("Test");
 
         }
     }

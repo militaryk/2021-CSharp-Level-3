@@ -21,19 +21,31 @@ namespace FarmWars
         public int shopx = 200;
         public int shopy = 200;
 
+
         public void DrawShop(Graphics g, int y, int x)
         {
+            Font drawFont = new Font("Arial Bold", 25);
+            SolidBrush shopBrush = new SolidBrush(Color.Black);
+
             //Define the pen with the colour black
             Pen pen1 = new Pen(Color.Black);
 
             Rectangle rect = new Rectangle(x, y, width, height);
+            Rectangle rectborder = new Rectangle(x, y, width, height + 20);
+            Rectangle rectshopsign = new Rectangle(x, y + height + 20, width, 100);
+
+
             Image newImage = Image.FromFile("../../../Art/shop.png");
             g.DrawImage(newImage, rect);
+            g.DrawRectangle(pen1, rectborder);
+            g.DrawString("Shop", drawFont, shopBrush, rectshopsign);
 
         }
 
         public void DrawShopMenu(Graphics g)
         {
+            scalefactorm = PnlWidth / 150;
+
             int buypos = (96 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm);
 
 
@@ -45,7 +57,7 @@ namespace FarmWars
             Rectangle ShowMenu = new Rectangle(100, 60, PnlWidth - 200, PnlHeight - 120);
             Rectangle ShopSign = new Rectangle(125, 100, (400 / Convert.ToInt32(scalefactord) * Convert.ToInt32(scalefactorm)),( 100 /Convert.ToInt32(scalefactord) * Convert.ToInt32(scalefactorm)));
 
-            Font shopFont = new Font("Times New Roman Bold",( 52 / Convert.ToInt32(scalefactord) * Convert.ToInt32(scalefactorm)));
+            Font shopFont = new Font("Lucida Sans", ( 52 / Convert.ToInt32(scalefactord) * Convert.ToInt32(scalefactorm)));
             SolidBrush shopBrush = new SolidBrush(Color.White);
 
             String drawString = "Error";
@@ -254,6 +266,34 @@ namespace FarmWars
                 g.DrawString(drawString, drawFont, drawBrush, MenuTitle);
                 g.DrawString("Sell", buyFont, whiteBrush, MenuBuyText);
                 g.DrawString(Convert.ToString(Price), coinFont, drawBrush, MenuCost);
+
+
+            }
+
+            if (1 == 1)
+            {
+                int x = shopx + (830 / Convert.ToInt32(scalefactord) * Convert.ToInt32(scalefactorm));
+                int y = shopy + (280 / Convert.ToInt32(scalefactord) * Convert.ToInt32(scalefactorm));
+
+                SolidBrush bankruptbrush = new SolidBrush(Color.Crimson);
+                SolidBrush bankruptbrushsign = new SolidBrush(Color.DarkBlue);
+
+                Pen bankruptpen = new Pen(Color.Blue, 5);
+                Font bankruptfont = new Font("Arial Bold", 30);
+                Font giveupfont = new Font("Arial Bold", 16);
+
+
+                Rectangle MenuBankrupt = new Rectangle(x, y, (300 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (300 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuBankruptSign = new Rectangle(x, y + (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (300 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+                Rectangle MenuBankruptGiveUp = new Rectangle(x, y + (200 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (300 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm), (100 / Convert.ToInt32(scalefactord)) * Convert.ToInt32(scalefactorm));
+
+
+
+                g.FillRectangle(bankruptbrush, MenuBankrupt);
+                g.DrawRectangle(bankruptpen, MenuBankrupt);
+                g.DrawString("Bankrupt?", bankruptfont, bankruptbrushsign, MenuBankruptSign);
+                g.DrawString("Give Up", giveupfont, bankruptbrushsign, MenuBankruptGiveUp);
+
 
 
             }

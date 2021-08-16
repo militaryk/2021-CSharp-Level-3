@@ -40,6 +40,7 @@ namespace FarmWars
 
         public void DrawHealth(Graphics g)
         {
+            health = 50;
             SolidBrush grayBrush = new SolidBrush(Color.DarkGray);
             Rectangle HlBrect = new Rectangle(x - 10, y + 30, width + 20, 10);
             g.FillRectangle(grayBrush, HlBrect);

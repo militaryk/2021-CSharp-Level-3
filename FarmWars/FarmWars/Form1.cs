@@ -17,38 +17,55 @@ namespace FarmWars
 {
     public partial class FormGame : Form
     {
-        public bool[] Drawn = new bool[6];
-        int SquareSize = 25;
-        int XCord = 0;
-        int YCord = 0;
-        int Turn = 0;
 
 
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern short GetAsyncKeyState(Keys vKey);
 
+        //Declare Interger Arrays and Bools
+        public int[] PathPos = new int[] { 0, 0, 0, 0, 0, 0 };
+        public int[] PathLoc = new int[] { 0, 0, 0, 0, 0, 0 };
+        public bool[] Drawn = new bool[6];
+        public int[] HosHealth = new int[] { 100, 100, 100, 100, 100, 100 };
 
-
-        bool MapDrawn = false;
+        //Declare Intergers
         int TileCount;
         public int Traversible = 1;
         int mapwidth = 0;
         int XPos;
         int YPos;
-        public int[] PathPos = new int[] { 0, 0, 0, 0, 0, 0 };
-        public int[] PathLoc = new int[] { 0, 0, 0, 0, 0, 0 };
         public int HuPathLoc = 0;
         public int HuPathPos = 0;
-        public int HuHealth = 100;
-        public int[] HosHealth = new int[] { 100, 100, 100, 100, 100, 100 };
+        public int HuHealth = 50;
+        int SquareSize = 25;
+        int XCord = 0;
+        int YCord = 0;
+        int Turn = 0;
+        int tutorial = 0;
+        int AX;
+        int AY;
+        int BX;
+        int BY;
+        int HuAX = 1;
+        int HuAY = 1;
+        int HuBX;
+        int HuBY;
+        public int width = 0;
+        public int height = 0;
+        int score = 0;
+
+
+        //Declear Bools
         bool LShift = false;
         public bool RShift = false;
         bool MouseDrag = false;
         bool GoneShopping = false;
         bool InGame = true;
         bool InMenu = false;
+        bool MapDrawn = false;
 
+        //Declear Public Bools
         public bool HuDrawn;
         public bool HostileDrawn = false;
         public bool ISwordPurchased = false;
@@ -57,62 +74,49 @@ namespace FarmWars
         public bool BArmourPurchased = false;
         public bool HighscoreAll = false;
         public bool UnderAttack = false;
-
+        public bool spacebreak = false;
         public bool FormActive = true;
-
-
+        
+        //Declear Strings
         string oldText = string.Empty;
+        string username = "";
 
 
-
-
-        int AX;
-        int AY;
-        int BX;
-        int BY;
-
-        int HuAX = 1;
-        int HuAY = 1;
-        int HuBX;
-        int HuBY;
-
+        //Declear Clases
         Square squareTile = new Square();
         Feild feildTile = new Feild();
 
         HostileAstar[] HAstar = new HostileAstar[6];
         HumanAstar HuAstar = new HumanAstar();
 
-        Human human = new Human();
+
         Inventory inventory = new Inventory();
         Shop shop = new Shop();
 
-        //Calculate the width and height of the square so that it all fits in the picturebox
-        public int width = 0;
-        public int height = 0;
-
-        //Create list to store marks
-        public List<double> tileList = new List<double>();
-        public List<double> tileType = new List<double>();
-
+        //Create Tuple list to store information on tiles and thier information
         List<Tuple<int, int, int, int, int>> newTileMap = new List<Tuple<int, int, int, int, int>>();
 
+        //Create Tuple list to store highscores
         List<Tuple<int, string>> highscore = new List<Tuple<int, string>>();
-        int score = 0;
-        string username = "";
 
+        //Create Bitmap Background
         private Bitmap Background;
 
         public FormGame()
         {
             InitializeComponent();
+            //Declear Double buffering
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, PnlGame, new object[] { true });
 
             //Send the Panel Width and Height to the Inventory class
             inventory.PnlHeight = PnlGame.Height;
             inventory.PnlWidth = PnlGame.Width;
+
+            //Send the Panel Width and Height to the Shop class
             shop.PnlHeight = PnlGame.Height;
             shop.PnlWidth = PnlGame.Width;
 
+            //Create a each hostile in the hostile class
             for (int i = 0; i < HAstar.Length; i++)
             {
                 HAstar[i] = new HostileAstar();
@@ -121,41 +125,68 @@ namespace FarmWars
             DrawMenu();
         }
 
-
+        /// <summary>
+        /// If the form is deactivated or deselected
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnDeactivate(EventArgs e)
         {
+            //Write if the form has been deselected to the console
             Console.WriteLine("Form Deslected");
+            //If the map has already been created show resume on the button
             if (MapDrawn == true)
             {
                 BtnGame.Text = "Resume";
             }
+            //Set if the form is active to false
             FormActive = false;
+            
+            //Disable all the timers
             TmrDam.Enabled = false;
             TmrHosMovement.Enabled = false;
             TmrHumMovement.Enabled = false;
             TmrTurn.Enabled = false;
+            
+            //Pause the game
             PauseGame();
         }
+
+        /// <summary>
+        /// Draw the game menu
+        /// </summary>
         private void DrawMenu()
         {
+            //Declear the graphics as g
             Graphics g = PnlMenu.CreateGraphics();
+            //Load the highscore from file
             LoadHighscore();
+            //Draw the menu and menu background
             inventory.DrawMenu(g);
 
         }
+
+        /// <summary>
+        /// Yhis method draws the map for the game
+        /// </summary>
         private void DrawMap()
         {
+            //Create the background bitmap for the entire panel
             Background = new Bitmap(PnlGame.Width, PnlGame.Height);
-            Console.WriteLine(Background);
+            //Declear the graphics as g but onto the Background
             Graphics g = Graphics.FromImage(Background);
+            //For each of the Hostiles, clear the lists in their clases to reset them
             for (int i = 0; i < 6; i++)
             {
                 HAstar[i].EmptyList();
             }
+
+            //Declear a variable called line to store the map information for a ASCII map
             string line = " ";
 
+            //Declear the randoms
             Random tile = new Random();
             Random AB = new Random();
+            //Calculate the randoms
             AX = AB.Next(1, 20);
             AY = AB.Next(1, 20);
             BX = AB.Next(30, 40);
@@ -168,45 +199,34 @@ namespace FarmWars
                 //For each row until the number of rows is the same as the number of rows entered by the user
                 for (int x = 0; PnlGame.Width > x * SquareSize; x++)
                 {
+                    //Add to the tile count
                     TileCount++;
 
+                    //Randomly determine the tiletype for the tiles
                     int tiletype = tile.Next(1, 6);
 
-
-
-
+                    //Set the variables for each of the Square Tiles in the class
                     squareTile.height = SquareSize;
                     squareTile.width = SquareSize;
                     squareTile.x = x;
                     squareTile.y = y;
                     squareTile.tiletype = tiletype;
 
+                    //Add the tiles and their details to the class
                     newTileMap.Add(new Tuple<int, int, int, int, int>(x, y, tiletype, Traversible, 0));
 
+                    //Draw the squares in the grid
                     squareTile.DrawSqaure(g);
 
+                    //If the Y and X of the tile matches the AY and AX points specified then designate it as A on the ASCII map, A is startpoint
                     if (y == AY && x == AX)
                     {
                         line = line + "A";
-                        using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
-                        {
-                            Point point1 = new Point(AX * 25, AY * 25);
-                            //TextRenderer.DrawText(g, "A", font, point1, Color.Blue);
-                        }
                     }
-                    else if (x == BX && y == BY)
+                    else if (x == BX && y == BY) //If the Y and X of the tile matches the BY and BX points specified then desifnate it as B on the ACCII map, B is endpoint
                     {
-                        using (Font font = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel))
-                        {
-                            Point point1 = new Point(BX * 25, BY * 25);
-                            //6TextRenderer.DrawText(g, "B", font, point1, Color.Blue);
-                        }
                         line = line + "B";
-                    }
-                    else if (tiletype == 69)
-                    {
-                        line = line + "-";
-                    }
+                    }// If the X of the square is withen 9 squares of the width of the map and if the Y of the square is greater than 6 then make it so that the its rendere as - on the ASCII map, - means impassable
                     else if (x >= (PnlGame.Width / SquareSize) - 9)
                     {
                         int height = (PnlGame.Height / SquareSize) - 6;
@@ -214,81 +234,101 @@ namespace FarmWars
                         {
                             line = line + "-";
                         }
-                        else
+                        else // If the y is not greater then 6 render the ASCII map as it being passable.
                         {
                             line = line + " ";
                         }
                     }
-                    else
+                    else //If none of the above conditions are applicable then render is passable
                     {
                         line = line + " ";
                     }
-                }
+                }//For each hostile send the line to them
                 for (int i = 0; i < HAstar.Length; i++)
                 {
                     HAstar[i].AddToList(line);
                 }
-                Console.WriteLine(line);
+                //Set the mapwidth to the length of the string
                 mapwidth = line.Length;
+                //Reset the line to nothing
                 line = "";
             }
-            //SaveMap();
+            //Once completed set the map to drawn
             MapDrawn = true;
+            //Draw the shop onto the map
             shop.DrawShop(g, 100, 100);
+            //Refresh the map by invalidating the panel
             PnlGame.Invalidate();
+            //Set the Tmr for the Turn to enabled
             TmrTurn.Enabled = true;
         }
 
-        private void SaveMap()
-        {
-            int width = PnlGame.Size.Width;
-            int height = PnlGame.Size.Height;
-            Bitmap bm = new Bitmap(width, height);
-            this.Background = bm;
-            PnlGame.DrawToBitmap(bm, new Rectangle(0, 0, width, height));
-            MapDrawn = true;
-        }
-
+        /// <summary>
+        /// When the panel is invalidated this will run to repaint the panel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PnlGame_Paint(object sender, PaintEventArgs e)
         {
+            //Set the variable g to e.Graphics
             var g = e.Graphics;
+            //If the map has been drawn
             if (MapDrawn == true)
             {
+                //Draw the map to the panel
                 g.DrawImage(Background, 0, 0);
+
+                //Set the variables in the inventory class for the Pnl Width and Height,
                 inventory.PnlHeight = PnlGame.Height;
                 inventory.PnlWidth = PnlGame.Width;
+
+                //Draw the inventory to the panel
                 inventory.DrawInventory(g);
 
             }
+            //If GoneShopping is true display the shop
             if (GoneShopping == true)
             {
                 shop.DrawShopMenu(g);
             }
         }
+
+        /// <summary>
+        /// This event sets the details such as the X and Y of the mouse when it moves
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PnlGame_MouseMove(object sender, MouseEventArgs e)
         {
+            //Set the coordiantes to the mouse to a public variable, one that is specific to the map and one that is specific to the entire panel
             XCord = (e.X / 25);
             YCord = (e.Y / 25);
             XPos = e.X;
             YPos = e.Y;
+            //If the mouse is being dragged
             if (MouseDrag == true)
             {
+                //If RShift has been toggled to true, RShift being BuildMode
                 if (RShift == true)
                 {
+                    //Set the graphics of F to the background
                     Graphics f = Graphics.FromImage(Background);
 
+                    //If the click on the panel was withen the blue square surrounding the Human
                     if (XPos >= -50 + HuAstar.xLoc && YPos >= -50 + HuAstar.yLoc && XPos <= 75 + HuAstar.xLoc && YPos <= 75 + HuAstar.yLoc)
                     {
+                        //Set the itemnum to 0
                         int itemnum = 0;
+                        //If their is a selected crop avalible in the inventory
                         if (inventory.inventory.Where(z => z.Item1 == feildTile.CropType).Any())
                         {
+                            //If the var      
                             var itemtype = inventory.inventory.Find(z => z.Item1 == feildTile.CropType);
-                            Console.WriteLine(itemtype.Item1);
                             if (itemtype.Item2 > 0)
                             {
                                 if (feildTile.cropfield.Where(z => z.Item3 == XCord * SquareSize && z.Item4 == YCord * SquareSize).Any())
                                 {
-                                   
+
                                 } else
                                 {
                                     feildTile.SquareSize = SquareSize;
@@ -318,7 +358,6 @@ namespace FarmWars
                         if (inventory.inventory.Where(z => z.Item1 == feildTile.CropType).Any())
                         {
                             var itemtype = inventory.inventory.Find(z => z.Item1 == feildTile.CropType);
-                            Console.WriteLine(itemtype.Item1);
                             if (itemtype.Item2 > 0)
                             {
                                 feildTile.SquareSize = SquareSize;
@@ -416,12 +455,10 @@ namespace FarmWars
                                 itemnum = itemtype.Item2 + 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "Turnip");
                                 inventory.inventory.Add(new Tuple<string, int>("Turnip", itemnum));
-                                Console.WriteLine("Item Remvoed then added to Inv");
                             }
                             else
                             {
                                 inventory.inventory.Add(new Tuple<string, int>("Turnip", 1));
-                                Console.WriteLine("Item Added to Inv");
                             }
                             ResetTile(tilex, tiley);
                         }
@@ -430,10 +467,6 @@ namespace FarmWars
                 if (XPos >= 0 && YPos >= 0 && XPos <= 50 && YPos <= 50)
                 {
                     PauseGame();
-                }
-                else if (XPos >= 100 && YPos >= 0 && XPos <= 150 && YPos <= 50)
-                {
-                    ExitGame();
                 }
                 else if (XPos >= PnlGame.Width - 290 && YPos >= PnlGame.Height - 125 && XPos <= PnlGame.Width && YPos <= PnlGame.Height)
                 {
@@ -446,10 +479,13 @@ namespace FarmWars
                         {
                             HosHealth[i] = 100;
                         }
-                        DrawHostile();
-                        UnderAttack = true;
+                        if (feildTile.cropfield.Count != 0)
+                        {
+                            DrawHostile();
+                            UnderAttack = true;
+                        }
                         username = TbUsername.Text;
-                        score = Turn;
+                        CalcualteScore();
                         highscore.RemoveAll(z => z.Item2 == username);
                         highscore.Add(new Tuple<int, string>(score, username));
                         CreateHighscore();
@@ -475,8 +511,6 @@ namespace FarmWars
                     int invsel = 0;
                     double invsqx = Math.Round(Convert.ToDouble(XPos) / 50, 0) - 18;
                     double invsqy = Math.Round(Convert.ToDouble(YPos) / 50, 0) - 3;
-                    Console.WriteLine(invsqy);
-                    Console.WriteLine(Convert.ToInt32(invsqx));
                     if (invsqx == 1)
                     {
                         invsel = Convert.ToInt32(invsqy);
@@ -484,7 +518,7 @@ namespace FarmWars
                     if (invsqx == 2)
                     {
                         invsel = Convert.ToInt32(invsqy) + 6;
-                    } 
+                    }
                     if (invsqx == 3)
                     {
                         invsel = Convert.ToInt32(invsqy) + 12;
@@ -492,8 +526,6 @@ namespace FarmWars
                     if (inventory.inventory.Count > invsel)
                     {
                         string Item = inventory.inventory[invsel].Item1;
-                        Console.WriteLine(Convert.ToString(invsel));
-                        Console.WriteLine(Item);
                         inventory.selitemname = Item;
                         feildTile.CropType = Item;
                     }
@@ -508,8 +540,8 @@ namespace FarmWars
 
                         HuBX = XCord;
                         HuBY = YCord;
-                       HuAstar.StartX = HuAX;
-                        HuAstar.StartY = HuAY; 
+                        HuAstar.StartX = HuAX;
+                        HuAstar.StartY = HuAY;
                         int tiletype;
                         string line = "";
                         //Draw the grid with the number of columns given
@@ -539,19 +571,14 @@ namespace FarmWars
                                     {
                                         line = line + "B";
                                     }
-                                    else if (x >= (PnlGame.Width / SquareSize) - 8)
+                                    else if (x >= (PnlGame.Width / SquareSize) - 9)
                                     {
-                                        int height = (PnlGame.Height / SquareSize) - 6;
-                                        if (y >= 6 && y <= height)
-                                        {
-                                            line = line + "-";
-                                        }
-                                        else
-                                        {
-                                            line = line + " ";
-                                        }
+                                        line = line + "-";
+                                    } else if (x >= (PnlGame.Width / SquareSize) - 12 && y > (PnlGame.Height / SquareSize) - 7)
+                                    {
+                                        line = line + "-";
                                     }
-                                    else if (tiletype == 69)
+                                    else if (x >= 3 && y >= 3 && x <= 8 & y <= 8)
                                     {
                                         line = line + "-";
                                     }
@@ -566,7 +593,6 @@ namespace FarmWars
                                 }
                             }
                             HuAstar.AddToList(line);
-                            Console.WriteLine(line);
                             line = "";
 
                         }
@@ -578,11 +604,11 @@ namespace FarmWars
             {
                 int shopscaled = Convert.ToInt32(shop.scalefactord);
                 int shopscalem = Convert.ToInt32(shop.scalefactorm);
-  
+
 
                 if (XPos >= 100 && YPos >= 60 && XPos <= PnlGame.Width - 100 && YPos <= PnlGame.Height - 60)
                 {
-                    if (XPos >= shop.shopx + (((0 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((190 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <=  (shop.shopx + (((0 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
+                    if (XPos >= shop.shopx + (((0 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((190 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (((0 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         if (inventory.Moneyz >= 25)
                         {
@@ -693,7 +719,7 @@ namespace FarmWars
                             inventory.UpdateMoneyz(g);
                         }
                     }
-                    if (XPos >= shop.shopx + (600 / shopscaled) * shopscalem  + (((0 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((190 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (600 / shopscaled) * shopscalem + (((0 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
+                    if (XPos >= shop.shopx + (600 / shopscaled) * shopscalem + (((0 * 100) / shopscaled) * shopscalem) && YPos >= shop.shopy + ((190 / shopscaled) * shopscalem) && YPos <= (shop.shopy + ((190 / shopscaled) * shopscalem)) + ((40 / shopscaled) * shopscalem) && XPos <= (shop.shopx + (600 / shopscaled) * shopscalem + (((0 * 100) / shopscaled) * shopscalem)) + ((100 / shopscaled) * shopscalem))
                     {
                         int itemnum = 0;
                         if (inventory.inventory.Where(z => z.Item1 == "Tater").Any())
@@ -720,7 +746,6 @@ namespace FarmWars
                         if (inventory.inventory.Where(z => z.Item1 == "Wheat").Any())
                         {
                             var itemtype = inventory.inventory.Find(z => z.Item1 == "Wheat");
-                            Console.WriteLine(itemtype.Item1);
                             if (itemtype.Item2 == 0)
                             {
 
@@ -792,7 +817,7 @@ namespace FarmWars
                             {
                                 itemnum = itemtype.Item2 - 1;
                                 inventory.inventory.RemoveAll(z => z.Item1 == "Turnip");
-                                inventory.inventory.Add( new Tuple<string, int>("Turnip", itemnum));
+                                inventory.inventory.Add(new Tuple<string, int>("Turnip", itemnum));
                                 //Sell Turnip
                                 inventory.Moneyz = inventory.Moneyz + 250;
                                 inventory.UpdateMoneyz(g);
@@ -872,7 +897,7 @@ namespace FarmWars
                             if (BSwordPurchased == false)
                             {
                                 //Iron Armour
-                                human.maxhealth = 150;
+                                HuAstar.maxhealth = 150;
                                 inventory.Moneyz = inventory.Moneyz - 350;
                                 inventory.UpdateMoneyz(g);
                             }
@@ -886,7 +911,7 @@ namespace FarmWars
                             {
                                 //Beast Armour
                                 inventory.Moneyz = inventory.Moneyz - 700;
-                                human.maxhealth = 200;
+                                HuAstar.maxhealth = 200;
                                 inventory.UpdateMoneyz(g);
                             }
                         }
@@ -933,7 +958,11 @@ namespace FarmWars
                             inventory.UpdateMoneyz(g);
                         }
                     }
-                } else
+                    if (XPos >= shop.shopx + (830 / Convert.ToInt32(shop.scalefactord) * Convert.ToInt32(shop.scalefactorm)) && YPos >= shop.shopy + (280 / Convert.ToInt32(shop.scalefactord) * Convert.ToInt32(shop.scalefactorm)) && YPos <= shop.shopy + (280 / Convert.ToInt32(shop.scalefactord) * Convert.ToInt32(shop.scalefactorm)) + ((300 / shopscaled) * shopscalem) && XPos <= shop.shopx + (830 / Convert.ToInt32(shop.scalefactord) * Convert.ToInt32(shop.scalefactorm)) + (300 / Convert.ToInt32(shop.scalefactord) * Convert.ToInt32(shop.scalefactorm)))
+                    {
+                        GameOver();              
+                    }
+                    } else
                 {
                     TmrTurn.Enabled = true;
                     TmrHosMovement.Enabled = true;
@@ -991,22 +1020,6 @@ namespace FarmWars
             return id;
         }
 
-        private void reLoadMapToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            newTileMap.ForEach(i => Console.Write("{0}\t", i));
-            Console.WriteLine("hi");
-            Console.WriteLine(newTileMap.Last());
-        }
-
-        private void pathFindingToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PnlGame_DoubleClick(object sender, EventArgs e)
-        {
-        }
-
         private void TmrGame_Tick(object sender, EventArgs e)
         {
 
@@ -1046,11 +1059,6 @@ namespace FarmWars
             Application.Exit();
         }
 
-        private void ExitGame()
-        {
-            Application.Exit();
-        }
-
         private void PauseGame()
         {
             TmrHosMovement.Enabled = false;
@@ -1059,8 +1067,21 @@ namespace FarmWars
             TmrTurn.Enabled = false;
             PnlMenu.Visible = true;
             PnlMenu.Enabled = true;
+            BtnGame.Text = "Resume";
         }
 
+        private void GameOver()
+        {
+            MessageBox.Show("Thank You for playing. " + " You scored " + Convert.ToString(score) + "." + " You survived " + Convert.ToString(Turn) + " Turns.", " Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information) ;
+            TmrHosMovement.Enabled = false;
+            TmrDam.Enabled = false;
+            TmrHumMovement.Enabled = false;
+            TmrTurn.Enabled = false;
+            PnlMenu.Visible = true;
+            PnlMenu.Enabled = true;
+            BtnGame.Text = "New Game";
+            MapDrawn = false;
+        }
         private void DrawHostile()
         {
             for (int i = 0; i <= 5; i++)
@@ -1177,7 +1198,6 @@ namespace FarmWars
                                 }
                             }
                             HAstar[i].AddToList(line);
-                            Console.WriteLine(line);
                             line = "";
 
                         }
@@ -1203,29 +1223,29 @@ namespace FarmWars
         }
 
         private void FormGame_KeyDown(object sender, KeyEventArgs e)
-            {
+        {
             Graphics g = Graphics.FromImage(Background);
+            Graphics f = PnlGame.CreateGraphics();
+
             if (e.KeyCode == Keys.ShiftKey)
+            {
+                if (Convert.ToBoolean(GetAsyncKeyState(Keys.LShiftKey)))
                 {
-                    if (Convert.ToBoolean(GetAsyncKeyState(Keys.LShiftKey)))
+                    LShift = true; }
+                if (Convert.ToBoolean(GetAsyncKeyState(Keys.RShiftKey)))
+                {
+                    if (RShift == false)
                     {
-                        LShift = true;
-                        Console.WriteLine("Left");
-                    }
-                    if (Convert.ToBoolean(GetAsyncKeyState(Keys.RShiftKey)))
-                    {
-                        if (RShift == false)
-                        {
-                            RShift = true;
+                        RShift = true;
                         Console.WriteLine("Build Mode");
                     }
-                        else
-                        {
-                            RShift = false;
-                            Console.WriteLine("Build Mode Off");
-                        }
+                    else
+                    {
+                        RShift = false;
+                        Console.WriteLine("Build Mode Off");
                     }
                 }
+            }
             if (e.KeyCode == Keys.Escape)
             {
                 TmrTurn.Enabled = true;
@@ -1234,6 +1254,26 @@ namespace FarmWars
                 TmrDam.Enabled = true;
                 GoneShopping = false;
                 InGame = true;
+            }
+            if (e.KeyCode == Keys.Space)
+            {
+                if (spacebreak == false)
+                {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        if (HAstar[i].visible == true)
+                        {
+                            if (HuAstar.xLoc >= -50 + HAstar[i].xLoc && HuAstar.yLoc >= -50 + HAstar[i].yLoc && HuAstar.xLoc <= 75 + HAstar[i].xLoc && HuAstar.yLoc <= 75 + HAstar[i].yLoc)
+                            {
+                                int healthhos = HosHealth[i] - 6;
+                                HAstar[i].DrawHealth(f, i);
+                                HosHealth[i] = healthhos;
+                            }
+                        }
+                    }
+                    TmrAttack.Enabled = true;
+                    spacebreak = true;
+                }
             }
             }
            
@@ -1259,28 +1299,19 @@ namespace FarmWars
         private void TmrDam_Tick(object sender, EventArgs e)
         {
             Graphics g = PnlGame.CreateGraphics();
+            if (HuHealth <= 0)
+            {
+                GameOver();
+            }
+
             for (int i = 0; i < 6; i++)
             {
                 if (HAstar[i].visible == true)
                 {
                     if (HAstar[i].xLoc >= -50 + HuAstar.xLoc && HAstar[i].yLoc >= -50 + HuAstar.yLoc && HAstar[i].xLoc <= 75 + HuAstar.xLoc && HAstar[i].yLoc <= 75 + HuAstar.yLoc)
                     {
-                        int health = HuHealth - 2;
-                        Console.WriteLine(health);
+                        int health = HuHealth - 5;
                         HuHealth = health;
-                    }
-                }
-            }
-            for (int i = 0; i < 6; i++)
-            {
-                if (HAstar[i].visible == true)
-                {
-                    if (HuAstar.xLoc >= -50 + HAstar[i].xLoc && HuAstar.yLoc >= -50 + HAstar[i].yLoc && HuAstar.xLoc <= 75 + HAstar[i].xLoc && HuAstar.yLoc <= 75 + HAstar[i].yLoc)
-                    {
-                        int healthhos = HosHealth[i] - 10;
-                        HAstar[i].DrawHealth(g, i);
-                        Console.WriteLine(healthhos);
-                        HosHealth[i] = healthhos;
                     }
                 }
             }
@@ -1293,12 +1324,6 @@ namespace FarmWars
                     double FieldY = Convert.ToDouble(feildTile.cropfield[i].Item4) / SquareSize;
                     double HosX = Math.Floor(Convert.ToDouble(HAstar[f].xLoc) / 25);
                     double HosY = Math.Floor(Convert.ToDouble(HAstar[f].yLoc) / 25);
-
-                    if (HosX == 0 && HosY == 0)
-                    {
-                        HAstar[f].attacking = false;
-                    }
-
 
                     if (HosX == FieldX && HosY == FieldY)
                     {
@@ -1318,14 +1343,6 @@ namespace FarmWars
                             ResetTile(FeildX, FeildY);
                             feildTile.cropfield.RemoveAt(i);
 
-                            if (feildTile.cropfield.Count == 0)
-                            {
-                                for (int h = 0; h < 6; h++)
-                                {
-                                    HAstar[h].health = 0;
-                                    HosHealth[h] = 0;
-                                }
-                            }
                             if (feildTile.cropfield.Count > 0)
                             {
                                 Random Go = new Random();
@@ -1392,7 +1409,6 @@ namespace FarmWars
                                         }
                                     }
                                     HAstar[f].AddToList(line);
-                                    Console.WriteLine(line + "Pog");
                                     line = "";
 
                                 }
@@ -1407,12 +1423,12 @@ namespace FarmWars
 
         private void TmrTurn_Tick(object sender, EventArgs e)
         {
-            human.health = HuHealth;
-            Console.WriteLine(Convert.ToInt32(HuHealth));
+            HuAstar.health = HuHealth;
+            inventory.score = score;
             UnderAttack = HAstar.Any(h => h.attacking);
             if (UnderAttack == false)
             {
-                //HuHealth = human.maxhealth;
+                HuHealth = HuAstar.maxhealth;
                 for (int i = 0; i < 6; i++)
                 {
                     HAstar[i].xLoc = 0;
@@ -1585,6 +1601,7 @@ namespace FarmWars
                 TbUsername.ForeColor = System.Drawing.Color.Red;
             }
             TbUsername.SelectionStart = TbUsername.Text.Length;
+            username = TbUsername.Text;
         }
 
         private void BtnGame_Click(object sender, EventArgs e)
@@ -1611,7 +1628,39 @@ namespace FarmWars
         {
 
         }
+                
+        private void CalcualteScore()
+        {
+            string CropType = "";
+            int plantscore = 0;
 
+            for (int i = 0; i < feildTile.cropfield.Count; i++)
+            {
+                CropType = feildTile.cropfield[i].Item2;
+                if (CropType == "TaterSeed")
+                {
+                    plantscore += 25;
+                }
+                if (CropType == "WheatSeed")
+                {
+                    plantscore += 50;
+                }
+                if (CropType == "CornSeed")
+                {
+                    plantscore += 100;
+                }
+                if (CropType == "CarrotSeed")
+                {
+                    plantscore += 175;
+                }
+                if (CropType == "TurnipSeed")
+                {
+                    plantscore += 250;
+                }
+                score = Turn + plantscore;
+
+            }
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             if (HighscoreAll == true)
@@ -1633,7 +1682,62 @@ namespace FarmWars
 
         private void TmrRegen_Tick(object sender, EventArgs e)
         {
-            HuHealth =+ 4;
+            if (HuHealth < HuHealth - 4)
+            {
+              HuHealth = HuHealth + 4;
+            }
+        }
+
+        private void TmrAttack_Tick(object sender, EventArgs e)
+        {
+            spacebreak = false;
+            TmrAttack.Enabled = false;
+        }
+
+        private void BtnTutorial_Click(object sender, EventArgs e)
+        {
+            PnlTutorial.Visible = true;
+            PnlTutorial.Enabled = true;
+            tutorial = 0;
+            DrawTutorialImage();
+        }
+
+        private void DrawTutorialImage()
+        {
+            Graphics g = PnlTutorial.CreateGraphics();
+
+            Rectangle rectTut = new Rectangle(0, 0, PnlGame.Width, PnlGame.Height);
+            Image tutorialImage = Image.FromFile("../../../Art/menubackground.png");
+
+            if (tutorial == 0)
+            {
+                tutorialImage = Image.FromFile("../../../Art/ui/tutorial1.png");
+            }
+            if (tutorial == 1)
+            {
+                tutorialImage = Image.FromFile("../../../Art/ui/tutorial2.png");
+
+            }
+            if (tutorial == 2)
+            {
+                tutorialImage = Image.FromFile("../../../Art/ui/tutorial3.png");
+
+            }
+            if (tutorial == 3)
+            {
+                tutorialImage = Image.FromFile("../../../Art/ui/tutorial4.png");
+            }
+            if (tutorial == 4)
+            {
+                PnlTutorial.Visible = false;
+                PnlTutorial.Enabled = false;
+            }
+            g.DrawImage(tutorialImage, rectTut);
+        }
+        private void PnlTutorial_MouseClick(object sender, MouseEventArgs e)
+        {
+            tutorial++;
+            DrawTutorialImage();
         }
     }
 }

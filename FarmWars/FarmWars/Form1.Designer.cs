@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.PnlGame = new System.Windows.Forms.Panel();
             this.PnlMenu = new System.Windows.Forms.Panel();
+            this.PnlTutorial = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.btnSwitch = new System.Windows.Forms.Button();
@@ -62,6 +63,7 @@
             this.TmrHumMovement = new System.Windows.Forms.Timer(this.components);
             this.TmrDam = new System.Windows.Forms.Timer(this.components);
             this.TmrRegen = new System.Windows.Forms.Timer(this.components);
+            this.TmrAttack = new System.Windows.Forms.Timer(this.components);
             this.PnlGame.SuspendLayout();
             this.PnlMenu.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -82,7 +84,6 @@
             this.PnlGame.TabIndex = 0;
             this.PnlGame.Click += new System.EventHandler(this.PnlGame_Click);
             this.PnlGame.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlGame_Paint);
-            this.PnlGame.DoubleClick += new System.EventHandler(this.PnlGame_DoubleClick);
             this.PnlGame.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PnlGame_MouseDown);
             this.PnlGame.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PnlGame_MouseMove);
             this.PnlGame.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PnlGame_MouseUp);
@@ -95,6 +96,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PnlMenu.BackColor = System.Drawing.SystemColors.ControlDark;
             this.PnlMenu.CausesValidation = false;
+            this.PnlMenu.Controls.Add(this.PnlTutorial);
             this.PnlMenu.Controls.Add(this.label4);
             this.PnlMenu.Controls.Add(this.label5);
             this.PnlMenu.Controls.Add(this.btnSwitch);
@@ -113,6 +115,20 @@
             this.PnlMenu.Size = new System.Drawing.Size(1480, 850);
             this.PnlMenu.TabIndex = 1;
             this.PnlMenu.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlMenu_Paint);
+            // 
+            // PnlTutorial
+            // 
+            this.PnlTutorial.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PnlTutorial.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.PnlTutorial.CausesValidation = false;
+            this.PnlTutorial.Location = new System.Drawing.Point(0, 1);
+            this.PnlTutorial.Name = "PnlTutorial";
+            this.PnlTutorial.Size = new System.Drawing.Size(1480, 850);
+            this.PnlTutorial.TabIndex = 99;
+            this.PnlTutorial.Visible = false;
+            this.PnlTutorial.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PnlTutorial_MouseClick);
             // 
             // label4
             // 
@@ -219,11 +235,11 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Lucida Handwriting", 75F, System.Drawing.FontStyle.Bold);
+            this.label1.Font = new System.Drawing.Font("Lucida Sans", 75F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(343, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(837, 162);
+            this.label1.Size = new System.Drawing.Size(736, 142);
             this.label1.TabIndex = 4;
             this.label1.Text = "Farm Wars";
             // 
@@ -261,6 +277,7 @@
             this.BtnTutorial.TabIndex = 1;
             this.BtnTutorial.Text = "Tutorial";
             this.BtnTutorial.UseVisualStyleBackColor = true;
+            this.BtnTutorial.Click += new System.EventHandler(this.BtnTutorial_Click);
             // 
             // BtnGame
             // 
@@ -326,44 +343,40 @@
             // reDrawMapToolStripMenuItem
             // 
             this.reDrawMapToolStripMenuItem.Name = "reDrawMapToolStripMenuItem";
-            this.reDrawMapToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.reDrawMapToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
             this.reDrawMapToolStripMenuItem.Text = "Draw Map";
             // 
             // reLoadMapToolStripMenuItem
             // 
             this.reLoadMapToolStripMenuItem.Name = "reLoadMapToolStripMenuItem";
-            this.reLoadMapToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
-            this.reLoadMapToolStripMenuItem.Text = "Read List";
-            this.reLoadMapToolStripMenuItem.Click += new System.EventHandler(this.reLoadMapToolStripMenuItem_Click);
+            this.reLoadMapToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(158, 6);
             // 
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
             this.clearToolStripMenuItem.Text = "Clear";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(166, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(158, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // pathFindingToolStripMenuItem
             // 
             this.pathFindingToolStripMenuItem.Name = "pathFindingToolStripMenuItem";
-            this.pathFindingToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
-            this.pathFindingToolStripMenuItem.Text = "PathFinding";
-            this.pathFindingToolStripMenuItem.Click += new System.EventHandler(this.pathFindingToolStripMenuItem_Click);
+            this.pathFindingToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
             // 
             // moveGuyToolStripMenuItem
             // 
@@ -411,6 +424,10 @@
             this.TmrRegen.Enabled = true;
             this.TmrRegen.Interval = 2000;
             this.TmrRegen.Tick += new System.EventHandler(this.TmrRegen_Tick);
+            // 
+            // TmrAttack
+            // 
+            this.TmrAttack.Tick += new System.EventHandler(this.TmrAttack_Tick);
             // 
             // FormGame
             // 
@@ -473,6 +490,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Timer TmrRegen;
+        private System.Windows.Forms.Timer TmrAttack;
+        public System.Windows.Forms.Panel PnlTutorial;
     }
 }
 

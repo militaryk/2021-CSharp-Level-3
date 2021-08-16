@@ -23,6 +23,7 @@ namespace FarmWars
         public int width;
         public int height;
         public int Moneyz = 1000;
+        public int score;
         public int PnlWidth;
         public int PnlHeight;
         public string selitemname = "";
@@ -54,7 +55,7 @@ namespace FarmWars
                 PosX = PnlWidth - width;
                 PosY = PnlHeight - height - ((PnlHeight / 5));
 
-                InvX = PnlWidth - width;
+                InvX = PnlWidth - width + 25;
                 InvY = PosY + 125;
 
                 int numofinv = 0;
@@ -84,12 +85,16 @@ namespace FarmWars
                         {
                             string itemname = inventory[numofinv].Item1;
                             int itemamount = inventory[numofinv].Item2;
-                            int itemid = ItemDict(itemname);
-                            string itempict = ItemPictDict(itemid);
+                            if (itemamount > 0)
+                            {
+                                int itemid = ItemDict(itemname);
+                                string itempict = ItemPictDict(itemid);
+                                Image ItemImage = Image.FromFile(itempict);
+                                g.DrawImage(ItemImage, inv);
+                                g.DrawString(itemamount.ToString(), invfont, br, invamo);
+                            }
                             numofinv += 1;
-                            Image ItemImage = Image.FromFile(itempict);
-                            g.DrawImage(ItemImage, inv);
-                            g.DrawString(itemamount.ToString(), invfont, br, invamo);
+
                         }
                         else {
                         }
@@ -109,6 +114,7 @@ namespace FarmWars
             DrawUI(g);
             DrawNextTurn(g);
             DrawBuildIcon(g);
+            DrawScore(g);
         }
 
         public void DrawNextTurn(Graphics g)
@@ -136,18 +142,15 @@ namespace FarmWars
             height = SqaureSize;
 
             Rectangle iconPause = new Rectangle(SqaureSize * 0, 0, width * 2, height * 2);
-            Rectangle iconExit = new Rectangle(SqaureSize * 4, 0, width * 2, height * 2);
             Rectangle iconCoin = new Rectangle(SqaureSize * 12, 0, width * 2, height * 2);
 
 
 
             Image PauseImage = Image.FromFile("../../../Art/ui/pause.png");
-            Image ExitImage = Image.FromFile("../../../Art/ui/exit.png");
             Image CoinImage = Image.FromFile("../../../Art/ui/Coin.png");
 
 
             g.DrawImage(PauseImage, iconPause);
-            g.DrawImage(ExitImage, iconExit);
             g.DrawImage(CoinImage, iconCoin);
             DrawMoneyz(g);
         }
@@ -163,6 +166,15 @@ namespace FarmWars
             SolidBrush drawBrush = new SolidBrush(Color.Black);
 
             g.DrawString(Moneyz.ToString(), drawFont, drawBrush, RecMoneyz);
+        }
+
+        private void DrawScore(Graphics g)
+        {
+            Rectangle RecScore = new Rectangle((SqaureSize * 20) + 15, 0, width * 12, height * 2);
+            Font drawFont = new Font("Arial", 32);
+            SolidBrush drawBrush = new SolidBrush(Color.Black);
+
+            g.DrawString("Score:" + score.ToString(), drawFont, drawBrush, RecScore);
         }
 
         private int ItemDict(string itemname)

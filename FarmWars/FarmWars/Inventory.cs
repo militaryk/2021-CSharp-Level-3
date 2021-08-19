@@ -23,6 +23,7 @@ namespace FarmWars
         public int width;
         public int height;
         public int Moneyz = 1000;
+        public int turn = 0;
         public int score;
         public int PnlWidth;
         public int PnlHeight;
@@ -142,7 +143,7 @@ namespace FarmWars
             height = SqaureSize;
 
             Rectangle iconPause = new Rectangle(SqaureSize * 0, 0, width * 2, height * 2);
-            Rectangle iconCoin = new Rectangle(SqaureSize * 12, 0, width * 2, height * 2);
+            Rectangle iconCoin = new Rectangle(SqaureSize * 6, 0, width * 2, height * 2);
 
 
 
@@ -152,6 +153,8 @@ namespace FarmWars
 
             g.DrawImage(PauseImage, iconPause);
             g.DrawImage(CoinImage, iconCoin);
+
+            DrawTurn(g);
             DrawMoneyz(g);
         }
 
@@ -161,7 +164,7 @@ namespace FarmWars
             DrawMoneyz(g);
         }
         private void DrawMoneyz(Graphics g) {
-            Rectangle RecMoneyz = new Rectangle((SqaureSize * 13)+15, 0, width * 5, height * 2);
+            Rectangle RecMoneyz = new Rectangle((SqaureSize * 7)+15, 0, width * 5, height * 2);
             Font drawFont = new Font("Arial", 32);
             SolidBrush drawBrush = new SolidBrush(Color.Black);
 
@@ -170,11 +173,20 @@ namespace FarmWars
 
         private void DrawScore(Graphics g)
         {
-            Rectangle RecScore = new Rectangle((SqaureSize * 20) + 15, 0, width * 12, height * 2);
+            Rectangle RecScore = new Rectangle((SqaureSize * 14) + 15, 0, width * 12, height * 2);
             Font drawFont = new Font("Arial", 32);
             SolidBrush drawBrush = new SolidBrush(Color.Black);
 
             g.DrawString("Score:" + score.ToString(), drawFont, drawBrush, RecScore);
+        }
+
+        private void DrawTurn(Graphics g)
+        {
+            Rectangle RecScore = new Rectangle((SqaureSize * 26) + 15, 0, width * 12, height * 2);
+            Font drawFont = new Font("Arial", 32);
+            SolidBrush drawBrush = new SolidBrush(Color.Black);
+
+            g.DrawString("Turn:" + turn.ToString(), drawFont, drawBrush, RecScore);
         }
 
         private int ItemDict(string itemname)

@@ -28,9 +28,9 @@ namespace FarmWars
 
         public int LeftX, LeftY, RightX, RightY, UpX, UpY, DownX, DownY, StartX, StartY;
         bool pathmade = false;
-        List<string> map = new List<string>();
-        List<Tuple<int, int>> path = new List<Tuple<int, int>>();
-        List<Tuple<int, int>> walkpath = new List<Tuple<int, int>>();
+        public List<string> map = new List<string>();
+        public List<Tuple<int, int>> path = new List<Tuple<int, int>>();
+        public List<Tuple<int, int>> walkpath = new List<Tuple<int, int>>();
         public void AddToList(string mapline)
         {
             map.Add(mapline);

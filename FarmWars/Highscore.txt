@@ -1,5 +1,7 @@
 JeffBezos
 1502
+militaryk
+401
 Jeffry
 69
 Ben
@@ -50,5 +52,3 @@ Nina
 1
 Taylor
 0
-militaryk
-1652

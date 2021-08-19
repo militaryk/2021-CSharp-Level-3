@@ -472,23 +472,34 @@ namespace FarmWars
                 {
                     if (UnderAttack == false)
                     {
-                        inventory.nextturn = false;
-                        Turn += 1;
-                        feildTile.PlantTurn(f, Turn);
-                        for (int i = 0; i < 6; i++)
+                        if (feildTile.cropfield.Count > 0)
                         {
-                            HosHealth[i] = 100;
+                            inventory.nextturn = false;
+                            Turn += 1;
+                            feildTile.PlantTurn(f, Turn);
+                            for (int i = 0; i < 6; i++)
+                            {
+                                HosHealth[i] = 100;
+                            }
+                            if (feildTile.cropfield.Count != 0)
+                            {
+                                DrawHostile();
+                                UnderAttack = true;
+                            }
+                            username = TbUsername.Text;
+                            inventory.turn = Turn;
+                            CalcualteScore();
+                            if (highscore.Any(z => z.Item2 == username) == true)
+                            {
+                                var oldhighscore = highscore.Find(z => z.Item2 == username);
+                                if (oldhighscore.Item1 <= score)
+                                {
+                                    highscore.RemoveAll(z => z.Item2 == username);
+                                    highscore.Add(new Tuple<int, string>(score, username));
+                                }
+                            }
+                            CreateHighscore();
                         }
-                        if (feildTile.cropfield.Count != 0)
-                        {
-                            DrawHostile();
-                            UnderAttack = true;
-                        }
-                        username = TbUsername.Text;
-                        CalcualteScore();
-                        highscore.RemoveAll(z => z.Item2 == username);
-                        highscore.Add(new Tuple<int, string>(score, username));
-                        CreateHighscore();
                     }
                 }
                 else if (XPos >= 100 && YPos >= 100 && XPos <= 200 && YPos <= 180)
@@ -1072,7 +1083,7 @@ namespace FarmWars
 
         private void GameOver()
         {
-            MessageBox.Show("Thank You for playing. " + " You scored " + Convert.ToString(score) + "." + " You survived " + Convert.ToString(Turn) + " Turns.", " Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information) ;
+            MessageBox.Show("Thank You for playing. " + " You scored " + Convert.ToString(score) + "." + " You survived " + Convert.ToString(Turn) + " Turns.", " Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
             TmrHosMovement.Enabled = false;
             TmrDam.Enabled = false;
             TmrHumMovement.Enabled = false;
@@ -1081,7 +1092,77 @@ namespace FarmWars
             PnlMenu.Enabled = true;
             BtnGame.Text = "New Game";
             MapDrawn = false;
+
+            //Declare Interger Arrays and Bools
+            PathPos = new int[] { 0, 0, 0, 0, 0, 0 };
+            PathLoc = new int[] { 0, 0, 0, 0, 0, 0 };
+            Drawn = new bool[6];
+            HosHealth = new int[] { 100, 100, 100, 100, 100, 100 };
+
+            //Declare Intergers
+            Traversible = 1;
+            mapwidth = 0;
+            HuPathLoc = 0;
+            HuPathPos = 0;
+            HuHealth = 50;
+            SquareSize = 25;
+            XCord = 0;
+            YCord = 0;
+            Turn = 0;
+            tutorial = 0;
+            HuAX = 3;
+            HuAY = 3;
+
+            width = 0;
+            height = 0;
+            score = 0;
+
+
+            //Declear Bools
+            LShift = false;
+            RShift = false;
+            MouseDrag = false;
+            GoneShopping = false;
+            InGame = true;
+            InMenu = false;
+            MapDrawn = false;
+
+            //Declear Public Bools
+            HostileDrawn = false;
+            ISwordPurchased = false;
+            BSwordPurchased = false;
+            IArmourPurchased = false;
+            BArmourPurchased = false;
+            HighscoreAll = false;
+            UnderAttack = false;
+            spacebreak = false;
+            FormActive = true;
+
+            inventory.turn = 0;
+            inventory.Moneyz = 1000;
+            inventory.score = 0;
+
+            HuAstar.xLoc = 75;
+            HuAstar.yLoc = 75;
+            HuAstar.x = 75;
+            HuAstar.y = 75;
+
+            feildTile.cropfield.Clear();
+            inventory.inventory.Clear();
+            inventory.selitemname = "";
+
+            for (int i = 0; i < 6; i++)
+            {
+                HAstar[i].walkpath.Clear();
+                HAstar[i].map.Clear();
+                HAstar[i].path.Clear();
+                HAstar[i].attacking = false;
+                HAstar[i].visible = false;
+
+
+            }
         }
+
         private void DrawHostile()
         {
             for (int i = 0; i <= 5; i++)
